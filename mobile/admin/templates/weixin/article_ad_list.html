@@ -1,0 +1,105 @@
+<!-- $Id: ads_list.htm 14216 2008-03-10 02:27:21Z testyang $ -->
+{if $full_page}
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+
+<form method="post" action="" name="listForm">
+<!-- start ads list -->
+<div class="list-div" id="listDiv">
+{/if}
+
+<table cellpadding="3" cellspacing="1">
+  <tr>
+    <th>广告ID</th>
+    <th>广告标题</th>
+      <th>所属会员ID/昵称</th>
+    <th>广告缩略图</th>
+
+  
+    <th>链接地址</th>
+    <th>手机号</th>
+    <th>二维码</th>
+    <th>添加时间</th>
+	<th>状态</th>
+    <th>{$lang.handler}</th>
+  </tr>
+  {foreach from=$ads_list item=list}
+  <tr>
+   <td align="center">
+    <span>{$list.id|escape:html}</span>
+    </td>
+   <td align="center"><span>{$list.ad_title|escape:html}</span>
+    </td>
+      </td>
+    <td align="center"><span>{$list.user_id}/{$list.nickname}</span>
+    </td>
+    <td align="center">
+   
+    <div style="margin:4px; position:relative" onmousemove="open_af('{$list.id}', 'block')" onmouseout="open_af('{$list.id}', 'none')">
+    <img src="../{$list.ad_img}" width="90px" style="cursor:pointer"/>
+    <div id="open_af_{$list.id}" style="display:none; position:absolute;left:70px;top:-2px; float:left; z-index:1000; border:#E5E5E5 solid 2px">
+    <img src="../{$list.ad_img}" />
+    </div>
+    </div>
+    <script language="javascript">
+	function open_af(m_id, m_t)
+	{
+		document.getElementById("open_af_" + m_id).style.display = m_t;
+	}
+    </script>
+   
+    </td>
+
+  
+    <td align="center"><span> <a href="{$list.ad_link}" onClick="if (confirm('确定要进行访问验证吗？')) return true; else return false;" title="访问验证">{$list.ad_link}</a></span></td>
+    <td align="center"><span>{$list.adtelnumber}</span></td>
+     <td align="center">
+    {if $list.erweima}
+    <div style="margin:4px; ">
+	
+    <img src="../{$list.erweima}" width="90px"/>
+    </div>
+	 {/if}
+    </td>
+    <td align="right"><span>{$list.addtime}</span></td>
+	 <td align="center"><span> {if $list.ad_status eq 0}<em style="color:#FF0000">未审核</em>{else}已审核
+      {/if}</span></td>
+    <td align="right"><span>
+      {if $list.ad_status eq 0}
+      <a href="article_ad.php?act=list&id={$list.id}&key=add&page={$page}" title="通过审核"><img src="images/icon_edit.gif" border="0" height="16" width="16" /></a>
+      {/if}
+      <a href="article_ad.php?act=list&id={$list.id}&key=del&page={$page}" onClick="if (confirm('确定要删除吗？')) return true; else return false;" title="删除"><img src="images/icon_drop.gif" border="0" height="16" width="16" /></a></span>
+    </td>
+  </tr>
+  {foreachelse}
+    <tr><td class="no-records" colspan="10">{$lang.no_ads}</td></tr>
+  {/foreach}
+  <tr>
+     <td align="right" nowrap="true" colspan="10">共有{$Total}条记录,每页{$perpagenum}条,共{$Totalpage}页 <!--{if $page != 1  }--><a href={$url}>首页</a> 
+<a href={$url}?page={$per}> 上一页</a><!-- {/if} --> <!--{if $page != $Totalpage  }--><a href={$url}?page={$next}> 下一页</a>  
+<a href={$url}?page={$Totalpage}> 尾页</a> <!-- {/if} --> </td>
+  </tr>
+</table>
+
+{if $full_page}
+</div>
+<!-- end ad_position list -->
+</form>
+
+<script type="text/javascript" language="JavaScript">
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+  {literal}
+  onload = function()
+  {
+    // 开始检查订单
+    startCheckOrder();
+  }
+  {/literal}
+</script>
+{include file="pagefooter.htm"}
+{/if}

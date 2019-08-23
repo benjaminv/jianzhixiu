@@ -1,0 +1,217 @@
+<style>
+.back_d_list { padding-left: 10px; font-size: 14px; }
+.table_box td { padding-left: 10px; }
+.anniu { display: block; width: 120px; margin: 20px auto; height: 25px; font-size: 12px; line-height: 25px; color: #666; text-align: center; border-radius: 2px; border: 1px solid #ccc; }
+.navContent h2 { width: 95%; margin: auto; height: 40px; background: url(../images/user/dianpu.png) no-repeat left center; background-size: auto 25px; font-weight: normal; }
+.navContent h2 span { display: block; height: 40px; float: left; font-size: 16px; line-height: 40px; color: #666; background: url(../images/user/user_right.png) no-repeat right center; background-size: auto 30px; margin-left: 25px; padding-right: 20px; background-size: auto 18px; }
+</style>
+<div class="order">
+<div class="order_up">
+  <div class="lan">
+    <dl>
+      <dd><span> {if $list_backgoods.0}
+        处理状态: {$back_shipping.status_back}<br/>
+        退款状态: {$back_shipping.status_refund}
+        {/if}
+        {if $list_backgoods.3}
+        
+	处理状态:{$back_shipping.status_back}
+        {/if}
+        {if $list_backgoods.4}
+        处理状态: {$back_shipping.status_back}<br/>
+        退款状态: {$back_shipping.status_refund}
+        {/if}
+        {if $list_backgoods.1}
+        处理状态: {$back_shipping.status_back}<br/>
+        退款状态: {$back_shipping.status_refund}
+        {/if}</span> <span style=" font-size:14px">原订单号：{$back_shipping.order_sn}</span> </dd>
+    </dl>
+  </div>
+</div>
+<div class="ord_list1">
+  <h2><span>商品信息</span></h2>
+  <div class="good_list"> {if $list_backgoods.0}
+    <div class="back_d_list"> {foreach from= $list_backgoods.0.goods_list item=bgoods}
+      <li>退回商品： {$bgoods.goods_name} </li>
+      {if $bgoods.goods_attr}
+      <li>{$bgoods.goods_attr|nl2br}</li>
+      {/if}
+      <li>数量：{if $bgoods.back_goods_number}{$bgoods.back_goods_number}{/if} </li>
+      <li>类型：退货退款 </li>
+      
+      <li>应退金额：{$bgoods.back_goods_money} </li>
+      <li>处理状态: {$bgoods.status_back}</li>
+      <li>退款状态: {$bgoods.status_refund} </li>
+{/foreach}
+        <div class="blank"></div>
+          <li>寄回商品，收件人信息</li>
+          <li>商品寄回地址： {$back_address} </li>
+          
+          <li>应退金额：{$back_shipping.refund_money_1}&nbsp;&nbsp;&nbsp;&nbsp;实退金额：{$back_shipping.refund_money_2}</li>
+          <li>收件人：{$back_consignee}</li>
+	
+
+
+
+
+
+    </div>
+    {/if}
+    {if $list_backgoods.3}
+    <div class="back_d_list"> {foreach from= $list_backgoods.3.goods_list item=bgoods}
+      <li>退回商品： {$bgoods.goods_name} </li>
+      {if $bgoods.goods_attr}
+      <li>{$bgoods.goods_attr|nl2br}</li>
+      {/if}
+      <li>数量：{if $bgoods.back_goods_number}{$bgoods.back_goods_number}{/if} </li>
+      <li>类型：申请返修 </li>
+      {/foreach}
+      <li>处理状态: {$bgoods.status_back}</li>
+      <li>收货电话: {$shdh}</li>
+      {/if} </div>
+    {if $list_backgoods.4}
+    <div class="back_d_list"> {foreach from= $list_backgoods.4.goods_list item=bgoods}
+      <li>退回商品： {$bgoods.goods_name} </li>
+      {if $bgoods.goods_attr}
+      <li>{$bgoods.goods_attr|nl2br}</li>
+      {/if}
+      <li>数量：{if $bgoods.back_goods_number}{$bgoods.back_goods_number}{/if} </li>
+     
+      <li>类型：退款（无需退货） </li>
+      <li>应退金额：{$bgoods.back_goods_money} </li>
+      <li>处理状态: {$bgoods.status_back}</li>
+      <li>退款状态: {$bgoods.status_refund} </li>
+
+       {/foreach}
+      {/if}
+      {if $list_backgoods.1}
+      <div class="back_d_list"> {foreach from= $list_backgoods.1.goods_list name="list_backgoods_1" item=bgoods}
+        <tr>
+          <li>{if $smarty.foreach.list_backgoods_1.iteration eq 1}退回{else}换回{/if}商品</li>
+          <li>退回商品: {$bgoods.goods_name}</li>
+          <li>{if $bgoods.goods_attr}属性：{$bgoods.goods_attr}{/if} </li>
+          <li>数量：{if $bgoods.back_goods_number}{$bgoods.back_goods_number}{/if} </li>
+          <li>{if $smarty.foreach.list_backgoods_1.iteration eq 1}类型：换货{/if}</li>
+          {/foreach}
+          <li>应退金额：{$bgoods.back_goods_money} </li>
+          <li>处理状态: {$bgoods.status_back}</li>
+          <li>退款状态: {$bgoods.status_refund} </li>
+          <div class="blank"></div>
+          <li>寄回商品，收件人信息</li>
+          <li>商品寄回地址： {$back_shipping.country_name} {$back_shipping.province_name} {$back_shipping.city_name} {$back_shipping.district_name} {$back_shipping.address}</li>
+          <li>邮政编码：{$back_shipping.zipcode}</li>
+          <li>应退金额：{$back_shipping.refund_money_1}&nbsp;&nbsp;&nbsp;&nbsp;实退金额：{$back_shipping.refund_money_2}</li>
+          <li>收件人：{$back_shipping.consignee}</li>
+          <li>退款形式：{$back_shipping.refund_type_name}</li>
+          <li>退款说明：{$back_shipping.refund_desc}</li>
+          {/if} 
+      </div>
+    </div>
+    {if $back_shipping.back_type neq 4 && ($back_shipping.status_back_1 lt 1 || ($back_shipping.status_back_1 gt 3 && $back_shipping.status_back_1 lt 6))}
+    <div class="navContent">
+      <ul>
+        <li>快递信息（请填写您寄回商品的快递信息）</li>
+        <form action="user.php" method="post">
+          <li>配送方式：
+            <select name="shipping_id" size=1 style="vertical-align:middle;border:1px #ddd solid">
+              <option value="0">请选择快递公司</option>
+              
+              
+	{foreach from=$shipping_list item=shipping}
+            
+              
+              <option value="{$shipping.shipping_id}" {if $back_shipping.shipping_id eq $shipping.shipping_id}selected{/if} >{$shipping.shipping_name} </option>
+              
+              
+	{/foreach}
+          
+            
+            </select>
+          </li>
+          <li>快递运单号：
+            <input type="text" name="invoice_no" class="inputBg" size=20 value="{$back_shipping.invoice_no}" style=" vertical-align:middle">
+            <input type="submit" name="submit" class="main-btn main-btn-large" value="确定" {if $back_shipping.status_back gt 0 && $back_shipping.status_back lt 5}disabled{/if}  style=" vertical-align:middle">
+            <input type="hidden" name="back_id" value="{$back_id}">
+            <input type="hidden" name="act" value="back_order_detail_edit">
+            </td>
+          </li>
+          <li><span style="color:red">请等待售后申请审核通过后再把货物寄回，否则无效</span></li>
+        </form>
+      </ul>
+    </div>
+    {/if}
+    <div class="navContent" style="padding-top:0">
+      <h2><span>留言/回复</span></h2>
+      <div style="height:4px; background:#eee"></div>
+      <ul>
+        <table width="100%" cellspacing="1" class="table_box">
+          <!--{if $back_shipping.postscript}-->
+          <tr>
+            <td>我说：</td>
+          </tr>
+          <tr>
+            <td>{$back_shipping.postscript} （{$back_shipping.add_time}）</td>
+          </tr>
+          <tr>
+            <td><div style="height:1px; border-bottom:1px dotted #ccc; margin:5px 0; width:90%"></div></td>
+          </tr>
+          <!--{/if}--> 
+          <!--{foreach from=$back_replay item=value}--> 
+          {if $value.type eq 0}
+          <tr style="color:#F00">
+            <td bgcolor="#FFFFFF">客服回复：</td>
+          </tr>
+          <tr style="color:#F00">
+            <td bgcolor="#FFFFFF">{$value.message} （{$value.add_time}）</td>
+          </tr>
+          <tr>
+            <td><div style="height:1px; border-bottom:1px dotted #ccc;margin:5px 0; width:90%"></div></td>
+          </tr>
+          {else}
+          <tr>
+            <td  bgcolor="#FFFFFF">我说：</td>
+          </tr>
+          <tr>
+            <td bgcolor="#FFFFFF">{$value.message} （{$value.add_time}）</td>
+          </tr>
+          <tr>
+            <td><div style="height:1px; border-bottom:1px dotted #ccc; margin:5px 0;width:90%"></div></td>
+          </tr>
+          {/if} 
+          <!--{/foreach}-->
+          <tr>
+            <td >我说：</td>
+          </tr>
+          <tr>
+            <td bgcolor="#FFFFFF"><script>
+            function check_replay()
+            {
+                if (document.getElementById("message").value == '')
+                {
+                    alert("请输入回复内容！");
+                    document.getElementById("message").focus();
+                    return false;	
+                }
+            }
+            </script>
+              <form action="user.php?act=back_replay" method="post" onsubmit="return check_replay()">
+                <input name="back_id" type="hidden" value="{$back_shipping.back_id}">
+                <div>
+                  <textarea id="message" name="message" style=" display:block;width:80%; height:60px; padding:10px"></textarea>
+                </div>
+                <div class="blank"></div>
+                <div>
+                  <input type="submit" value="回复" class="anniu" />
+                </div>
+              </form></td>
+          </tr>
+        </table>
+      </ul>
+    </div>
+  </div>
+  <script>
+function goTop(){
+	$('html,body').animate({'scrollTop':0},600);
+}
+</script> 
+  <a href="javascript:goTop();" class="gotop"><img src="themesmobile/dm299_com/images/topup.png"></a> </div>

@@ -1,0 +1,35 @@
+
+<meta charset="UTF-8">
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+<link rel="stylesheet" href="themesmobile/dm299_com/css/flow.css">
+
+<div class="bodybj">
+
+
+
+<div class="shaidan">
+  <table cellpadding=5 cellspacing=1 width=100% bgcolor="#eeeeee">
+            <tr>
+              <td bgcolor="#FFFFFF" style="font-size:15px;font-weight:bold;line-height:180%;padding:20px;color:#555"> 
+    	<!-- {if $back_act_w eq 'tuihuo'} -->
+	  退货申请已经提交，待卖家审核通过后请到个人中心/退款退货那里填写退货的快递信息
+    <!-- {elseif $back_act_w eq 'tuikuan'} -->
+    退款申请已提交，请耐心等待卖家处理。
+    <!-- {elseif $back_act_w eq 'weixiu'} -->
+    维修申请已提交，请耐心等待卖家处理。<br>
+	商品寄回地址：{$back_address}<br>
+	收货人电话：{$back_zipcode}<br>
+	收件人：{$back_consignee}
+    <!-- {/if} -->
+	</td>
+            </tr>
+            <tr>
+              <td bgcolor="#FFFFFF" align=center><input type="button" value="确定" onclick='location.href="user.php?act=back_list";' style="cursor:pointer;border:none; background:#ED5854;color:#fff;padding:5px 15px"></td>
+            </tr>
+          </table>
+
+</div>
+
+</div>
+
+

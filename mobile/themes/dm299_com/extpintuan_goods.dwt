@@ -1,0 +1,467 @@
+<!DOCTYPE html >
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>{$page_title}</title>
+  <meta name="Keywords" content="{$keywords}" />
+  <meta name="Description" content="{$description}" />
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+  <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/css/public.css"/>
+  <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/extpt.css" />
+
+ <script type="text/javascript" src="themesmobile/dm299_com/js/jquery.js"></script>
+{insert_scripts files='jquery.json.js,transport.js'}
+<script type="text/javascript" src="themesmobile/dm299_com/js/touchslider.dev.js"></script>
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,lefttime.js,transport.js'}
+ <script type="text/javascript" src="themesmobile/dm299_com/js/jquery-1.7.2.min.js"></script>
+
+<script type="text/javascript">
+// 筛选商品属性
+jQuery(function($) {
+	$(".info").click(function(){
+		$('.goodsBuy .fields').slideToggle("fast");
+	});
+})
+
+
+onload = function(){
+		document.getElementById('goods_number').value = 1;//更新数量
+		document.getElementById('number_single_buy').value = 1;//更新数量
+		document.getElementById('extpintuan_number').value = 1;//更新数量
+
+}
+
+function changenum(diff) {
+	var num = parseInt(document.getElementById('goods_number').value);
+	var goods_number = num + Number(diff);
+	if( goods_number >= 1){
+		document.getElementById('goods_number').value = goods_number;//更新数量
+		document.getElementById('extpintuan_number').value = goods_number;//更新数量
+	}
+}
+</script>
+<script>
+/* 月梦网络 */
+function goBack(){  
+   if(history.length > 1 ){  
+          history.back(-1);  
+    }else{  
+          location.href = 'index.php';
+    }  
+} 
+</script>
+<script>
+/* 生成随机价格 */
+var g_Interval = 1;
+var g_Min_price = {$extpintuan.min_price};//下限
+var g_Max_price = {$extpintuan.max_price};//上限
+var choose_number={$extpintuan.choose_number};
+var act_id = {$extpintuan.act_id};
+var level = {$extpintuan.level};
+var g_Timer;
+var running = false;
+function beginRndNum(trigger){
+     document.getElementById('click_a').style.display = 'none';	
+     document.getElementById('click_b').style.display = 'block';	
+
+	if(running){
+		running = false;
+		clearTimeout(g_Timer);	
+		var price=document.getElementById('price').value;
+        Ajax.call('extpintuan.php', 'act=setprice&act_id=' + act_id + '&price=' + price+ '&level=' + level, setPriceResponse, 'GET', 'JSON');
+		document.getElementById('buy_button').style.display = 'block';	
+	}
+	else{
+		running = true;
+		beginTimer();
+		g_Timer = setTimeout(beginRndNum, 2000);
+		
+	}
+}
+
+function setPriceResponse(res){
+}
+function updateRndNum(){
+	var num = (Math.random()*(g_Max_price-g_Min_price)+g_Min_price).toFixed(2);
+	var newnum=(Array(8).join(0) + num).slice(-8);
+	//$('#chouqujiage_b').html('立即开团'+"&nbsp;&gt;");
+	$('#ResultPrice_b').html('¥'+num+'元');
+	document.getElementById('price').value = num;
+}
+
+function beginTimer(){
+	g_Timer = setTimeout(beat, g_Interval);
+}
+
+function beat() {
+	g_Timer = setTimeout(beat, g_Interval);
+	updateRndNum();
+
+}
+</script>
+</head>
+<body style=" background-color:#FFF;">
+
+<!--头部 S PRINCE  QQ 120029121-->
+<div class="tab_nav">
+    <header class="header">
+      <div class="h-left">
+        <a class="sb-back" href="javascript:history.back(-1)" title="返回"></a>
+      </div>
+      <div class="h-mid">
+      	拼团商品详情
+      </div>
+      <div class="h-right">
+        <aside class="top_bar">
+          <div onClick="show_menu();$('#close_btn').addClass('hid');" id="show_more">
+            <a href="javascript:;"></a>
+          </div>
+        </aside>
+      </div>
+    </header>
+</div>
+<!-- #BeginLibraryItem "/library/up_menu.lbi" -->
+<!-- #EndLibraryItem -->
+<!--头部 E PRINCE  QQ 120029121-->
+
+<!--商品图片 E PRINCE  QQ 120029121-->
+<div class="clist">
+  <ul>
+    <li class="crow level1" >
+      <div  style="height:auto; width:100%; margin-top:0px; margin-left:0px; ">
+      <!-- #BeginLibraryItem "/library/goods_gallery.lbi" --><!-- #EndLibraryItem --> 
+      </div>
+    </li>
+  </ul>  
+</div>
+<!--商品图片 E PRINCE  QQ 120029121-->
+
+
+
+
+<!--根据状态显示内容及数量选择 S PRINCE  QQ 120029121-->
+	<!-- {if $extpintuan.status eq 1} 进行中 -->
+	<div id="page" class="extptbox" >
+        <!--名称，简介等参数-->
+        <div class="extpttitle">{$extpintuan.act_name|escape:html}</div>
+        <div class="ext_jianjie" style="font-size:12px;color:#666; ">{$extpintuan.goods_brief}</div>
+        <div class="extpthengtw"> <div class="pt_l"><div style="width:29px; line-height:28px; text-align:center; background:#e02128; font-weight: bold; margin-top:2px; float:right; color:#fff; font-size:16px;">〉</div><div style="float:right; margin-top:2px; line-height:28px; padding:0 4px; color:#fff; background:#4f4f4f">{$extpintuan.level}人团&nbsp;&nbsp; { $extpintuan.tuanzhangdis}</div> </del></div>
+            <div class="pt_r">已售：{$extpintuan.virtual_sold}件{if $extpintuan.lucky_extpintuan}
+            <span style="margin-left:10px; color:#F00;border:solid 1px #F00; border-radius:5px; padding:2px;">抽奖团</span>{/if}
+            </div>
+        </div>
+        <div class="ext_jianjie" style="font-size:12px; color:#F00; position:relative">
+            {if $extpintuan.lucky_extpintuan}<span style="color:#F00">本活动为限量抽奖团，限量{$extpintuan.lucky_limit}份。</span>{/if}
+            支付开团并邀请{$extpintuan.share_people}人参加，人数不足自动退款，详见下方活动说明及拼团玩法介绍。<br />
+        </div>       
+       <!--名称，简介等参数-->
+
+        <div class="td2">
+            <div class="kt_item_block"></div>
+            <div class="kt which_one" style="height:auto;">
+                       <!-- {if $pay_url  }  -->
+ 							 <a class="extptbuy_button" style="margin-top:10px;"   href="{$pay_url}"  >
+                             <span style="width:100%; text-align:center; color:#FFFFFF">您有待付款订单.&nbsp;&nbsp;立即付款&nbsp;&gt;</span>
+                             </a>
+                        <!-- {else}  -->
+                            <!-- {if $extpintuan.need_follow && (!$weixininfo.isfollow ) && $is_wechat_browser  }-->
+                            <a class="kt_item kt_item1" onclick="showReg();">
+                            <!-- {else}  -->
+                            <a class="kt_item kt_item1" onclick="form_extpintuan.submit()">
+                            <!-- {/if}  -->
+                                <div class="kt_left" >立即开团&nbsp;&gt;</div>
+                                <div class="kt_height"><b id="tuan_more_price"></b><i> ¥{ if $rand_price}{ $show_rand_price}{else}{$extpintuan.show_price}{/if}元</i></div>
+                            </a>
+							<div style="height:10px;width:100%; clear:both;"></div>
+   						<!-- {/if}  -->
+                        
+                        <form action="extpintuan.php?act=buy" method="post" name="form_extpintuan">
+                          <input type="hidden" name="act_id" value="{$extpintuan.act_id}" />
+                          <input type="hidden" id="extpintuan_number"  name="number" value="1" />
+                          <input type="hidden" name="level" value="{$extpintuan.level}" />                                 
+                        </form>
+            </div>
+        </div>
+   <!-- {elseif $extpintuan.status eq 2 } 已结束 -->
+   <div class="hdsysj" ><p style="width:100%; text-align:center; color:#FFFFFF"> <a href="extpintuan.php" style="color:#FFF">活动已结束</a></p></div>
+      
+    	<!-- {if $extpintuan.lucky_extpintuan} -->
+        <div class="td2">
+              <div class="kt_item_block"></div>
+              <div class="kt which_one" style="height:auto;">
+                                 <a class="extptbuy_button" style="margin-top:10px;"   href="extpintuan.php?act=luckylist&act_id={$extpintuan.act_id}"  >
+                                 <div class="hdsysj" style=" background-color:#093; " ><p style="width:100%; text-align:center; color:#FFFFFF">查看抽奖结果&nbsp;&gt;</p></div>
+                                 </a>
+              </div>
+         </div>
+   	  <!-- {/if}  -->
+    <!-- {else } 未开始或已结束 -->
+      <div class="hdsysj" ><p style="width:100%; text-align:center; color:#FFFFFF"> <a href="extpintuan.php" style="color:#FFF">活动未开始</a></p></div>
+    <!-- {/if}  -->
+    
+    
+    
+
+    <!-- {if $extpintuan.choose_number eq 1} -->
+    <section class="goodsBuy radius5" style=" display:block;" >
+        <div class="fields" style=" display:block;">
+          <ul class="quantity">
+            <div class="items">  <span style="color:#999">购买数量：</span> <span class="ui-number radius5">
+              <button type="button" class="decrease radius5" onclick="changenum(-1)">-</button>
+              <input class="num" name="number" id="goods_number" autocomplete="off" value="1" min="1" max="" type="number" />
+              <button type="button" class="increase radius5" onclick="changenum(1)">+</button>
+              </span> </div>
+          </ul>
+        </div>
+    </section>         
+    <!-- {/if}  -->
+</div>
+<!--根据状态显示内容及数量选择 E PRINCE  QQ 120029121-->
+
+
+
+
+
+
+<div>
+
+
+
+<!--未成团的拼团 begin-->
+<!-- {if $new_extpintuan} -->
+<section class="s-detail">
+<div class="divbox10px"></div>
+<div class="hdjs" id="desc">以下小伙伴正在发起拼团，您可以直接参加</div> 
+<div id="tab1">
+    <div class="desc wrap" style="padding:10px;">
+      <div class="blank2"></div>
+      <!-- {foreach from=$new_extpintuan item=new_extpintuan } -->
+      <a href="extpintuan.php?act=pt_view&pt_id={$new_extpintuan.pt_id}&u={$user_id}">
+      <table width="98%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+      <tr>
+        <td align="left" bgcolor="#ffffff" rowspan="2" width="20%" >
+          <!--{if $new_extpintuan.user_head}-->
+         <img src="{$new_extpintuan.user_head}" style="width:50px;height:auto; margin-left:5px; margin-right:5px; margin-bottom:5px;" >
+         <!--{else}-->
+         <img src="images/extpt_icon_index.png" style="width:50px;height:auto;margin-left:5px; margin-right:5px;margin-bottom:5px;" >
+        <!--{/if }-->
+        </td>
+        <td align="center" bgcolor="#ffffff" colspan="2" >
+        <em style="float:left;font-size:9px;  line-height:20px;margin-left:0px;">{$new_extpintuan.user_nickname}</em>
+        <em style="float:right;font-size:9px; color:#999; line-height:20px;">发起时间：{$new_extpintuan.create_time}</em></td>
+      </tr>
+      <tr>
+        <td align="left" bgcolor="#ffffff" width="30%" style="heihgt:16px; border:solid 1px #D11303;font-size:10px; line-height:16px; margin-left:5px;">
+        &nbsp;&nbsp;{$new_extpintuan.need_people}人团</td>
+        <td align="left" bgcolor="#D11303" style=" border:solid 1px #D11303; font-size:10px; text-align:right; padding-right:10px; color:#FFFFFF; line-height:16px;margin-left:5px;">&nbsp;&nbsp;还差{$new_extpintuan.available_people}人,火速参团>></td>
+      </tr>
+     </table></a>
+    <!-- {/foreach} -->
+    </div>
+  </div>
+</section>
+<!-- {/if } -->
+</div>
+<!---未成团的拼团-->
+
+<div>
+
+
+<!--活动说明 S QQ 120029121-->
+<!-- {if $extpintuan.extpintuan_desc} -->
+<section >
+<div class="divbox10px"></div>
+<div class="hdjs" id="desc">活动说明：</div> 
+<div id="tab1" style="padding:10px; background:#FFFFFF;">
+    <div >
+      {$extpintuan.extpintuan_desc}
+    </div>
+  </div>
+</section>      
+<!-- {/if } -->
+<!--活动说明 E QQ 120029121-->
+
+
+
+
+<!--商品详情 S  PRINCE 120029121-->  
+<!-- {if $pt_goods.goods_desc} -->
+<div class="divbox10px"></div>
+<div class="hdjs" id="product">商品详情：</div> 
+<div class="s-detail" style="padding:10px; background:#FFFFFF;" >
+    <div class="desc wrap" style="margin-top:0px;">
+    {$pt_goods.goods_desc}
+     </div>
+</div>
+<!-- {/if } -->
+<!--商品详情 E  PRINCE 120029121-->  
+
+
+
+<!--玩法介绍  P R IN CE 1 2 0 0 2 9 1 2 1-->  
+<div class="hdjs" id=product>
+       <p>玩法介绍：</p>
+</div> 
+<div class="s-detail" >
+      <div class="desc wrap" >
+       <img src="images/extpt_footer.png" style="width:100%;height:auto"  />
+      </div>
+</div>
+<!--玩法介绍  P R IN CE 1 2 0 0 2 9 1 2 1-->  
+
+
+
+<!--更多活动 S  PRINCE 120029121-->  
+<div class="hdsysj" style="width:80%; margin:0 auto; margin-top:10px;" >
+	<p style="width:100%; text-align:center; color:#FFFFFF"><a href="extpintuan.php" style="color:#FFF">更多活动请点击这里>></a></p>
+</div>
+<br /><br /><br /><br />
+<!--更多活动 E  PRINCE 120029121-->  
+
+ 
+ 
+<!--底部 S PRINCE 120029121-->  
+<div class="activity_nav" >
+ <ul> 
+ <li class="activity_bian"><a href="index.php"><em class="goods_nav1"></em><span>首页</span></a> </li>
+ <li style=" width:66%; line-height:50px; text-align:center; color:#FF0000;" >
+ <a  href="extpintuan.php?act=userlist" style="color:#FF0000;">我的拼团</a>  
+ </li>
+ </ul>
+ <dl>
+      <dd class="flow"><a class="button active_button" onclick="showFDiv();">立即分享</a> </dd>
+      
+      <!--{if $extpintuan.need_follow && (!$weixininfo.isfollow ) && $is_wechat_browser   }-->
+      	<dd class="goumai"><a style="display:block;" onclick="showReg();">立即开团</a> </dd>
+      <!--{elseif $pay_url }-->
+        <dd class="goumai"><a style="display:block;" href="{$pay_url}">立即付款</a> </dd>
+      <!--{elseif $extpintuan.status eq 1}-->
+      	<dd class="goumai"><a style="display:block;" onclick="form_extpintuan.submit()">立即开团</a> </dd>
+      <!--{else}-->
+      	<dd class="goumai"><a style="display:block;"  href="extpintuan.php">更多活动</a> </dd>
+      <!--{/if}-->
+ </dl>                
+</div>
+<!--底部 E PRINCE 120029121-->  
+
+
+
+</div>
+
+    <!--关注+分享+返回顶部-Start  PRINCE 120029121-->
+         <!--弹出层 S-->
+        <script type="text/javascript">
+            function showFDiv(){
+                document.getElementById('popDiv').style.display = 'block';
+				document.getElementById('hidDiv').style.display = 'block';
+				document.getElementById('cartNum').innerHTML = document.getElementById('goods_number').value;
+				document.getElementById('cartPrice').innerHTML = document.getElementById('ECS_GOODS_AMOUNT').innerHTML;
+            }
+            function closeFDiv(){
+                document.getElementById('popDiv').style.display = 'none';
+				document.getElementById('hidDiv').style.display = 'none';
+				document.getElementById('tipsDiv').style.display = 'none';
+            }
+            function showReg(){
+                document.getElementById('popReg').style.display = 'block';
+				document.getElementById('hidReg').style.display = 'block';
+            }
+            function closeReg(){
+                document.getElementById('popReg').style.display = 'none';
+				document.getElementById('hidReg').style.display = 'none';
+            }
+
+         </script>
+		<script>
+        function goTop(){
+            $('html,body').animate({'scrollTop':0},600);
+        }
+        </script>
+        <div class="tipMask" id="hidDiv" style="display:none; z-index:9000; background-color:#000; opacity:0.5;" ></div>
+        <div class="popGeneral" id="popDiv" style="background:none; top:0px; ">
+        <img src="images/share_guide.png" onClick="closeFDiv()"  width="100%" height="100%"/>
+        </div>
+        
+        <!--提示语 S-->
+        <!--{if $tips  }-->
+        <div class="popGeneral" id="tipsDiv" style="background:none; bottom:150px; display:block; text-align:center;">
+        <div style="line-height:50px; background:#FFF; border:1px solid #F00" onclick="closeFDiv()"> 
+        <span style=" font-size:12px; line-height:15px; color:#F00">{$tips}</span>
+        <br />
+        点击关闭
+        </div>
+        </div>
+        <!--{/if }-->
+        <!--提示语 E-->
+        
+        
+        <!--关注弹出框 S-->
+        <div class="tipMask" id="hidReg" style="display:none; z-index:9000; background-color:#000; opacity:0.5;" ></div>
+        <div class="popGeneral" id="popReg"  style=" display:none; background:none; bottom:50px;text-align:center;" onclick="closeReg()">
+         <img src="{$_SERVER[HTTP_HOST]}/mobile/images/weixin/pt_qrcode.jpg" style="width:80%;height:auto"  />
+        </div>
+        <!--关注弹出框 E-->
+  
+
+    <!--关注+分享+返回顶部-End  PRINCE 120029121-->
+
+
+{insert_scripts files='transport.js,utils.js'}
+<!--商品参数 E--> 
+
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+<!-- {/literal} -->
+  wx.config({
+    debug: false,
+    appId: '{$signPackage.appId}',
+    timestamp: {$signPackage.timestamp},
+    nonceStr: '{$signPackage.nonceStr}',
+    signature: '{$signPackage.signature}',
+    jsApiList: [
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage' 
+    ]
+  });
+ wx.ready(function () {
+	//监听“分享给朋友”
+    wx.onMenuShareAppMessage({
+      title: '{if $extpintuan.share_title }{$extpintuan.share_title }{else}{$extpintuan.act_name }{/if}',
+      desc: '{if $extpintuan.share_brief }{$extpintuan.share_brief }{else}{$extpintuan.act_name }{/if}',
+      link: '{$extpintuan.share_url}',
+      imgUrl: '{if strpos($extpintuan.share_img,'ttp')>0}{else}{$web_url}{/if}{$extpintuan.share_img}', //--PRINCE 120029121
+      trigger: function (res) {		
+      },
+      success: function (res) {
+      },
+      cancel: function (res) {
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+	
+	//分享到朋友圈
+    wx.onMenuShareTimeline({
+      title: '{if $extpintuan.share_title }{$extpintuan.share_title }{else}{$extpintuan.act_name }{/if}',
+      link: '{$extpintuan.share_url}',
+      imgUrl: '{if strpos($extpintuan.share_img,'ttp')>0}{else}{$web_url}{/if}{$extpintuan.share_img}', //--PRINCE 120029121
+      trigger: function (res) {		
+      },
+      success: function (res) {
+      },
+      cancel: function (res) {
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+	
+});
+<!-- {literal} -->
+</script>
+</body>
+</html>

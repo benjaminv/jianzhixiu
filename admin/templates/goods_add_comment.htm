@@ -1,0 +1,221 @@
+<!-- $Id: category_info.htm 16752 2009-10-20 09:59:38Z wangleisvn $ -->
+
+{include file="pageheader.htm"}
+<script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+<style>
+    .my_ul{
+        list-style:none;
+        margin-left: -30px;
+    }
+    .my_ul li{
+        float: left;    margin-top: -15px;cursor: pointer;
+    }
+</style>
+<!-- start add new category form -->
+<div class="main-div">
+  <form action="goods.php?act=add_comment_handle" method="post" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
+    <table width="100%" id="general-table">
+      <tr>
+        <td class="label">{$lang.user}:</td>
+        <td>
+            <input class="user_name" style="float: left" placeholder="搜索（根据昵称模糊搜索）" type='text' name='user_name' maxlength="20" value='' size='27'  list="ide" onchange="select_option(this)" />
+
+                <datalist id="ide">
+                        {foreach from=$user item=user_item }
+                            <option class="user_option" data-type="{$user_item.type}" data-id="{$user_item.user_id}" value="{$user_item.user_name}"/>
+                        {/foreach}
+                </datalist>
+                <span style="float: left" class="add_comment add_user">增加用户</span>
+            <input class="user_virtual_name" style="float: left;display: none" placeholder="输入用户名称" type='text' name='user_virtual_name' maxlength="20" value='' size='27'/>
+            <input class="user_id" type="hidden" name="user_id" value="0"/>
+			<input class="user_type" type="hidden" name="user_type" value="0"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">{$lang.goods}:</td>
+        <td>
+            <input class="goods_input" style="float: left;" placeholder="按商品编号或商品名称或商品货号搜索" type='text' name='' maxlength="20" value='' size='27'/>
+            <span style="float: left" class="add_comment search_goods">搜索</span>
+            <select style="width: 200px;" name="goods_id" class="goods_option">
+                {foreach from=$goods_list item=goods_item }
+                    <option value="{$goods_item.goods_id}">{$goods_item.goods_name}</option>
+                {/foreach}
+            </select>
+        </td>
+      </tr>
+      <tr id="measure_unit">
+        <td class="label">{$lang.rank}:</td>
+        <td>
+            <ul class="my_ul">
+                <li><img class="star" data-val='1' src="images/star0.png"/></li>
+                <li><img class="star" data-val='2'  src="images/star0.png"/></li>
+                <li><img class="star" data-val='3' src="images/star0.png"/></li>
+                <li><img class="star" data-val='4'  src="images/star0.png"/></li>
+                <li><img class="star" data-val='5'  src="images/star0.png"/></li>
+            </ul>
+            <input class="rank" type="hidden" name='rank' value='0' size="12" />
+
+        </td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.rank_time}:</td>
+          <td>
+            <input  readonly="readonly" type="text" name='rank_time' value='<?php echo date("Y-m-d",time())?>'  id="rank_time" size="15" />
+              <input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('rank_time', '%Y-%m-%d', false, false, 'selbtn1');"  class="button" style="display: inline-block;" value="选择"/>
+        </td>
+      </tr>
+        <tr>
+            <td class="label">{$lang.content}:</td>
+            <td>
+                <textarea class="goods_input" style="float: left;width: 280px;height: 100px;resize: none;padding: 10px" placeholder=""  name='content'  ></textarea>
+            </td>
+        </tr>
+      <tr>
+        <td class="label">{$lang.show_status}:</td>
+        <td><input type="radio" name="is_show" value="1" {if $cat_info.is_show neq 0} checked="true"{/if}/>
+          {$lang.show}
+          <input type="radio" name="is_show" value="0" {if $cat_info.is_show eq 0} checked="true"{/if} />
+          {$lang.hide} </td>
+      </tr>
+	</table>
+    <div class="button-div">
+      <input type="submit" class="button" value="{$lang.button_submit}" />
+      <input type="reset" class="button" value="{$lang.button_reset}" />
+    </div>
+  </form>
+</div>
+{insert_scripts files="../js/utils.js,validator.js"}
+{literal}
+<script type="text/javascript">
+	(function(){
+		var html5elmeents = "address|article|aside|audio|canvas|command|datalist|details|dialog|figure|figcaption|footer|header|hgroup|keygen|mark|meter|menu|nav|progress|ruby|section|time|video".split('|');
+		for(var i = 0; i < html5elmeents.length; i++){
+			document.createElement(html5elmeents[i]);
+		}
+    })
+</script>
+	<script language="JavaScript">
+
+/**
+ * 检查表单输入的数据
+ */
+function validate()
+{
+  validator = new Validator("theForm");
+  validator.required("goods_id",      catname_empty);
+  if (parseInt(document.forms['theForm'].elements['grade'].value) >10 || parseInt(document.forms['theForm'].elements['grade'].value) < 0)
+  {
+    validator.addErrorMsg('{$lang.grade_error}');
+  }
+  return validator.passed();
+}
+onload = function()
+{
+  // 开始检查订单
+  startCheckOrder();
+}
+function select_option(obj){
+	$('.goods_name').blur();
+	var input_select=$(obj).val();
+	var option_length=$(".user_option").length;
+	var user_id='';
+	var user_type='';
+	for(var i=0;i<option_length;i++){
+		var option_value=$(".user_option").eq(i).attr('value');
+		if(input_select==option_value){
+			user_id=$(".user_option").eq(i).attr('data-id');
+			user_type=$(".user_option").eq(i).attr('data-type');
+			break;
+		}
+	}
+	$('.user_id').val(user_id);
+	$('.user_type').val(user_type);
+}
+$(function(){
+	$('.user_name').blur(function(){
+		var val=$(this).val();
+		if(val==''){
+			$('.add_user').show();
+		}else{
+			$('.add_user,.user_virtual_name').hide();
+		}
+		var input_select=$(this).val();
+		var option_length=$(".user_option").length;
+		var user_id='';
+		var user_type='';
+		for(var i=0;i<option_length;i++){
+			var option_value=$(".user_option").eq(i).attr('value');
+			if(input_select==option_value){
+				user_id=$(".user_option").eq(i).attr('data-id');
+				user_type=$(".user_option").eq(i).attr('data-type');
+				break;
+			}
+		}
+		$('.user_id').val(user_id);
+		$('.user_type').val(user_type);
+
+	})
+	$('.user_virtual_name').blur(function(){
+
+		var val=$(this).val();
+		var url='goods.php?act=ajax&type=check_user';
+		var pa={};
+		pa.user_name=val;
+		$.post(url,pa,function(res){
+			if(res.code<0){
+				$('.user_virtual_name').attr('value','')
+				alert(res.msg);
+
+			}
+		})
+    })
+
+	$('.goods_name').blur(function(){
+		var val=$(this).val();
+		if(val==''){
+            $('.add_user').show();
+        }else{
+			$('.add_user,.user_virtual_name').hide();
+        }
+    })
+	$('.add_user').click(function(){
+			$('.user_virtual_name').show();
+    })
+
+    $('.search_goods').click(function(){
+    	var url='goods.php?act=ajax&type=goods_search';
+        var pa={};
+        pa.name=$('.goods_input').val();
+        $.post(url,pa,function(res){
+        	var list=res;
+        	var len=list.length;
+        	var str='';
+			for(var i=0;i<len;i++){
+                str+='<option value="'+list[i].goods_id+'">'+list[i].goods_name+'</option>';
+            }
+
+            $('.goods_option').html(str);
+        })
+
+    })
+
+    $('.my_ul .star').click(function(){
+    	var val=$(this).attr('data-val');
+    	$('.star').each(function(item){
+            if(item<val){
+            	$(this).attr('src','images/star1.png');
+            }else{
+				$(this).attr('src','images/star0.png');
+            }
+        })
+		$('.rank').val(val);
+    })
+
+})
+
+
+</script>
+{/literal}
+{include file="pagefooter.htm"}

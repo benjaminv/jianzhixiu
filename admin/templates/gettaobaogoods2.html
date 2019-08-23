@@ -1,0 +1,32 @@
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+<div id="tabbody-div">
+<form name="theForm" method="get" action="gettaobao2.php">
+  <table width="100%">
+  <tbody>
+  <tr>
+    <td class="label">淘宝/天猫商品URL：</td>
+    <td><input type="text" name="id" value="" style="width:80%"><br>（例如：任意天猫店铺的商品完整链接，直接复制过来即可）</td>
+  </tr>
+  <tr>
+<tr>
+    <td class="label">虚拟销量：</td>
+    <td><input type="text" name="ghost_count" value=""><br>前台的销量等于实际销量加设置的</td>
+  </tr>
+
+  <tr>
+    <td class="label">抓取评价并伪造为购买记录：</td>
+    <td><input type="text" name="cnum" value="20">条（请填写20的倍数,例如20 40 80）</td>
+  </tr>
+  <tr>
+  <input type="hidden" name="gid" value="{$gid}">
+    <td colspan="2" align="center">
+      <input type="submit" value="{$lang.button_submit}" class="button" />
+    <input type="reset" value="{$lang.button_reset}" class="button" />
+    </td>
+  </tr>
+</tbody></table>
+</form>
+</div>
+{/literal}
+{include file="pagefooter.htm"}

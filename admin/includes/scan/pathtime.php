@@ -1,0 +1,19 @@
+<?php
+/*
+	系统生成的缓存目录
+*/
+return array(
+	'temp/compiled',
+	'temp/static_caches',
+	'temp/query_caches',
+	'temp/compiled',
+	'temp/caches',
+	'kefu/storage/framework/cache',
+	'mobile/storage/framework/temp/',
+	'mobile/storage/framework/cache/',
+	'mobile/storage/framework/views/',
+	'mobile/storage/framework/data/',
+	'mobile/vendor/illuminate/cache/',
+	'mobile/data/caches/',
+);
+?>

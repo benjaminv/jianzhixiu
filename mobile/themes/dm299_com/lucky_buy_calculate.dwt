@@ -1,0 +1,106 @@
+<!DOCTYPE html >
+<html><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>{$page_title}</title>
+  <meta name="Keywords" content="{$keywords}" />
+  <meta name="Description" content="{$description}" />
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+  <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/css/public.css"/>
+  <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/lucky.css" />
+<script src="{$ectouch_themes}/js/TouchSlide.js"></script>
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,lefttime.js'}
+
+<script>
+/* PRINCE */
+function goBack(){  
+   if(history.length > 1 ){  
+          history.back(-1);  
+    }else{  
+          location.href = 'index.php';
+    }  
+} 
+</script>
+</head>
+<body style="background-color:#FFF;">
+<div class="lucky_buy_calculate_head" >
+<p >幸运云购码</p>
+<span >=(50条时间汇总÷当期云购所需人次)取余数+10000001</span>
+</div>
+
+
+<!--当前会员参与情况 S-->
+<section class="calculate_rule">
+    <div class="calculate_rule_head">
+        <div class="title">计算规则</div> 
+        <div class="desc">
+        1.商品当期的最后一个云购号码分配完毕后，将公示本商品当期的最新50个成交时间（不足50个的取所有）;<br />
+        2.将这50个时间的数值进行求和得出数值A(每个时间按时、分、秒、毫秒的顺序组合，如2016-04-01 20:15:25.362则为201525362);<br />
+        3.将数值A除以该商品总需人次得到的余数 + 原始数 10000001，得到最终幸运号码，拥有该幸运号码者，直接获得该商品。
+        </div> 
+
+    </div>
+</section>
+<!---当前会员参与情况 E-->
+
+
+
+
+<!-- {if $lucky_buy.lucky_code} -->
+
+<div>
+<!--进度条 S-->
+<div class="w-goods-info">
+       <p class="w-goods-period" style="font-size:18px; line-height:30px; text-align:center">本期幸运号码：<em style=" color:#FF0000">{$lucky_buy.lucky_code}</em></p>
+       <div class="w-progressBar">
+            <p class="wrap">
+                    <span class="bar" style="width:100%;"><i class="color"></i></span>
+            </p>
+       </div>
+</div>
+<!--进度条 E--> 
+
+<!--计算详情 S-->
+<section class="calculate_detail">
+<div class="head" >
+计算详情
+</div> 
+<div class="number">成交时间<em >计算数值<em ></div>          
+            <!-- {foreach from=$calculate_info item=calculate }--> 
+<div class="number">{$calculate.used_time}:{$calculate.used_time_millisecond}<em >{$calculate.calculate_number}<em ></div>    
+{if $calculate.this_index lt $calculate.count_all }<div class="number"><em >+<em ></div>{/if}            
+            <!--{/foreach}--> 
+<div class="number"><em >=<em ></div>               
+<div class="number"><em ><b>{$lucky_buy.sum_of_calculate_number}</b><em ></div>    
+<div class="foot" >
+{$lucky_buy.sum_of_calculate_number}÷{$lucky_buy.total}(人次)<br />={$lucky_buy.zhengshu}......{$lucky_buy.yushu}(余数)
+</div>    
+<div class="foot" >
+{$lucky_buy.yushu}+10000001=<em>{$lucky_buy.lucky_code}</em>(幸运号码)
+</div>          
+</section>
+<!---计算详情 E-->
+
+</div>
+<!-- {/if } -->
+
+
+<br /><br /><br /><br /><br />
+<br /><br /><br />
+</div>
+
+
+<div class="footer_nav">
+ <dl style="width:100%;">  
+    <dd class="flow" style="width:100%;"><a style="display:block;" href="javascript:goBack()">返回</a> </dd>
+ </dl>                
+</div>
+
+
+
+
+
+<script type="text/javascript" src="{$ectouch_themes}/js/zepto.min.js"></script> 
+</body>
+</html>

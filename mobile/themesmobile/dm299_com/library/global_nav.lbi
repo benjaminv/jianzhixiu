@@ -1,0 +1,5 @@
+<script type="text/javascript" src="js/jquery.json.js"></script>
+<script>
+    //$.get("/api/okgoods.php",'','', 'JSON');
+</script>
+{insert name='query_info'}

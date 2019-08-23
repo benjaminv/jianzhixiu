@@ -1,0 +1,206 @@
+<!DOCTYPE html >
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>{$page_title}</title>
+  <meta name="Keywords" content="{$keywords}" />
+  <meta name="Description" content="{$description}" />
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+  <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/css/public.css"/>
+  <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/lucky.css" />
+
+  <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/css/goods1.css"/>
+
+   <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/css/lucky.css"/>
+
+    <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/css/duobao.css"/>
+
+<script>
+/* PRINCE */
+function goBack(){  
+   if(history.length > 1 ){  
+          history.back(-1);  
+    }else{  
+          location.href = 'index.php';
+    }  
+} 
+</script>
+</head>
+<body>
+
+<!----------------------------------header----------------------------------->
+<div class="tab_nav">
+    <header class="header">
+      <div class="h-left">
+        <a class="sb-back" href="javascript:history.back(-1)" title="返回"></a>
+      </div>
+      <div class="h-mid">
+      云购活动
+      </div>
+      <div class="h-right">
+        <aside class="top_bar">
+          <div onClick="show_menu();$('#close_btn').addClass('hid');" id="show_more">
+            <a href="javascript:;"></a>
+          </div>
+        </aside>
+      </div>
+    </header>
+</div>
+<!-- #BeginLibraryItem "/library/up_menu.lbi" -->
+<!-- #EndLibraryItem -->
+<!--弹出菜单-->
+
+
+
+<div class="good-list-wrapper">
+<div class="good-menu thin-bor-bottom">
+                    <ul class="good-menu-list" id="ulOrderBy">
+                        <li class="current"><a href="lucky_buy.php?act=list&sort=end_time&order=DESC">即将揭晓</a></li>
+                        <li><a href="lucky_buy.php?act=list&sort=available&order=DESC">人气</a></li>
+                        <li><a href="lucky_buy.php?act=list&sort=act_id&order=DESC">最新</a></li>
+                        <li>
+                        <a href="lucky_buy.php?act=list&sort=number&order=DESC">价值</a>
+                        
+                        <span class="i-wrap">
+                        <i class="up sort"></i><i class="down "></i></span>
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+             </div>   
+
+
+
+
+
+
+<div id="page" class="good-list-inner" style="right: 0px; left: 0px; padding-left:0px; display: block; ">
+<div class="good-list-box">
+<div class="goodList" style="display: block;" id="J_ItemList">
+  <ul class="product flex_in single_item" id="more_element_1">
+       <div class="pro-inner">
+    </div>
+
+    </ul>
+    <a href="javascript:;" class="get_more"></a> </div>
+  <a href="javascript:;" class="get_more"></a> <br /><br /><br />  </div>
+</div>
+
+
+
+
+<script type="text/javascript" src="themesmobile/dm299_com/js/jquery.min.js"></script> 
+<script type="text/javascript" src="themesmobile/dm299_com/js/jquery.more.js"></script> 
+<script type="text/javascript" src="themesmobile/dm299_com/js/ectouch.js"></script> 
+<script type="text/javascript">
+jQuery(function($){
+	$('#J_ItemList').more({'address': 'lucky_buy.php?act=asynclist&type={$type}', 'spinner_code':'<div style="text-align:center; margin:10px;"><img src="images/category/loader.gif" width="12" height="12" /></div>'})
+	$(window).scroll(function () {
+		if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+			$('.get_more').click();
+		}
+	});
+});
+</script>
+<script type="text/javascript">
+/*头部搜索点击关闭或者弹出搜索框*/  
+function showSearch( ){
+  document.getElementById("search_box").style.display="block";
+}
+function closeSearch(){
+  document.getElementById("search_box").style.display="none";
+}
+/* 搜索验证 */
+function check(Id){
+  var strings = document.getElementById(Id).value;
+  if(strings.replace(/(^\s*)|(\s*$)/g, "").length == 0){
+    return false;
+  }
+  return true;
+}
+
+(function($) {
+  var btn_up = new Image(), btn_down = new Image();
+  btn_up.src = "{$ectouch_themes}/images/ico_12.png";
+  btn_down.src = "{$ectouch_themes}/images/ico_11.png";
+  var Menu = {
+    // 初始化事件
+    initEvent : function() {
+      $().ready(
+          function() {
+            $("div.clist").click(function(e) {
+              Menu.router(e);
+            });
+            $("#allClass").click(function(e) {
+              Menu.showMenu1();
+            });
+            $(window).on(
+                "hashchange",
+                function(e) {
+                  var name = decodeURIComponent(location.hash
+                      .replace(/^#/, ""));
+                  if (name != "") {
+                    Menu.showMenu3(name);
+                  }else{
+                    Menu.showMenu1();
+                  }
+                });
+          });
+    },
+    // 事件分发路油
+    router : function(_event) {
+      var target = $(_event.target || _event.srcElement);
+      var _tar = target.closest(".level1");
+
+      // 显示二级菜单
+      if (_tar.length > 0) {
+        Menu.showMenu2(_tar);
+        /*var _gp = target.closest(".crow_row");// 点击事件对应此行的祖父级节点
+        var _top = _gp.offset().top;
+        setTimeout(function(){
+          if (_top > 100) {
+            window.scroll(0, _gp.offset().top);
+          } else {
+            window.scroll(0, _gp.offset().top - 50);
+          }         
+        },15)*/
+        return;
+      }
+    },
+    // 显示一级菜单
+    showMenu1 : function() {
+      $("#contentsub").hide();
+      $("#content").show();
+    },
+    // 显示二级菜单
+    showMenu2 : function($curMenuDom) {
+      var next = $curMenuDom.next("ul");
+      if (next.css("display") == "none") {
+        //$("ul.clist_sub").hide();
+        //$("div.crow_arrow").each(function(i, dom) {
+        //  $(dom).html(btn_down.cloneNode(true));
+        //});
+        next.css("opacity", "0").show().animate({
+          opacity : 1
+        }, 500);
+        //next.show();
+        $("div.crow_arrow", $curMenuDom).html(btn_up.cloneNode(true));
+      } else {
+        next.hide();
+        $("div.crow_arrow", $curMenuDom).html(btn_down.cloneNode(true));
+      }
+    },
+    
+  }
+  window.Menu = Menu;
+  Menu.initEvent();// 初始化事件
+})($);
+</script>
+  <!-- #BeginLibraryItem "/library/page_footer.lbi" -->
+  <!-- #EndLibraryItem -->
+  <!-- #BeginLibraryItem "/library/footer_nav.lbi" -->
+  <!-- #EndLibraryItem -->
+</body>
+</html>

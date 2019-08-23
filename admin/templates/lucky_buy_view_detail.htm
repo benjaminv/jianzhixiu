@@ -1,0 +1,103 @@
+<!-- $Id: lucky_buy_view.htm 14216 2008-03-10 02:27:21Z testyang $ -->
+
+{if $full_page}
+{include file="pageheader.htm"}
+<script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+{insert_scripts files="validator.js,../js/transport.org.js,../js/utils.js,listtable.js}
+<div class="list-div">
+<table cellpadding="3" cellspacing="1">
+    <tr>
+      <th>期号</th>
+      <th>开始时间</th>
+      <th>揭晓时间</th>
+      <th>总需人次</th>
+      <th>还需人次</th>
+      <th>中奖号码</th>
+      <th>幸运会员</th>
+      <th>头像</th>
+      <th>幸运订单编号</th>
+      <th>开奖状态</th>
+      <th>处理状态</th>
+    </tr>
+    <tr>
+      <td align="center">{$lucky_buy_info.schedule_id }</td>
+      <td align="center">{$lucky_buy_info.start_time}</td>
+      <td align="center">{ if $lucky_buy_info.end_time}{$lucky_buy_info.end_time}{/if}</td>
+      <td align="center">{$lucky_buy_info.total}</td>
+      <td align="center">{$lucky_buy_info.available}</td>
+      <td align="center">{ if $lucky_buy_info.lucky_code}{$lucky_buy_info.lucky_code}{/if}</td>
+      <td align="center">{if $lucky_buy_info.lucky_user_id}<a href="users.php?act=edit&id={$lucky_buy_info.lucky_user_id}" title="会员信息" target="_blank">{$lucky_buy_info.lucky_user_name}</a>{/if}</td>
+      <td align="center">{if $lucky_buy_info.lucky_user_head}<img src="{$lucky_buy_info.lucky_user_head}" style="width:40px; height:auto;" >{/if}</td>
+
+      {if $lucky_buy_info.status eq 1}
+      <td align="center">  <a href="order.php?act=info&amp;order_id={$lucky_buy_info.lucky_user_order_id}" title="订单详情" target="_blank">{$lucky_buy_info.lucky_user_order_sn}</a></td>
+      {else}
+      <td align="center"></td>
+      {/if}
+      <td align="center">{if $lucky_buy_info.status eq 1}已开奖{else}进行中{/if}</td>
+      <td align="center"><span onclick="listTable.edit(this, 'edit_handl_status', {$lucky_buy_info.lucky_buy_id})">{if $lucky_buy_info.handl_status eq 1}已处理{else}待处理{/if}</span></td>
+    </tr>
+</table>
+</div><br /><br />
+
+<form method="post" action="" name="listForm">
+<div class="list-div" id="listDiv">
+{/if}
+
+<table cellpadding="3" cellspacing="1">
+    <tr>
+      <th><a href="javascript:listTable.sort('schedule_id');">期号</a>{$sort_schedule_id}</th>
+      <th><a href="javascript:listTable.sort('code');">云购码</a>{$sort_code}</th>
+      <th><a href="javascript:listTable.sort('used_time');">分配时间</a>{$sort_used_time}</th>
+      <th><a href="javascript:listTable.sort('user_id');">所属会员</a>{$sort_user_id}</th>
+      <th>头像</th>
+      <th><a href="javascript:listTable.sort('order_id');">所属订单编号</a>{$sort_order_id}</th>
+      <th><a href="javascript:listTable.sort('is_lucky_user');">是否中奖号码</a>{$sort_is_lucky_user}</th>
+    </tr>
+    {foreach from=$info item=lucky_buy}
+    <tr>
+      <td align="center">{$lucky_buy.schedule_id }</td>
+      <td align="center">{$lucky_buy.code}</td>
+      <td align="center">{if $lucky_buy.used_time gt 0}{$lucky_buy.used_time}{else}待分配{/if}</td>
+      <td align="center">{if $lucky_buy.user_id}<a href="users.php?act=edit&id={$lucky_buy.user_id}" title="会员信息" target="_blank">{$lucky_buy.user_name}</a>{/if}</td>
+      <td align="center">{if $lucky_buy.user_head}<img src="{$lucky_buy.user_head}" style="width:40px; height:auto;" >{/if}</td>
+      {if $lucky_buy.order_id gt 0}
+      <td align="center">  <a href="order.php?act=info&amp;order_id={$lucky_buy.order_id}" title="订单详情" target="_blank">{$lucky_buy.order_sn}</a></td>
+      {else}
+      <td align="center"></td>
+      {/if}
+      <td align="center">{if $lucky_buy.is_lucky_user eq 1}是{else}否{/if}</td>
+
+
+    </tr>
+    {foreachelse}
+    <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>
+    {/foreach}
+    <tr>
+      <td align="right" nowrap="true" colspan="8">{include file="page.htm"}</td>
+    </tr>
+</table>
+
+{if $full_page}
+</div>
+</form>
+
+<script type="text/javascript" language="JavaScript">
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+  listTable.query = "query_lucky_buy_detail";
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+
+  {literal}
+  onload = function()
+  {
+    startCheckOrder();  // 开始检查订单
+  }
+  {/literal}
+</script>
+{include file="pagefooter.htm"}
+{/if}

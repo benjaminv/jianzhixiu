@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+<title>在线商城 管理中心 - 入驻商列表 </title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="styles/general.css" rel="stylesheet" type="text/css">
+<link href="styles/main.css" rel="stylesheet" type="text/css">
+<link href="styles/chosen/chosen.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script><script type="text/javascript" src="js/chosen.jquery.min.js"></script><script type="text/javascript" src="js/jquery.json.js"></script><script type="text/javascript" src="../js/transport.js"></script><script type="text/javascript" src="js/common.js"></script>
+{insert_scripts files="../js/utils.js,listtable.js"}
+
+<style type="text/css">
+    .bg{
+          z-index: 99;
+          position: fixed;
+          width:100%;
+          height: 100%;
+          background-color: #404040;
+          opacity:0.8;
+    }
+</style>
+</head>
+<body>
+    <div class="bg" style="display: none;">
+      <form style="width: 600px;height: 400px; color: #fff;margin-left: 10%;" method="post" action="pi_ci__number.php" class="add_active">
+         <input type="hidden" name="act" value='update_active' >
+        <div style="float: left;height:40px;width: 100%;margin-left: 50%;left: 150px;margin-top: 100px;">
+          <span>批次号</span>
+          <input type="text" name="batch_number" value='111111111111' readonly style="width:200px;height:24px;line-height:24px;margin-left: 14px;" class="batch">
+        </div>
+        <div  style="float: left;width: 100%;margin-left: 50%;left: 150px;margin-top: 20px;">
+            <span >活动名称</span>
+            <select name="active" style="width:202px">
+              {foreach from=$active item=information}
+              <option value="{$information.id}">{$information.dzp_name}</option>
+              {/foreach}
+            </select> 
+        </div>
+        <div style="float: left;width: 100%;margin-left: 50%;left: 250px;margin-top: 20px;">
+           <input type="submit" id='query'  class='button' value="确认提交" style="width:125px; margin-top: 20px;margin-left: 2px;"> <input type="reset" value="返回页面" class='button go_back' style="width:125px; margin-top: 20px;margin-left: 2px;">
+        </div>
+       
+      </form>
+
+
+      <form style="width: 600px;height: 400px; color: #fff;margin-left: 10%;" method="post" action="pi_ci__number.php" class="add_prizes">
+         <input type="hidden" name="act" value='add_prize' >
+         <input type="hidden" name="active_id" value='' class="active_id">
+        <div style="float: left;height:40px;width: 100%;margin-left: 50%;left: 150px;margin-top: 100px;">
+          <span>批次号</span>
+          <input type="text" name="batch_number" value='' readonly style="width:200px;height:24px;line-height:24px;margin-left: 14px;" class="batchs">
+        </div>
+        <div style="float: left;height:40px;width: 100%;margin-left: 50%;left: 150px;margin-top: 20px;">
+           <span>活动名称</span>
+           <input type="text" name="acive" value='' readonly style="width:200px;height:24px;line-height:24px;margin-left: 4px;" class="active">
+        </div>
+        <div  style="float: left;width: 100%;margin-left: 50%;left: 150px;margin-top: 20px;">
+            <span >奖项名称</span>
+            <select name="prize_id" style="width:202px" class="dzp_add">
+              
+            </select> 
+        </div>
+        <div style="float: left;width: 100%;margin-left: 50%;left: 250px;margin-top: 20px;">
+           <input type="submit" id='query'  class='button' value="确认提交" style="width:125px; margin-top: 20px;margin-left: 2px;"> <input type="reset" value="返回页面" class='button go_back' style="width:125px; margin-top: 20px;margin-left: 2px;">
+        </div>
+       
+      </form>
+      
+    </div>
+  	<h1>
+  		<span class="action-span1"><a href="index.php?act=main">在线商城 管理中心</a> </span><span id="search_id" class="action-span1"> - 批次号管理 </span>
+  		<div style="clear:both"></div>
+  	</h1>
+  <form method="" action="" name="listForm" onsubmit="return confirm(batch_drop_confirm);">
+  <div class="list-div" id="listDiv">
+    <table cellspacing="1" cellpadding="3" style="text-align: center;">
+         <tbody>
+            <tr>
+                <th style="width: 302px;">批次号</th>
+                <th>二维码数量</th>
+                <th>抽奖活动名称</th>
+                <th>活动奖项</th>
+                <th style="width: 250px;">操作</th>
+            </tr>
+            {foreach from=$arr_info item=jishu}
+              <tr class="pat">
+                  <td class="num">{$jishu.batch_number} </td>
+                  <td style="padding-left: 10px;">{$jishu.count}</td>
+                  <td style="padding-left: 10px;" class="dzp_name">{$jishu.dzp_name}</td>
+                  <td style="display: none;" class="dzp_ids">{$jishu.dzp_id}</td>
+                  <td style="padding-left: 10px;">{$jishu.dzp_good_name}</td>
+                  <td >
+                    <div style="background-color: #2A9BD9; border: none;height: 24px;border-radius: 4px;color: #fff;width: 100px;margin:auto;line-height: 24px;float: left;" class="choujiang">选择抽奖活动</div>
+                    <div style="background-color: #2A9BD9; border: none;height: 24px;border-radius: 4px;color: #fff;width: 100px;margin:auto;line-height: 24px;float: left;margin-left: 10px;" class="get_prize">选择活动奖项</div>
+                  </td>
+              </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <table id="page-table" cellspacing="0">
+        <tbody>
+            <tr>
+                <td>&nbsp;</td>
+                <td nowrap="true" align="right">
+                       
+              <div id="turn-page">
+              总计  <span id="totalRecords">{$count}</span>
+              个记录  当前第 <span id="pageCurrent">{$nowpage}</span>
+              页，每页 <input type="text" size="3" id="pageSize" value="{if $pagesize }{$pagesize}{else}15{/if}" >
+              <span id="page-link">
+                <a href="pi_ci__number.php?nowpage=1&pagesize={$pagesize}">第一页</a>
+                <a href="pi_ci__number.php?nowpage={$prepage}&pagesize={$pagesize}">上一页</a>
+                <a href="pi_ci__number.php?nowpage={$nextpage}&pagesize={$pagesize}">下一页</a>
+                <a href="pi_ci__number.php?nowpage={$lastpage}&pagesize={$pagesize}">最末页</a>
+              </span>
+            </div>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+	</div>
+</form>
+</body>
+<script type="text/javascript">
+
+  // 更改页面的尺寸大小
+  $('#pageSize').change(function(){
+
+    var pagesize = $('#pageSize').val();
+
+     window.location.href = 'pi_ci__number.php?act=list&pagesize='+pagesize;
+  })
+ 
+  // 点击操作按钮
+  $('.choujiang').click(function(){
+
+
+    var batch_number = $(this).parents('.pat').find('.num').html();
+    $('.batch').val(batch_number);
+    $('.bg').css('display','block');
+    $('.add_active').css('display','block');
+    $('.add_prizes').css('display','none');
+  })
+
+  // 遮罩层消失
+  $('.go_back').click(function(){
+
+      $('.bg').css('display','none');
+  })
+
+
+  // 设置奖项
+  $('.get_prize').click(function(){
+
+      var batch_number = $(this).parents('.pat').find('.num').html();
+      var dzp_name = $(this).parents('.pat').find('.dzp_name').html();
+      if(!dzp_name){
+
+          alert('请您先选择抽奖活动后，再来选择该活动的奖项');
+
+      }else{
+        
+          var dzp_id = $(this).parents('.pat').find('.dzp_ids').html();
+          var data = [dzp_id];
+
+          $('.batchs').val(batch_number);
+          $('.active').val(dzp_name);
+          $('.active_id').val(dzp_id);
+
+          Ajax.call('pi_ci__number.php?is_ajax=1&act=get_prize', data, reback, 'GET', 'JSON'); 
+
+           
+      }
+
+
+  });
+
+  function reback(rel){
+
+     
+      $('.dzp_add').empty();
+      var lens = rel.content.length;
+      for(var i =0;i<lens;i++){
+         
+           if(rel.content[i]['type'] < 2){
+
+            $('.dzp_add').append('<option value="'+rel.content[i]['id']+'">'+rel.content[i]['prize_level']+'</option>')
+            
+          } 
+      }
+        $('.bg').css('display','block');
+        $('.add_active').css('display','none');
+        $('.add_prizes').css('display','block');
+  }
+
+</script>
+</html>

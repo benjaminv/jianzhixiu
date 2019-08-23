@@ -1,0 +1,83 @@
+<!-- $Id: lucky_buy_view.htm 14216 2008-03-10 02:27:21Z testyang $ -->
+
+{if $full_page}
+{include file="pageheader.htm"}
+<script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+{insert_scripts files="validator.js,../js/transport.org.js,../js/utils.js,listtable.js}
+
+<form method="post" action="" name="listForm">
+<div class="list-div" id="listDiv">
+{/if}
+
+<table cellpadding="3" cellspacing="1">
+    <tr>
+      <th><a href="javascript:listTable.sort('lucky_buy_id');">云购ID</a>{$sort_lucky_buy_id}</th>
+      <th><a href="javascript:listTable.sort('act_id');">活动编号</a>{$sort_act_id}</th>
+      <th><a href="javascript:listTable.sort('schedule_id');">期号</a>{$sort_schedule_id}</th>
+      <th><a href="javascript:listTable.sort('start_time');">开始时间</a>{$sort_start_time}</th>
+      <th><a href="javascript:listTable.sort('end_time');">揭晓时间</a>{$sort_end_time}</th>
+      <th><a href="javascript:listTable.sort('total');">总需人次</a>{$sort_total}</th>
+      <th><a href="javascript:listTable.sort('available');">还需人次</a>{$sort_available}</th>
+      <th><a href="javascript:listTable.sort('lucky_code');">中奖号码</a>{$sort_lucky_code}</th>
+      <th><a href="javascript:listTable.sort('lucky_user_id');">幸运会员</a>{$sort_lucky_user_id}</th>
+      <th>头像</th>
+      <th><a href="javascript:listTable.sort('lucky_user_order_id');">幸运订单编号</a>{$sort_lucky_user_order_id}</th>
+      <th><a href="javascript:listTable.sort('status');">开奖状态</a>{$sort_status}</th>
+      <th><a href="javascript:listTable.sort('handl_status');">处理状态</a>{$sort_handl_status}</th>
+      <th>{$lang.handler}</th>
+    </tr>
+    {foreach from=$lucky_buy_list item=lucky_buy}
+    <tr>
+      <td align="center">{$lucky_buy.lucky_buy_id }</td>
+      <td align="center">{$lucky_buy.act_id}</td>
+      <td align="center">{$lucky_buy.schedule_id }</td>
+      <td align="center">{$lucky_buy.start_time}</td>
+      <td align="center">{$lucky_buy.end_time}</td>
+      <td align="center">{$lucky_buy.total}</td>
+      <td align="center">{$lucky_buy.available}</td>
+      <td align="center">{if $lucky_buy.lucky_code}{$lucky_buy.lucky_code}{/if}</td>
+      <td align="center">{if $lucky_buy.lucky_user_id}<a href="users.php?act=edit&id={$lucky_buy.lucky_user_id}" title="会员信息" target="_blank">{$lucky_buy.lucky_user_name}</a>{/if}</td>
+      <td align="center">{if $lucky_buy.lucky_user_head}<img src="{$lucky_buy.lucky_user_head}" style="width:40px; height:auto;" >{/if}</td>
+
+      {if $lucky_buy.status eq 1}
+      <td align="center">  <a href="order.php?act=info&amp;order_id={$lucky_buy.lucky_user_order_id}" title="订单详情" target="_blank">{$lucky_buy.lucky_user_order_sn}</a></td>
+      {else}
+      <td align="center">{if $lucky_buy.lucky_user_order_id}{$lucky_buy.lucky_user_order_id}{/if}</td>
+      {/if}
+      <td align="center">{if $lucky_buy.status eq 1}已开奖{else}进行中{/if}</td>
+      <td align="center"><span onclick="listTable.edit(this, 'edit_handl_status', {$lucky_buy.lucky_buy_id})">{if $lucky_buy.handl_status eq 1}已处理{else}待处理{/if}</span></td>
+      <td align="center">
+        <a href="lucky_buy.php?act=view&amp;act_id={$lucky_buy.act_id}&amp;lucky_buy_id={$lucky_buy.lucky_buy_id}" title="参看本期参与详情"><img src="images/icon_view.gif" border="0" height="16" width="16"></a>
+      </td>
+    </tr>
+    {foreachelse}
+    <tr><td class="no-records" colspan="14">{$lang.no_records}</td></tr>
+    {/foreach}
+    <tr>
+      <td align="right" nowrap="true" colspan="14">{include file="page.htm"}</td>
+    </tr>
+</table>
+
+{if $full_page}
+</div>
+</form>
+
+<script type="text/javascript" language="JavaScript">
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+  listTable.query = "query_lucky_buy";
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+
+  {literal}
+  onload = function()
+  {
+    startCheckOrder();  // 开始检查订单
+  }
+  {/literal}
+</script>
+{include file="pagefooter.htm"}
+{/if}

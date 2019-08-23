@@ -1,0 +1,273 @@
+{if $full_page}
+<!-- $Id: users_list.htm 17053 2015-02-10 06:50:26Z derek $ -->
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+<style type="text/css">
+  .look_fenxiao:hover{
+    cursor: pointer;
+  }
+  .layers{
+     z-index: 99;
+      position: absolute;
+      width:100%;
+      height: 100%;
+      background-color: #353232;
+      color: #000;
+      display: none;
+  }
+  .layers #turn-page{
+      float: right;
+  }
+  .shanchu{
+    float: right;
+    margin-right: 10px;
+  }
+   .shanchu:hover{
+    cursor: pointer;
+   }
+</style>
+
+<div class="layers list-div">
+     <span style="display: none;" class="hidden_name"></span>
+    <table cellpadding="3" cellspacing="1" style="z-index: 999;" class="add_child">
+        <tr>
+          <th>分销商名称</th>
+          <th>分成金额</th>
+          <th>下单人</th>
+          <th>分成时间</th>
+          <th>订单明细 <span  class="shanchu">|&nbsp;删除</span></th>
+        <tr>
+
+       <!--  <tr class='remove_add'>
+          <td align='center'>张三</td>
+          <td align='center'>12.00</td>
+          <td align='center'> 李四</td>
+          <td align='center'>20190529795921获取提成</td>
+         </tr> -->
+         
+    </table> 
+    <div style="height: 50px;background-color: #fff;float: right;width: 100%;">
+     
+      <div id="turn-page">
+        总计  <span class="totalcount">5</span>
+        个记录分为 <span class="totalpage">2</span>
+        页当前第 <span class="page">1</span>
+        页，每页 <input type="text" size=""  value="10" class="pagesize" style="width:25px;">
+        <span id="page-link">
+          <a href="#" class="first_page">第一页</a>
+          <a href="#" class="prev_page">上一页</a>
+          <a href="#" class="next_page">下一页</a>
+          <a href="#" class="last_page">最后一页</a>
+         跳转到 <input id="pageInput" title="按回车键跳转到指定页数"  style="width:25px;"  type="text" class="some_pagesize">
+          <input class="button yin_button" id="pagerBtn" value="GO"  type="button">
+        </span>
+      </div>
+    </div>
+    
+</div>
+<div class="form-div">
+
+<form action="distrib_sort.php?act=select_distribute" method="post" name="listForm">
+  <img src="images/icon_search.gif" alt="SEARCH" width="26" height="22" border="0">
+  分销商名称  <input type="text" name="fenxiao_name" class="fenxiao_name" value="{if $distr_name}{$distr_name}{/if}">
+    &nbsp;从 &nbsp;<input type="date" name="begin" class="begin" style="width:140px;height:24px;" value="{if $begin}{$begin}{/if}"> &nbsp;到
+    <input type="date"  name="end"  style="width:140px;height:24px;" value="{if $end}{$end}{/if}" class="end">
+    <input type="submit" value=" 搜索 " class="button">
+  </form>
+
+</div>
+<form action="distrib_sort.php?act=excel_shuju" method="post" onsubmit="return chk()">
+        <input type="hidden" name="fenxiao_name" class="fenxiao_name1">
+        <input type="hidden" name="begin" class="begin1">
+        <input type="hidden" name="end" class="end1">
+        <input type="submit" id='query'  class='button daochu' value="导出排行榜" style="float: right;margin-top: -48px;">
+</form>
+<form method="POST" action="" name="listForm">
+
+<!-- start users list -->
+<div class="list-div" id="listDiv">
+{/if}
+<div class="fenxiao">
+  
+
+<!--用户列表部分-->
+<table cellpadding="3" cellspacing="1" >
+      <tr>
+        <th>分销商名称</th>
+        <th>分成时间</th>
+        <th>总分成金额</th>
+      <tr>
+      {foreach from=$distrib_sort_list item=list key=key}
+      <tr>
+        <td align="center"  onclick="get_infos(this)">{$list.user_name|escape}</td>
+        <td align="center" >{$list.time}</td>
+        <td align="center">{$list.total_money}</td>
+      </tr>
+      {foreachelse}
+      <tr><td class="no-records" colspan="12">{$lang.no_records}</td></tr>
+      {/foreach}
+      <tr>
+
+          <td colspan="3" align="right">{include file="page.htm"}</td>
+      </tr>
+</table>
+
+{if $full_page}
+</div>
+</div>
+<!-- end users list -->
+</form>
+<script type="text/javascript" language="JavaScript">
+    
+
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+{foreach from=$filter item=item key=key}
+listTable.filter.{$key} = '{$item}';
+{/foreach}
+
+{literal}
+onload = function()
+{
+    document.forms['searchForm'].elements['keyword'].focus();
+    // 开始检查订单
+    startCheckOrder();
+}
+//-->
+</script>
+{/literal}
+{include file="pagefooter.htm"}
+{/if}
+
+
+<script type="text/javascript">
+
+  //导出订单的表单提交
+    function chk(){
+
+      $('.begin1').val($('.begin').val());
+
+      $('.end1').val($('.end').val());
+      $('.fenxiao_name1').val($('.fenxiao_name').val());
+      
+      return true;
+    }
+  
+
+  function get_infos(thiss){
+
+     var fenxiao_name = thiss.innerHTML;
+
+       $('.hidden_name').html(fenxiao_name);
+       var begin = $('.begin').val();
+       var end = $('.end').val();
+       Ajax.call('distrib_sort.php?act=ajax_select_info', 'distrib_name=' +fenxiao_name+'&begin='+begin+'&end='+end, back_func, 'GET', 'JSON');
+  }
+  
+ 
+
+  // 删除遮罩层的操作
+  $('.shanchu').click(function(){
+
+      $('.layers').css('display','none');
+      $('.fenxiao').css('display','block');
+
+  });
+
+  // 第一页操作
+  $('.first_page').click(function(){
+
+      var fenxiao_name = $('.hidden_name').html();
+      //var page = $('.page').html();
+      var pagesize = $('.pagesize').val();
+
+      Ajax.call('distrib_sort.php?act=ajax_select_info', 'distrib_name=' +fenxiao_name+'&page=1&pagesize='+pagesize, back_func, 'GET', 'JSON');
+  })
+
+  // 上一页操作
+  $('.prev_page').click(function(){
+
+      var fenxiao_name = $('.hidden_name').html();
+      var page = $('.page').html() - 1;
+      var pagesize = $('.pagesize').val();
+
+      if( page  >0){
+
+      Ajax.call('distrib_sort.php?act=ajax_select_info', 'distrib_name=' +fenxiao_name+'&page='+page+'&pagesize='+pagesize, back_func, 'GET', 'JSON');
+      }
+
+  })
+
+   // 下一页操作
+  $('.next_page').click(function(){
+
+      var fenxiao_name = $('.hidden_name').html();
+      var page = parseInt($('.page').html()) +1;
+      var pagesize = $('.pagesize').val();
+      var totalpage = $('.totalpage').html();
+
+      if(totalpage >= page){
+         Ajax.call('distrib_sort.php?act=ajax_select_info', 'distrib_name=' +fenxiao_name+'&page='+page+'&pagesize='+pagesize, back_func, 'GET', 'JSON');
+      }
+
+  })
+
+
+   //最后一页操作
+  $('.last_page').click(function(){
+
+      var fenxiao_name = $('.hidden_name').html();
+  
+      var pagesize = $('.pagesize').val();
+      var totalpage = $('.totalpage').html();
+
+     
+      Ajax.call('distrib_sort.php?act=ajax_select_info', 'distrib_name=' +fenxiao_name+'&page='+totalpage+'&pagesize='+pagesize, back_func, 'GET', 'JSON');
+      
+
+  });
+
+  // 更换语句
+  $('.yin_button').click(function(){
+
+      var fenxiao_name = $('.hidden_name').html();
+  
+      var pagesize = $('.pagesize').val();
+      var page = $('.some_pagesize').val();
+      var totalpage = $('.totalpage').html();
+
+      if(!page){
+        page = '1';
+      }
+      if(page > totalpage ){
+
+        return false;
+      }
+      $('.some_pagesize').val(' ');
+      Ajax.call('distrib_sort.php?act=ajax_select_info', 'distrib_name=' +fenxiao_name+'&page='+page+'&pagesize='+pagesize, back_func, 'GET', 'JSON');
+      
+
+  });
+
+   function back_func(rel){
+
+      var lens = rel.content.info.length;
+      console.log( rel.content); 
+      $('.remove_add').remove();
+      for (var i = 0; i < lens; i++) {
+       
+        $('.add_child').append("<tr class='remove_add'><td align='center'>"+rel.content.info[i]['user_name']+"</td><td align='center'>"+rel.content.info[i]['money']+"</td><td align='center'>"+rel.content.info[i]['xia_name']+"</td><td align='center'>"+rel.content.info[i]['time']+"</td><td align='center'>"+rel.content.info[i]['change_desc']+"</td></tr>");
+      }
+
+      $('.totalcount').html(rel.content.totalcount);
+      $('.totalpage').html(rel.content.totalpage);
+      $('.page').html(rel.content.page);
+      $('.pagesize').html(rel.content.pagesize);
+
+      $('.layers').css('display','block');
+      $('.fenxiao').css('display','none');
+  }
+
+
+</script>

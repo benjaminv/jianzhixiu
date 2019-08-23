@@ -1,0 +1,188 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+<link rel="stylesheet" href="themesmobile/dm299_com/css/flow.css">
+
+
+
+<div class="bodybj">
+  <form  method="post" action="user.php?act=back_order_act" onsubmit="return validate_comment()" enctype="multipart/form-data" data-ajax="false">
+    
+    
+    <input type="hidden" value="{$order.order_sn}" name="order_sn">
+    
+    <input type="hidden" value="1" name="country">
+    <input type="hidden" value="{$order.province}" name="province">
+    <input type="hidden" value="{$order.city}" name="city">
+    <input type="hidden" value="{$order.district}" name="district">
+    <input type="hidden" value="{$order.consignee}" name="back_consignee">
+   
+    <input type="hidden" value="{$order.address}" name="back_address">
+    <input type="hidden" value="{$order.zipcode}" name="back_zipcode">
+    <input type="hidden" value="{$order.mobile}" name="back_mobile">
+    <div class="shai_goods">
+     
+      {foreach from=$goods item=goods}
+
+      <input type="hidden" value="{$goods.goods_id}" name="goods_id">
+      <input type="hidden" value="{$goods.order_id}" name="order_id">
+      <input type="hidden" value="{$goods.goods_name}" name="goods_name">
+
+      <input type="hidden" value="{$goods.product_id}" name="product_id_tui">
+      <dl>
+        <dt><img src="../../{$goods.goods_thumb}" width="50"/></dt>
+        <dd>
+          <p>{$goods.goods_name|truncate:35}</p>
+          <span>{$goods.supplier_name}</span> </dd>
+      </dl>
+
+      {/foreach}
+    </div>
+    <div class="shaidan">
+    <h3>服务类型：</h3>
+    <ul class="nav nav-list-sidenav" id="zhifu68" style="display:block; border-bottom:none;">
+      {if $X eq '2'}
+       
+      <li>
+        <input type="radio" name="back_type" value="1" checked="checked"  class="f_checkbox_t"/>
+        退款退货</li>
+      {else}
+      <li>
+      <input type="hidden" value="1" name="order_all">
+        <input type="radio" name="back_type" value="4"  checked="checked"  class="f_checkbox_t"/>
+        退款（暂未发货）</li>
+      {/if}
+    </ul>
+
+      {if $X eq '2'}
+       <input type="hidden" value="{$order_goods.goods_price}" name="tui_goods_price">
+
+       <div class="shaidan">
+      <h3>退货数量：</h3>
+      <input value="{$order_goods.goods_number}" onblur="check_tui_goods_number()" id="tui_goods_number" style="display:block; width:90%; margin:auto; border:1px solid #dddddd; height:33px; font-size:14px; line-height:150%; color:#666; margin-top:10px;" name="tui_goods_number" />
+    </div>
+
+
+    <script>
+			function check_tui_goods_number()
+			{
+				var now_number = Number(document.getElementById("tui_goods_number").value);
+				var goods_number = {$order_goods.goods_number};
+				if (now_number < 1)
+				{
+					alert("提交数量不能小于1");
+					document.getElementById("tui_goods_number").value = 1;
+					document.getElementById("tui_goods_number").focus();
+				}
+				else if (now_number > goods_number)
+				{
+					alert("提交数量不能超过购买数量"+goods_number);
+					document.getElementById("tui_goods_number").value = goods_number;
+					document.getElementById("tui_goods_number").focus();
+				}
+			}
+			</script>
+
+    {/if}
+
+
+
+    <div class="shaidan">
+      <h3>问题描述：</h3>
+      <textarea id="content_13" class="inputBorder" name="back_reason" style="padding-top:10px; text-indent:10px"></textarea>
+    </div>
+    {if $X eq 2}
+    <div class="shaidan">
+      <h4>图片信息：</h4>
+      <div style=" width:90%; margin:auto; overflow:hidden; padding-top:10px;"> {foreach from=$shaidan_img item=img} <a href="javascript:;" class="file">
+        <div id="fileList{$img}" style="width:60px;height:60px;"><img width="60" height="60" ></div>
+        <input type="file" onchange="handleFiles(this,{$img})" name = "img_srcs{$img}" accept="image/*" capture="camera" />
+        </a> {/foreach} </div>
+      {/if} <span style=" font-size:14px; display:block; width:90%; margin:auto; overflow:hidden; margin-top:10px;"> </div>
+    <div class="shaidan">
+      <h3>退款方式：</h3>
+      <ul class="nav nav-list-sidenav" id="zhifu68" style="display:block; border-bottom:none;">
+       <li>
+          <input type="radio" name="back_pay"  value="2" checked class="f_checkbox_t"/>
+          原路退款（仅微信支付可以用）</li>
+      </ul>
+    </div>
+    <div class="shaidan">
+      <h3>我要留言：</h3>
+      <textarea id="content_13" class="inputBorder" name="back_postscript" style="padding-top:10px; text-indent:10px"></textarea>
+    </div>
+    <div class="p_main">
+      <input name="" type="submit" value="提交" class="m_pingjia" />
+    </div>
+  </form>
+</div>
+<script>
+function validate_comment(){
+
+
+var message = document.getElementById("content_13").value;
+
+ 
+ 
+
+
+if(message == ''){
+    alert('问题描述不能为空！');
+
+    return false;
+}
+
+
+return true;
+
+
+
+
+
+
+
+}
+window.URL = window.URL || window.webkitURL;
+function handleFiles(obj,id) {
+fileList = document.getElementById("fileList"+id);
+	var files = obj.files;
+	img = new Image();
+	if(window.URL){
+	//File API
+			  
+	img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+	img.width = 60;
+        img.height = 60;
+	img.onload = function(e) {
+	window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+	}
+        if(fileList.firstElementChild){
+            fileList.removeChild(fileList.firstElementChild);
+        } 
+	fileList.appendChild(img);
+	}else if(window.FileReader){
+	//opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+	var reader = new FileReader();
+	reader.readAsDataURL(files[0]);
+	reader.onload = function(e){
+				
+            img.src = this.result;
+            img.width = 60;
+            img.height = 60;
+            fileList.appendChild(img);
+	}
+    }else{
+	//ie
+	obj.select();
+	obj.blur();
+	var nfile = document.selection.createRange().text;
+	document.selection.empty();
+	img.src = nfile;
+	img.width = 60;
+        img.height = 60;
+	img.onload=function(){
+	  
+    }
+	fileList.appendChild(img);
+    }
+}
+</script> 

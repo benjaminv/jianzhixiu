@@ -1,0 +1,91 @@
+<html><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>{$page_title}</title>
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/css/public.css">
+    <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/css/user.css">
+    <script type="text/javascript" async="" defer="" src="//piwik.lian-mei.com/linkall.js"></script><script src="https://hm.baidu.com/hm.js?06da1df901f42b748e925d65a0fe89fe"></script><script type="text/javascript" async="" defer="" src="//piwik.lian-mei.com/linkall.js"></script><script type="text/javascript" src="themesmobile/dm299_com/js/jquery.js"></script>
+    <script type="text/javascript" src="themesmobile/dm299_com/js/jquery.more.js"></script>
+    <script type="text/javascript" src="js/jquery.json.js"></script><script type="text/javascript" src="js/transport.js"></script><script type="text/javascript" src="js/common.js"></script><script type="text/javascript" src="js/utils.js"></script><script type="text/javascript" src="js/shopping_flow.js"></script></head>
+<body class="body_bj">
+
+<script type="text/javascript" src="themesmobile/dm299_com/js/mobile.js"></script>
+<header>
+    <div class="tab_nav" style="border-bottom: 1px solid #DFDFDF;">
+        <div class="header">
+            <div class="h-mid" style="width:100%;">信息绑定</div>
+        </div>
+    </div>
+</header>
+<div id="tbh5v0">
+    <div class="Personal">
+        <div id="tbh5v0">
+            <div class="innercontent1">
+                <form method="post" action="user.php" id="edit_profile" enctype="multipart/form-data">
+
+                    <div class="name">
+                        <label for="extend_field_5" style="display:block;"> <span>手机</span>
+                            <input type="text" name="mobile_phone" value="" id="mobile_phone" placeholder="请输入手机号码" class="c-f-text" style="height:32px;line-height:32px;">
+                        </label>
+                    </div>
+                    <div class="name" id="password_name" style="display:none;">
+                        <span>密码</span>
+                        <input type="text" name="password" id="password" value="" placeholder="请输入密码" class="c-f-text" style="height:32px;line-height:32px;">
+                    </div>
+
+                    <div class="field submit-btn">
+                        <button type="button" class="btn_big1" onclick="sumbit_from()">确认</button>
+                        <input type="hidden" name="profile_type" id="profile_type" value="0" />
+                        <input type="hidden" name="parent_id" id="parent_id" value="{$parent_id}" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function sumbit_from()
+    {
+        var mobile_phone= $("#mobile_phone").val();
+        var profile_type= $("#profile_type").val();
+        var parent_id   = $("#parent_id").val();
+        var password   = $("#password").val();
+        if(profile_type==0)
+        {
+            $.post("affiliate_weixin_login.php",{act:"checkmobile",mobile_phone:mobile_phone},function(result){
+                if(result.error==1)
+                {
+                    alert("此手机号已存在会员数据，只能输入会员密码绑定！");
+                    $("#profile_type").val(1);
+                    $("#password_name").show();
+                }
+                else
+                {
+                    var url="weixin_login.php?bind=1&user_id="+parent_id+"&erweima_type=1&mobile_phone="+mobile_phone+"&mp="+result.mp+"&profile_type=0";
+                    window.location.href = url;
+                }
+            },"json");
+        }
+        else
+        {
+            $.post("affiliate_weixin_login.php",{act:"checkpassword",mobile_phone:mobile_phone,password:password},function(result){
+                if(result.error==1)
+                {
+                    alert(result.msg);
+                    window.location.reload();
+                }
+                else
+                {
+                    var url="weixin_login.php?bind=1&user_id="+parent_id+"&erweima_type=1&ud="+result.ud+"&mp="+result.mp+"&profile_type=1";
+                    window.location.href = url;
+                }
+            },"json");
+        }
+    }
+</script>
+</body>
+</html>

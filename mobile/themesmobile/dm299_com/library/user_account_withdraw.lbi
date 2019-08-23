@@ -1,0 +1,58 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!---------提现----------->
+<!--{if $action eq "account_raply" || $action eq "account_log" || $action eq "account_deposit" || $action eq "account_detail"} -->
+
+<h2 class="vc_title">当前账户余额：<strong>{$user_info.user_money}</strong></h2>
+
+<div class="recharge">
+<!-- {/if} --> 
+<!-- {if $action eq "account_raply"} 提现-->
+<form name="formSurplus" method="post" action="user.php" onSubmit="return submitSurplus()">
+<div class="re_one">
+    <div style="float:left;">提现方式:</div>
+    <div style="float:left;margin-left:10px;">
+        <div><input name="acc_type" type="radio" value="0" checked style="width:18px;height:24px;" />微信</div>
+        <div><input name="acc_type" type="radio" value="1" style="width:18px;height:24px;"/>支付宝</div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+<div id="payment_type" style="display:none;">
+    <dl class="re_one">
+        <dt>支付宝账号:</dt>
+        <dd><input type="text" name="alipay_cn" value="" class="inputBg" /></dd>
+    </dl>
+    <dl class="re_one">
+        <dt>支付宝姓名:</dt>
+        <dd><input type="text" name="alipay_name" value="" class="inputBg" /></dd>
+    </dl>
+</div>
+    <script>
+        $(function(){
+            $('input[type=radio][name=acc_type]').change(function() {
+                $("#payment_type").toggle();
+            });
+        });
+    </script>
+<dl class="re_one">
+<dt>{$lang.repay_money}:</dt>
+ <dd><input type="text" name="amount" value="{$order.amount|escape}" class="inputBg" /><font style=" font-size:14px; color:#666"> 元</font></dd>
+</dl>
+<dl class="re_two">
+<dt>{$lang.process_notic}:</dt>
+<dd><textarea name="user_note" cols="55" rows="6">{$order.user_note|escape}请填写收款人姓名，收款方式，收款账号</textarea></dd>
+</dl>
+<span><input type="hidden" name="surplus_type" value="1" />
+                  <input type="hidden" name="act" value="act_account" />
+                  <input type="submit" name="submit"  class="bnt_1" value="{$lang.submit_request}" />
+                  <input type="reset" name="reset" class="bnt_1" value="{$lang.button_reset}" /></td>
+</span>
+</form>
+<!-- {/if} --> 
+</span>
+<!---返回顶部-->
+<script>
+function goTop(){
+	$('html,body').animate({'scrollTop':0},600);
+}
+</script>
+<a href="javascript:goTop();" class="gotop"><img src="themesmobile/dm299_com/images/topup.png"></a> 

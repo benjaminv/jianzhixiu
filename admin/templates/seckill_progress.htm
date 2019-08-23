@@ -1,0 +1,33 @@
+<!-- $Id: auction_list.htm 14888 2008-09-18 03:43:21Z levie $ -->
+
+
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+
+
+<form method="post" action="skill.php" name="listForm" onsubmit="return confirm(batch_drop_confirm);">
+  <!-- start auction list -->
+  <div class="list-div" id="listDiv">
+
+
+    <table cellpadding="3" cellspacing="1">
+      <tr>
+        <th width="25%">ID</th>
+        <th>商品名称</th>
+        <th>秒杀总数</th>
+        <th>剩余秒杀个数</th>
+      </tr>
+
+      {foreach from=$res item=auction}
+      <tr>
+        <td>{$auction.id}</td>
+        <td align="center">{$auction.goods_name}</td>
+        <td align="center">{$auction.seckill_total_num}</td>
+        <td align="center">{$auction.seckill_num}</td>
+	{/foreach}
+	  </tr>
+    </table>
+  
+  </div>
+  <!-- end auction list -->
+</form>

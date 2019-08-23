@@ -1,0 +1,461 @@
+<!-- $Id: user_info.htm 16854 2009-12-07 06:20:09Z sxc_shop $ -->
+{include file="pageheader.htm"}
+{insert_scripts files="../js/transport.org.js,../js/region.js"}
+<script src="/admin/js/date.js"></script>
+<style>
+  .login_panel {
+    position: fixed;
+    z-index: 9999;
+    top: 50%;
+    left: 50%;
+    width: 514px;
+    margin-left: -257px;
+    background-color: #fff;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    overflow: hidden;
+    color: #333;
+  }
+  .login_inner.wx {
+    padding-top: 10px;
+    padding-left: 80px;
+  }
+  .login_fieldset {
+    padding-top: 5px;
+    padding-top: 0\9;
+  }
+  .login_legend {
+    display: block;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 400;
+    font-style: normal;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 48px;
+    line-height: 48px;
+    background-color: #f4f7f9;
+    padding-left: 24px;
+    z-index: 1;
+  }
+  .login_input_area {
+    border: 1px solid #e6e7ec;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    overflow: hidden;
+    margin-top: 70px;
+  }
+  .login_panel.open .login_input_box {
+    padding-left: 70px;
+    padding-right: 20px;
+  }
+  .login_panel.open .login_label {
+    left: 26px;
+  }
+  .login_input_box .frm_input {
+    height: 37px;
+    margin: 5px 0;
+  }
+  .login_tool_area {
+    margin-top: 18px;
+  }
+  .btn.btn_primary {
+    border-color: #44b549;
+  }
+  .login_tool_area .btn {
+    margin-right: 15px;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 46px;
+  }
+  .mask {
+    filter: alpha(opacity = 35);
+    -moz-opacity: .35;
+    -khtml-opacity: .35;
+    opacity: .35;
+    z-index: 11;
+  }
+  .mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: alpha(opacity = 75);
+    -moz-opacity: .75;
+    -khtml-opacity: .75;
+    opacity: .75;
+    background-color: #000;
+    z-index: 2;
+  }
+</style>
+<script>
+  function open_mask(num)
+  {
+      $("#mask").show();
+      $("#bouns_mask").show();
+      $("#bouns_num").val(num);
+  }
+  function close_mask()
+  {
+      $("#mask").hide();
+      $("#bouns_mask").hide();
+  }
+  function bouns_ok()
+  {
+      var bouns_num = $("#bouns_num").val();
+      if(bouns_num == 0)
+      {
+          alert("数据异常，刷新重新添加！");
+          return false;
+      }
+
+      var type_text = $("#type_id").find("option:selected").text();
+      var type_id = $("#type_id ").val();
+      if(type_id==0)
+      {
+          alert("请选择红包类型！");
+          return false;
+      }
+      $("#prize_name_"+bouns_num).val(type_text);
+      $("#bouns_id_"+bouns_num).val(type_id);
+      close_mask();
+  }
+
+  function open_goods_mask(num)
+  {
+      $("#mask").show();
+      $("#goods_mask").show();
+      $("#goods_num").val(num);
+  }
+  function close_goods_mask()
+  {
+      $("#mask").hide();
+      $("#goods_mask").hide();
+  }
+  function search_goods()
+  {
+      var goods_key = $("#goods_key").val();
+      $.post("dzp.php",{act:"searchgoods",goods_key:goods_key},function(result){
+          if(result.error == 0)
+          {
+              $("#goods_select").html(result.content);
+          }
+          else
+          {
+              alert(result.message);
+          }
+      },'json');
+  }
+  function goods_ok()
+  {
+      var goods_num = $("#goods_num").val();
+      if(goods_num == 0)
+      {
+          alert("数据异常，刷新重新添加！");
+          return false;
+      }
+
+      var type_text = $("#goods_select").find("option:selected").text();
+      var type_id = $("#goods_select ").val();
+      if(type_id==0)
+      {
+          alert("请选择红包类型！");
+          return false;
+      }
+      $("#prize_name_"+goods_num).val(type_text);
+      $("#goods_id_"+goods_num).val(type_id);
+      close_goods_mask();
+  }
+</script>
+<div class="mask" id="mask" style="display:none;"></div>
+<!--红包选择-->
+<div class="login_panel label_input prepend open" id="bouns_mask" style="margin-top:-300px;display:none;">
+  <div id="wxLogin_1557817374935_wx">
+    <div class="login_inner wx" style="padding:10px;">
+      <form class="form login_form" id="wxLogin_1557817374935_form" novalidate="novalidate">
+        <fieldset class="login_fieldset">
+          <div class="login_input_area" style="border:none;margin-top:30px;">
+                <span class="login_input_box first">
+                    <label class="login_label">红包</label>
+                    <select id="type_id">
+                      <option value ="0">请选择红包类型</option>
+                      {foreach from=$bonus_type_list item=list}
+                      <option value ="{$list.type_id}">{$list.type_name}</option>
+                      {/foreach}
+                    </select>
+                </span>
+          </div>
+          <div class="login_tool_area" style="width:278px;margin:0 auto;padding:30px 0px;">
+            <input type="hidden" name="bouns_num" value="0" id="bouns_num"/>
+            <a href="javascript:void(0);" class="btn btn_primary btn_login" onclick="bouns_ok()" style="background-color: red;padding: 8px 46px;color: #fff;border-radius: 5px;">确定</a>
+            <a href="javascript:void(0);" class="btn btn_default btn_regist" onclick="close_mask()"  style="background-color: red;padding: 8px 46px;color: #fff;border-radius: 5px;">取消</a>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+<!--商品筛选-->
+<div class="login_panel label_input prepend open" id="goods_mask" style="margin-top:-300px;display:none;">
+  <div>
+    <div class="login_inner wx" style="padding:10px;">
+      <form class="form login_form" novalidate="novalidate">
+        <fieldset class="login_fieldset">
+          <div class="login_input_area" style="border:none;margin-top:30px;">
+                <span class="login_input_box first">
+                    <label class="login_label">商品搜索</label>
+                    <input type="text" name="goods_key" placeholder="请输入商品名" id="goods_key"  style="width: 60%;padding: 5px;"/>
+                </span>
+          </div>
+          <div style="width: 116px;margin: 30px auto;">
+                <a href="javascript:void(0);" onclick="search_goods()" class="btn btn_primary btn_login" style="background-color: red;padding: 8px 46px;color: #fff;border-radius: 5px;">搜索</a>
+          </div>
+          <div class="login_input_area" style="border:none;margin-top:30px;">
+                <span class="login_input_box first">
+                    <label class="login_label">商品选择</label>
+                    <select id="goods_select">
+                      <option value ="0">请选择商品</option>
+                    </select>
+                </span>
+          </div>
+          <div class="login_tool_area" style="width:278px;margin:0 auto;padding:30px 0px;">
+            <input type="hidden" name="bouns_num" value="0" id="goods_num"/>
+            <a href="javascript:void(0);" class="btn btn_primary btn_login" onclick="goods_ok()" style="background-color: red;padding: 8px 46px;color: #fff;border-radius: 5px;">确定</a>
+            <a href="javascript:void(0);" class="btn btn_default btn_regist" onclick="close_goods_mask()"  style="background-color: red;padding: 8px 46px;color: #fff;border-radius: 5px;">取消</a>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="main-div">
+
+<script>
+    /**
+     * 检查表单输入的数据
+     */
+    function validate()
+    {
+        var dzp_name = $("input[name='dzp_name']").val();
+        var dzp_draw_times = $("input[name='dzp_draw_times']").val();
+        var dzp_address = $("input[name='dzp_address']").val();
+        var dzp_start_day = $("input[name='dzp_start_day']").val();
+        var dzp_end_day = $("input[name='dzp_end_day']").val();
+        if(dzp_name=='')
+        {
+            alert("请填写活动名称！");
+            return false;
+        }
+        if(dzp_draw_times=='')
+        {
+            alert("请填写每人抽奖次数！");
+            return false;
+        }
+        if(dzp_address=='')
+        {
+            alert("请填写活动地址！");
+            return false;
+        }
+        if(dzp_start_day=='')
+        {
+            alert("请填写活动起始时间！");
+            return false;
+        }
+        if(dzp_end_day=='')
+        {
+            alert("请填写活动截止时间！");
+            return false;
+        }
+        return true;
+    }
+    function click_prize_name(obj)
+    {
+        var id = $(obj).data("id");
+        var type=$('input:radio[name="cfg_value[type]['+(id-1)+']"]:checked').val();
+        if(type==0)
+        {
+            open_goods_mask(id);
+        }
+        else if(type==1)
+        {
+            open_mask(id);
+        }
+    }
+</script>
+<!-- #代码增加2014-12-23 by www.68ecshop.com  _star -->
+<form method="post" action="dzp.php" name="theForm" onsubmit="return validate()" enctype="multipart/form-data">
+<!-- #代码增加2014-12-23 by www.68ecshop.com  _end -->
+<table width="100%" >
+  <tr>
+    <td class="label">活动名称:</td>
+    <td>{if $form_action eq "update"}<input type="text" name="dzp_name" value="{$user.dzp_name}" />{else}<input type="text" name="dzp_name" maxlength="60" value="{$user.dzp_name}" />{/if} <span style="color:red;">*</span></td>
+  </tr>
+
+  <tr>
+    <td class="label">每人抽奖次数:</td>
+    <td>{if $form_action eq "update"}<input type="text" name="dzp_draw_times" value="{$user.dzp_draw_times}" />{else}<input type="text" name="dzp_draw_times" maxlength="60" value="{$user.dzp_draw_times}" />{/if} <span style="color:red;">*</span></td>
+  </tr>
+
+  <tr>
+    <td class="label">活动地址:</td>
+    <td>{if $form_action eq "update"}<input type="text" name="dzp_address" value="{$user.dzp_address}" />{else}<input type="text" name="dzp_address" maxlength="60" value="{$user.dzp_address}" />{/if} <span style="color:red;">*</span></td>
+  </tr>
+  <style>
+    #calendarPanel
+    {
+      width:230px!important;
+    }
+  </style>
+  <tr>
+    <td class="label">活动起止时间:</td>
+    <td>{if $form_action eq "update"}<input type="text" name="dzp_start_day" value="{$user.dzp_start_day}" id="promote_start_date" onclick="SetDate(this,'yyyy-MM-dd')"/> ~ <input type="text" name="dzp_end_day" value="{$user.dzp_end_day}"  id="promote_end_date" onclick="SetDate(this,'yyyy-MM-dd')"/> {else}<input type="text" name="dzp_start_day" maxlength="60" value="{$user.dzp_start_day}" id="promote_start_date" onclick="SetDate(this,'yyyy-MM-dd')"/> ~ <input type="text" name="dzp_end_day" maxlength="60" value="{$user.dzp_end_day}" id="promote_end_date" onclick="SetDate(this,'yyyy-MM-dd')"/>{/if}<span style="color:red;">*</span></td>
+  </tr>
+
+  <tr>
+    <td class="label">活动规则:</td>
+    <td>
+      <textarea name="dzp_description" class="textarea" rows="5" cols="50">{if $user.dzp_description}{$user.dzp_description}{/if}</textarea><span style="color:red;">*</span>
+    </td>
+  </tr>
+  <style>
+    .label_value  input[type="text"]
+    {
+       min-width:100px!important;
+    }
+  </style>
+  <tr>
+    <td class="label">活动列表:</td>
+    <td>
+      <div class="item">
+          <div class="label_value" id="label_value">
+              <table class="table ectouch-table prize_list">
+                  <tbody>
+                      <tr>
+                        <th class="text-center" width="10%"><a href="javascript:;" class="glyphicon glyphicon-plus" onclick="addprize(this)" style="color:red;">+</a></th>
+                        <th class="text-center" width="18%">奖项</th>
+                        <th class="text-center" width="18%">奖品</th>
+                        <th class="text-center" width="18%">数量</th>
+                        <th class="text-center" width="10%">概率(总数为100%)</th>
+                        <th class="text-center" width="20%">商品类型</th>
+                      </tr>
+                      {foreach from=$dzp_goods item=dzp}
+                      <tr>
+                        <td class="text-center"><a href="javascript:;" class="glyphicon glyphicon-minus" onclick="delprize(this)">-</a></td>
+                        <td class="text-center"><input type="text" name="cfg_value[prize_level][]" class="form-control" placeholder="例如：一等奖" value="{$dzp.prize_level}"></td>
+                        <td class="text-center"><input type="text" name="cfg_value[prize_name][]" class="form-control" placeholder="请搜索抽奖商品" id="prize_name_{$dzp.count1}" value="{$dzp.prize_name}" onclick="click_prize_name(this)" data-id="{$dzp.count1}"></td>
+                        <td class="text-center"><input type="text" name="cfg_value[prize_count][]" class="form-control" placeholder="例如：3" value="{$dzp.prize_count}"></td>
+                        <td class="text-center"><div class="input-group"><input type="text" name="cfg_value[prize_prob][]" class="form-control" placeholder="例如：1" value="{$dzp.prize_prob}"><span class="input-group-addon"></span></div></td>
+                        <td class="text-center"><div class="input-group"> <input name="cfg_value[type][{$dzp.count}]" type="radio" value="0" onclick="open_goods_mask({$dzp.count1})" {if $dzp.type eq 0}checked="checked"{/if}>商品<br><input name="cfg_value[type][{$dzp.count}]" type="radio" value="1" onclick="open_mask({$dzp.count1})" {if $dzp.type eq 1}checked="checked"{/if}>红包<br><input name="cfg_value[type][{$dzp.count}]" type="radio" value="2" {if $dzp.type eq 2}checked="checked"{/if}/>谢谢惠顾<span class="input-group-addon"></span></div></td>
+                        <input type="hidden" name="cfg_value[bouns_id][]" value="{$dzp.bouns_id}" id="bouns_id_{$dzp.count1}">
+                        <input type="hidden" name="cfg_value[goods_id][]" value="{$dzp.goods_id}" id="goods_id_{$dzp.count1}">
+                      </tr>
+                      {/foreach}
+                  </tbody>
+              </table>
+              <div class="notic">注意：必须添加一项谢谢惠顾。建议最多添加6项，概率总和小于100%</div>
+          </div>
+      </div>
+    </td>
+  </tr>
+  <script type="text/javascript">
+      //添加奖项
+      var num = $('.prize_list tr').length > 0 ? $('.prize_list tr').length : 1;
+      function addprize(obj){
+          switch(num)
+          {
+              case 1:
+                  prize_level = "一等奖";
+                  break;
+              case 2:
+                  prize_level = "二等奖";
+                  break;
+              case 3:
+                  prize_level = "三等奖";
+                  break;
+              case 4:
+                  prize_level = "四等奖";
+                  break;
+              case 5:
+                  prize_level = "五等奖";
+                  break;
+              case 6:
+                  prize_level = "六等奖";
+                  break;
+              default:
+                  prize_level = "";
+          }
+
+          var html = '<tr><td class="text-center"><a href="javascript:;" class="glyphicon glyphicon-minus" onClick="delprize(this)">-</a></td><td class="text-center"><input type="text" name="cfg_value[prize_level][]" class="form-control" placeholder="例如：一等奖" value="'+prize_level+'"></td><td class="text-center"><input type="text" name="cfg_value[prize_name][]" class="form-control" placeholder="请搜索抽奖商品" id="prize_name_'+(num)+'" data-id="'+(num)+'" onclick="click_prize_name(this)"></td><td class="text-center"><input type="text" name="cfg_value[prize_count][]" class="form-control" placeholder="例如：3"></td><td class="text-center"><div class="input-group"><input type="text" name="cfg_value[prize_prob][]"  class="form-control" placeholder="例如：1"><span class="input-group-addon"></span></div></td><td class="text-center"><div class="input-group"> <input name="cfg_value[type][' + (num-1) + ']" type="radio" value="0" onclick="open_goods_mask(num-1)" checked="checked"/>商品<br><input name="cfg_value[type][' + (num-1) + ']" type="radio" value="1" onclick="open_mask(num-1)" />红包<br><input name="cfg_value[type][' + (num-1) + ']" type="radio" value="2" />谢谢惠顾<span class="input-group-addon"></span></div></td> <input type="hidden" name="cfg_value[bouns_id][]" value="0" id="bouns_id_'+(num)+'" /><input type="hidden" name="cfg_value[goods_id][]" value="0" id="goods_id_'+(num)+'" /></tr>';
+          if(num <= 6){
+              $(obj).parent().parent().parent().append(html);
+          }else{
+              layer.msg('奖项不能超过6项');
+              return false;
+          }
+          num++;
+      }
+      //删除奖项
+      function delprize(obj){
+          $(obj).parent().parent().remove();
+      }
+
+      // 好记商城PC日历插件
+      var opts1 = {
+          'targetId':'promote_start_date',
+          'triggerId':['promote_start_date'],
+          'alignId':'text_time1',
+          'format':'-',
+          'hms':'off'
+      },opts2 = {
+          'targetId':'promote_end_date',
+          'triggerId':['promote_end_date'],
+          'alignId':'text_time2',
+          'format':'-',
+          'hms':'off'
+      }
+
+      xvDate(opts1);
+      xvDate(opts2);
+
+  </script>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="{$lang.button_submit}" class="button" />
+      <input type="reset" value="{$lang.button_reset}" class="button" />
+      <input type="hidden" name="act" value="{$form_action}" />
+      <input type="hidden" name="id" value="{$user.id}" />    </td>
+  </tr>
+</table>
+
+</form>
+</div>
+{insert_scripts files="../js/utils.js,validator.js"}
+{literal}
+<script language="JavaScript">
+<!--
+region.isAdmin = true;
+if (document.forms['theForm'].elements['act'].value == "insert")
+{
+  document.forms['theForm'].elements['username'].focus();
+}
+else
+{
+  document.forms['theForm'].elements['email'].focus();
+}
+
+onload = function()
+{
+    // 开始检查订单
+    startCheckOrder();
+}
+
+//-->
+</script>
+{/literal}
+{include file="pagefooter.htm"}
+
+

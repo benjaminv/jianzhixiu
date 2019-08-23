@@ -1,0 +1,80 @@
+<!-- $Id: bonus_type_info.htm 14216 2008-03-10 02:27:21Z testyang $ -->
+
+<script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+
+{include file="pageheader.htm"}
+<style>
+.block-input{float: left;min-width:50px !important;max-width:100px !important;}	
+.block-remove{float: left;width:5%;}
+.block-button{float: left;margin: 5px !important;height: 28px !important;}
+.left-float{float: left;}
+.block-label{height: 28px;line-height: 28px;margin: 5px;}
+</style>
+<div class="main-div">
+<form action="bonus.php" method="post" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
+<table width="100%">
+  <tr>
+    <td class="label">红包名称</td>
+    <td>
+      <input type='text' name='type_name' maxlength="30" value="{$bonus_arr.type_name}" size='20'  readonly/></td>
+  </tr>
+
+  <tr>
+    <td class="label">发送类型</td>
+    <td valign="middle">
+      <input class="choose-type" type="radio" name="send_type" value="0"/>按照会员
+      <input class="choose-type" type="radio" name="send_type" value="1"/>按照订单
+    </td>
+  </tr>
+
+  <tr class="show-user-box" style="display:none;">
+    <td class="label">会员id</td>
+    <td>
+      <input type='text' name='user_id' maxlength="30" value="" size='20' /></td>
+  </tr>
+
+  <tr class="show-user-box" style="display:none;">
+    <td class="label">红包金额</td>
+    <td>
+      <input type='text' name='money' maxlength="30" value="" size='20' /></td>
+  </tr>
+
+  <tr class="show-order-box" style="display:none;">
+    <td class="label">订单号</td>
+    <td>
+      <input type='text' name='order_sn' maxlength="30" value="" size='20' /></td>
+  </tr>
+ 
+  
+
+  <tr>
+    <td class="label">&nbsp;</td>
+    <td>
+      <input type="submit" value="{$lang.button_submit}" class="button" />
+      <input type="hidden" name="act" value="{$form_act}" />
+      <input type="hidden" name="type_id" value="{$bonus_arr.type_id}" />    </td>
+  </tr>
+</table>
+</form>
+</div>
+{insert_scripts files="../js/utils.js,validator.js"}
+{literal}
+<script>
+$(function(){
+	$('.choose-type').click(function(){
+		var radio_val = $(this).val();
+		if(radio_val == 0){
+			$('.show-user-box').show();
+			$('.show-order-box').hide();
+		}else{
+			$('.show-order-box').show();
+			$('.show-user-box').hide();
+		}
+	});
+})
+
+</script>
+
+{/literal}
+{include file="pagefooter.htm"}

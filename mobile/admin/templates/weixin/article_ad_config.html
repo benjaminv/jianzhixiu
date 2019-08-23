@@ -1,0 +1,188 @@
+{include file="pageheader.htm"}
+
+{insert_scripts files="../js/utils.js,listtable.js"}
+
+
+
+<form name="theForm" method="post" action="article_ad.php?act=config" enctype="multipart/form-data">
+
+  <table width="100%" cellpadding="3" cellspacing="1">
+
+  <tbody>
+
+  <tr>
+
+    <td class="label">文章植入系统ID  :</td>
+
+    <td><input type="text " name="article_catid" size="20" value="{$article_catid}">&nbsp;&nbsp;&nbsp;&nbsp;<span style=" color:#F30;">*&nbsp;注:&nbsp;作为文章广告植入系统的文章分类ID</span></td>
+
+  </tr>
+  
+   <tr>
+
+    <td class="label">允许发布广告会员等级 :</td>
+
+    <td><input type="checkbox" name="all_rank[]" value="-1" {if $ranks eq '-1'}checked="true"{/if} onClick="doCheck()"/>全部会员
+
+            	{foreach from=$user_rank_list item=user_rank}<input type="checkbox" name="user_rank[]" value="{$user_rank.rank_id}" {if $user_rank.checked}checked="true"{/if} onClick="doCheck()" {if $ranks eq '-1'} disabled="disabled"{/if}/>{$user_rank.rank_name} {/foreach}</td>
+
+  </tr>
+
+  <tr>
+
+    <td class="label">发布广告是否扣除用户余额/积分 :</td>
+
+    <td><input type="radio" name="is_deduct_money" value="1" {if $is_deduct_money eq 1}checked{/if} />是<input type="radio" name="is_deduct_money" value="0" {if $is_deduct_money eq 0}checked{/if} />否</td>
+
+  </tr>
+  <tr>
+
+    <td class="label">发布广告扣除用户余额数量 :</td>
+
+    <td>
+	<input type="text " name="deduct_money" size="20" value="{$deduct_money}">(元)
+	</td>
+
+  </tr>
+  
+  <tr>
+
+    <td class="label">发布广告扣除用户消费积分数量 :</td>
+
+    <td><input type="text " name="deduct_point" size="20" value="{$deduct_point}">(分) </td>
+
+  </tr>
+    
+	<tr>
+    <td class="label">是否开启文章赞赏功能 :</td>
+
+    <td><input type="radio" name="is_zanshang" value="1" {if $is_zanshang eq 1}checked{/if} />开启<input type="radio" name="is_zanshang" value="0" {if $is_zanshang eq 0}checked{/if} />关闭</td>
+
+  </tr>
+ 
+  <tr>
+
+    <td class="label">最低赞赏金额 :</td>
+
+    <td><input type="text " name="zan_money" size="20" value="{$zan_money}">&nbsp;&nbsp;&nbsp;&nbsp;<span style=" color:#F30;">*&nbsp;注:&nbsp;赞赏金额不能低于0.01元</span> </td>
+
+  </tr>
+  
+   <tr>
+   <td class="label">赞赏成功是否给奖励 :</td>
+
+    <td><input type="radio" name="is_reward" value="1" {if $is_reward eq 1}checked{/if} />是<input type="radio" name="is_reward" value="0" {if $is_reward eq 0}checked{/if} />否</td>
+
+  </tr>
+  <tr>
+
+    <td class="label">奖励消费积分数量 :</td>
+
+    <td>
+	<input type="text " name="reward_point" size="20" value="{$reward_point}">(分)
+	</td>
+
+  </tr>
+  
+  <tr>
+
+    <td class="label">奖励等级积分数量 :</td>
+
+    <td><input type="text " name="reward_rank_point" size="20" value="{$reward_rank_point}">(分) </td>
+
+  </tr>
+
+  <tr>
+
+    <td class="label">是否开启顶部官方广告展示  :</td>
+
+    <td><input type="radio" name="admin_ad" value="1" {if $admin_ad eq 1}checked{/if} />开启<input type="radio" name="admin_ad" value="0" {if $admin_ad eq 0}checked{/if} />关闭</td>
+
+  </tr>
+  <tr>
+
+    <td class="label">官方广告语 :</td>
+
+    <td><textarea name="ad_text" rows="4" cols="40">{$ad_text}</textarea></td>
+
+  </tr>
+   <tr>
+
+    <td class="label">官方广告跳转链接 :</td>
+
+     <td><input type="text " name="ad_url" size="42" value="{$ad_url}">&nbsp;&nbsp;&nbsp;&nbsp;<span style=" color:#F30;">*&nbsp;注:&nbsp;官方广告跳转链接包含http://</span> </td>
+
+  </tr>
+     <tr>
+   <tr>
+   <td class="label">点击查看广告是否给用户奖励 :</td>
+
+    <td><input type="radio" name="is_ad_reward" value="1" {if $is_ad_reward eq 1}checked{/if} />是<input type="radio" name="is_ad_reward" value="0" {if $is_ad_reward eq 0}checked{/if} />否</td>
+
+  </tr>
+   <td class="label">每天可收益次数  :</td>
+
+    <td><input type="text " name="earnings_times" size="20" value="{$earnings_times}">&nbsp;&nbsp;&nbsp;&nbsp;<span style=" color:#F30;">*&nbsp;注:&nbsp;用户每天点击查看广告最多收益次数</span></td>
+
+  </tr>
+   <tr>
+
+    <td class="label">奖励用户余额数量 :</td>
+
+    <td>
+	<input type="text " name="ad_reward_money" size="20" value="{$ad_reward_money}">(元)
+	</td>
+
+  </tr>
+  
+  <tr>
+
+    <td class="label">奖励用户消费积分数量 :</td>
+
+    <td><input type="text " name="ad_reward_point" size="20" value="{$ad_reward_point}">(分) </td>
+
+  </tr>
+  
+  <tr>
+
+    <td colspan="2" align="center">
+
+      <input type="submit" value="{$lang.button_submit}" class="button" />
+
+    <input type="reset" value="{$lang.button_reset}" class="button" />
+
+    </td>
+
+  </tr>
+<SCRIPT  LANGUAGE="JavaScript"> 
+function  doCheck()
+{ 
+	var r=document.getElementsByName("user_rank[]");
+	var j=document.getElementsByName("all_rank[]");
+	
+	for(var i = 0; i < r.length; i++)
+	{
+		if(j[0].checked)
+		{
+			r[i].checked = false;
+			r[i].disabled = true;
+		}
+		else
+		{
+			r[i].disabled = 0; 
+		}
+	}
+}
+
+</SCRIPT>
+</tbody></table>
+
+</form>
+
+
+
+{/literal}
+
+{include file="pagefooter.htm"}
+
+

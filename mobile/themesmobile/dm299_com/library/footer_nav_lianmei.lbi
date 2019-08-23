@@ -1,0 +1,134 @@
+<style>
+
+.weui-tabbar {
+    
+	display: -webkit-box;
+    
+	display: -webkit-flex;
+    
+	display: flex;
+    
+	position: fixed;
+    
+	z-index: 500;
+    
+	bottom: 0;
+    
+	width: 100%;
+    
+	background-color: #f7f7fa;
+
+}
+
+.weui-tabbar__item {
+    
+	display: block;
+    
+	-webkit-box-flex: 1;
+    
+	-webkit-flex: 1;
+    
+	flex: 1;
+    
+	padding: 5px 0 0;
+    
+	font-size: 0;
+    
+	color: #999;
+   
+	text-align: center;
+    
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+
+}
+.weui-tabbar__icon {
+   
+	display: inline-block;
+    
+	width: 27px;
+    
+	height: 27px;
+
+}
+
+.weui-tabbar__icon+.weui-tabbar__label {
+   
+	margin-top: 0!important;
+
+}
+
+
+.weui-tabbar__label {
+    
+	text-align: center;
+    
+	color: #999;
+    
+	font-size: 10px;
+    
+	line-height: 1.8;
+
+}
+
+.weui-tabbar__icon img {
+    
+	width: 100%;
+    
+	height: 100%;
+
+}
+
+</style>
+
+
+<div class="weui-tabbar" style="display:none;">
+    
+	<a href="https://edu.lian-mei.com/app/index.php?i=1&c=entry&do=index&m=fy_lessonv2" class="weui-tabbar__item">
+
+		<div class="weui-tabbar__icon">
+			<img src="https://sso.lian-mei.com/assets/edu.png"> 
+		</div>
+        
+		<p class="weui-tabbar__label"><span>培 训</span></p>
+    
+	</a>
+    
+	<a href="https://club.lian-mei.com/forum.php?forumlist=1&mobile=2" class="weui-tabbar__item">
+        
+		<div class="weui-tabbar__icon vux-reddot">
+			<img src="https://sso.lian-mei.com/assets/club.png"> 
+		</div>
+        <p class="weui-tabbar__label"><span>社 群</span></p>
+    
+	</a>
+    
+	<a href="https://shop.lian-mei.com/mobile" class="weui-tabbar__item weui-bar__item_on">
+
+		<div class="weui-tabbar__icon">
+			<img src="https://sso.lian-mei.com/assets/mall_active.png"> 
+		</div>
+        
+		<p class="weui-tabbar__label"><span>商 城</span></p>
+    
+	</a>
+    
+	<a href="https://management.lian-mei.com/s/probe" class="weui-tabbar__item">
+	
+        <div class="weui-tabbar__icon">
+			<img src="http://sso.lian-mei.com/assets/marketing.png">
+		</div>
+
+		<p class="weui-tabbar__label"><span>营 销</span></p>
+   
+	</a>
+    
+	<a href="https://sso.lian-mei.com/profile" class="weui-tabbar__item">
+       
+		<div class="weui-tabbar__icon"><img src="http://sso.lian-mei.com/assets/i.png"></div>
+       
+			<p class="weui-tabbar__label"><span>我 的</span></p>
+    
+	</a>
+
+</div>
+

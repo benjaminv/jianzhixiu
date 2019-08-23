@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>扫描-提示</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="shortcut icon" href="../favicon.ico" />
+<link rel="icon" href="../animated_favicon.gif" type="image/gif" />
+<link href="includes/scan/public/main.css" rel="stylesheet" type="text/css" />
+<link href="includes/scan/public/purebox.css" rel="stylesheet" type="text/css" />
+<link href="includes/scan/public/perfect-scrollbar.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="includes/scan/public/jquery.js"></script>
+<script type="text/javascript" src="includes/scan/public/jquery.purebox.js"></script>
+<script type="text/javascript" src="includes/scan/public/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="includes/scan/public/index.js"></script>
+<style>
+.notice1{width:80px;display:inline-block;}
+.pb-bd{padding:0;}
+</style>
+</head>
+<body class="iframe_body">
+<div class="warpper">
+	<div class="title">木马扫描</div>
+	<div class="content start_content">
+		<div class="explanation" id="explanation">
+			<div class="ex_tit" style="margin-bottom:0;"><i class="sc_icon"></i><h4>扫描提示：<font id="endMsg">正在扫描，请稍后&nbsp;<img src="includes/scan/load.gif"></font>，已扫描 <strong id="filenum"> 0 </strong>个文件，发现<strong> <font color="red" id="mumamun">0</font> </strong>个</font>可疑文件!</h4></div>
+		</div>
+		 <div class="flexilist" id="filehtml" style="display:none;">
+			<div class="common-content">
+				<div class="list-div" id="listDiv">
+					<table cellspacing="0" cellpadding="0" border="0">
+						<thead>
+							<tr>
+								<th width="45%"><div class="tDiv">文件</div></th>
+								<th width="15%"><div class="tDiv">更新时间</div></th>
+								<th width="25%"><div class="tDiv">特征</div></th>
+								<th width="15%"><div class="tDiv">操作</div></th>
+							</tr>
+						</thead>
+						<tbody id="addfilehtml">
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="flexilist" id="msghtml" style="display:none;">
+			<div class="switch_info">
+				<div id="notice1"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="footer">
+	<p>版权所有 © 2017-2020 <a href="http://www.dm299.com" target="_blank">苏州点迈软件系统有限公司</a>，并保留所有权利。</p>
+</div>
+
+<script type="text/javascript">
+function showmessage(filename,filetime,desc,type) {
+	$("#filehtml").show();
+	var handle='<a href="javascript:;" onclick="set_security_file(\''+filename+'\',this)">信任</a>';
+	if ( type==1 ){
+		handle='<a href="javascript:;" onclick="get_file_content(\''+filename+'\')">查看</a>&nbsp;'+handle;
+	}
+	$('<tr><td><div class="tDiv">'+filename+'<div></td><td><div class="tDiv">'+filetime+'<div></td><td><div class="tDiv">'+desc+'<div></td><td><div class="tDiv">'+handle+'<div></td></tr>').insertAfter("#addfilehtml");
+}
+
+function msg(str){
+	$("#notice1").html(str);
+	$("#msghtml").show();
+}
+</script>
+</body>
+</html>

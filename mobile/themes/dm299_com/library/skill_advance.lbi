@@ -1,0 +1,72 @@
+     {if $goods.is_promote and $goods.gmt_end_time and $goods.pd_seckill eq 2}
+    <!--判断是否是促销商品-->
+    <dt> <span id="ECS_GOODS_AMOUNT">{$goods.promote_price}</span> <em>促销价</em><em>剩余<i id="leftTime">{$lang.please_waiting}</i></em> </dt>
+    {insert_scripts files='lefttime.js'}<!--倒计时引用js-->
+    <dd><i>价格：<font>{$goods.shop_price_formated}</font></i>
+
+      <!-- {if $goods.give_integral eq '-1'} 购买此商品赠送积分-->
+      <em>赠送积分: <span id="ECS_GOODS_AMOUNT_JF"></span></em>
+      <!-- {elseif $goods.give_integral > 0} -->
+      <em>赠送积分: <span>{$goods.give_integral}</span></em>
+      <!-- {else} -->
+      <em>赠送积分: <span>0</span></em>
+      <!-- {/if} -->
+      <em id="IS_EXCLUSIVE" style="display:none">手机专享</em>
+      <!-- {if $goods.is_shipping} 为免运费商品则显示--><em>包邮</em><!-- {/if} -->
+    </dd>
+    {elseif  $goods.gmt_end_time and $goods.pd_seckill eq 1}
+      <!--判断是否是秒杀商品-->
+      <dt> <span id="ECS_GOODS_AMOUNT">{$goods.seckill_price}</span> <em>秒杀价</em><em>剩余<i id="leftTime">{$lang.please_waiting}</i></em> <em>{if $goods.seckill_num}剩余:{$goods.seckill_num}{else}已售完{/if}</em></dt>
+      {insert_scripts files='lefttime.js'}<!--倒计时引用js-->
+      <dd><i>价格：<font>{$goods.shop_price_formated}</font></i>
+          <!-- {if $goods.give_integral eq '-1'} 购买此商品赠送积分-->
+          <em>赠送积分: <span id="ECS_GOODS_AMOUNT_JF"></span></em>
+          <!-- {elseif $goods.give_integral > 0} -->
+          <em>赠送积分: <span>{$goods.give_integral}</span></em>
+          <!-- {else} -->
+          <em>赠送积分: <span>0</span></em>
+          <!-- {/if} -->
+          <em id="IS_EXCLUSIVE" style="display:none">手机专享</em>
+          <!-- {if $goods.is_shipping} 为免运费商品则显示--><em>包邮</em><!-- {/if} -->
+      </dd>
+  {else}
+
+    <dt> <span id="ECS_GOODS_AMOUNT">{$goods.shop_price_formated}</span>
+
+      <!-- {if $goods.is_shipping} 为免运费商品则显示--><em>包邮</em><!-- {/if} -->
+    </dt>
+    <dd>
+
+     <i>价格：<font>{$goods.market_price}</font></i>
+      <!-- {if $goods.give_integral eq '-1'} 购买此商品赠送积分-->
+      <em>赠送积分: <span id="ECS_GOODS_AMOUNT_JF"></span></em>
+      <!-- {elseif $goods.give_integral > 0} -->
+      <em>赠送积分: <span>{$goods.give_integral}</span></em>
+      <!-- {else} -->
+      <em>赠送积分: <span>0</span></em>
+      <!-- {/if} -->
+      <em id="IS_EXCLUSIVE" style="display:none">手机专享</em> </dd>
+{/if}
+{if $goods.pd_seckill eq 3}
+ <i style="font-size:14px;color:red">秒杀预告：秒杀期间可享受优惠</i>
+ <i  style="font-size:14px;color:red" id="leftTime"><i>
+  {insert_scripts files='lefttime.js'}<!--倒计时引用js-->
+{/if}
+	
+<script type="text/javascript">
+	var goods_id = {$goods_id};
+	var goodsattr_style = {$cfg.goodsattr_style|default:1};
+	var gmt_end_time = {$promote_end_time|default:0};
+	{foreach from=$lang.goods_js item=item key=key}
+	var {$key} = "{$item}";
+	{/foreach}
+	var goodsId = {$goods_id};
+	var now_time = {$now_time};
+
+	<!-- {literal} -->
+	onload = function(){
+	  changePrice();
+	  try { onload_leftTime(now_time); }
+	  catch (e) {}
+	}
+</script>

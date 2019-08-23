@@ -1,0 +1,674 @@
+<!DOCTYPE html >
+<html>
+<head>
+ <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>{$page_title}</title>
+  <meta name="Keywords" content="{$keywords}" />
+  <meta name="Description" content="{$description}" />
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+ <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/css/public.css"/>
+  <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/extpt.css" />
+  <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/css/index.css"/>
+
+{insert_scripts files='jquery-1.6.2.min.js '}
+{insert_scripts files='jquery.json.js,transport.js'}
+{insert_scripts files='common.js,shopping_flow.js'}
+<script type='text/javascript'>
+    setInterval(function(){
+		var dd=document.getElementById('topad').style.display;
+		if(dd=="none"){
+			document.getElementById('topad').style.display='block';
+			}
+	},40000);//界面加载四十秒后执行弹出。
+	//
+	 setInterval(function(){
+		var dd=document.getElementById('bannerDowm').style.display;
+		if(dd=="none"){
+			document.getElementById('bannerDowm').style.display='block';
+			}
+	},40000);//界面加载四十秒后执行弹出。
+</script>
+<script type="text/javascript" >
+function menuFixed(id){
+var obj = document.getElementById(id);
+var _getHeight = obj.offsetTop;
+
+window.onscroll = function(){
+changePos(id,_getHeight);
+}
+}
+function changePos(id,height){
+var obj = document.getElementById(id);
+var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+if(scrollTop < height){
+obj.style.position = 'relative';
+}else{
+obj.style.position = 'fixed';
+obj.style.top = '0';
+}
+}
+</script>
+<script type="text/javascript">
+window.onload = function(){
+menuFixed('topad');
+}
+//
+$(function(){
+
+
+$(".rich_media_meta_list span:first").css("display","none");
+}); 
+//
+</script>
+
+<!--微信支付js-->
+{insert_scripts files='transport.js'} 
+<script type="text/javascript">
+
+		//调用微信JS api 支付
+		function jsApiCall(jsApiParameters)
+		{   
+			       WeixinJSBridge.invoke(
+											'getBrandWCPayRequest',
+											jsApiParameters,
+											function(res){
+												WeixinJSBridge.log(res.err_msg);
+										if(res.err_msg == 'get_brand_wcpay_request:ok'){
+									   //alert(res.err_code+res.err_desc+res.err_msg);
+									  //window.location.href='{$dourl}&pay_status=1';
+									window.location='article_detail.php?id={$id}&de_adid={$ad_id}&act=payok&key={$key}';
+										 }else{
+									   //返回跳转到订单详情页面
+									   alert(支付失败);
+										}
+			
+			
+					 }
+				   );
+			
+						
+     }
+
+		function callpay()
+		{   
+			var jsApiParameters={$jsApiParameters};
+		    var reward_money= document.getElementById('reward_money').value;
+		    var reward_meg= document.getElementById('reward_meg').value;
+		    var anonymous_reward= $('input[id="anonymous_reward"]').filter(':checked').val();	
+			$.post("article_detail.php?id={$id}&de_adid={$ad_id}&act=reward",{'reward_money':reward_money,'reward_meg':reward_meg,'anonymous_reward':anonymous_reward},function(data,status){
+				data= eval('(' + data + ')');
+				jsApiParameters=data;	
+				if (typeof WeixinJSBridge == "undefined"){
+					if( document.addEventListener ){
+						document.addEventListener('WeixinJSBridgeReady', jsApiCall(jsApiParameters), false);
+					}else if (document.attachEvent){
+						document.attachEvent('WeixinJSBridgeReady', jsApiCall(jsApiParameters)); 
+						document.attachEvent('onWeixinJSBridgeReady', jsApiCall(jsApiParameters));
+					}
+				}else{
+					jsApiCall(jsApiParameters);
+				}		
+			});
+			
+		}
+		
+		
+		
+	</script>
+<style>
+.topad{ margin:0 auto;left:0; right:0; position:relative;  width:100%; max-width:650px; text-align:right;}
+/*.topad img{ width:100%;max-width:650px;}*/
+.teltopimg{width:10%; max-width:80px; min-width:50px;}
+.telimg{ width:10%; max-width:80px; min-width:50px;}
+.app-guide1 {
+	position:fixed;
+	bottom:46px;
+	left:0; right:0;
+	width:100%;
+	max-width:650px;
+	margin:0 auto;
+	background-color:rgba(0,0,0,0);
+	/*box-shadow:0 -1px 1px rgba(0,0,0,.10);*/
+	z-index:99999999999999999;
+}
+.app-guide1 .guide-cont {
+	position:relative;
+	display:block;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	padding:4px 0;
+	margin:0 90px 0 20px
+}
+.app-guide1 .guide-cont.touch::before {
+	content:"";
+	width:100%;
+	height:100%;
+	background-color:rgba(0,0,0,.06);
+	position:absolute;
+	top:0;
+	left:-20px;
+	padding:0 90px 0 20px
+}
+.app-guide1 .guide-logo {
+	float:left;
+	width:42px;
+	height:42px;
+	vertical-align:top;
+	margin-right:8px
+}
+.app-guide1 .guide-slogon,.app-guide1 .guide-dc {
+	color:#fff;
+	font-size:16px;
+	line-height:20px;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	overflow:hidden
+}
+.app-guide1 .guide-slogon span {
+	color:#fff;
+	font-size:16px;
+	line-height:20px;
+	margin-right:6px
+}
+.app-guide1 .guide-slogon span:last-of-type {
+	margin-right:0
+}
+.app-guide1 .guide-dc {
+	color:#ccc;
+	font-size:14px;
+	line-height:22px
+}
+.app-guide1 .guide-btn {
+	position:absolute;
+	top:10px;
+	right:10px;
+	width:80px;
+	height:30px;
+	background-color:#62af01;
+	border:0 none;
+	border-radius:3px;
+	color:#fff;
+	font:14px/30px microsoft yahei,helvetica,arial,sans-serif;
+	text-align:center;
+	padding:0
+}
+.app-guide1 .guide-btn.touch {
+	background-color:#529301
+}
+.guide-close {
+	position:absolute;
+	top:10%;
+	right:0;
+	width:20px;
+	height:20px;
+	line-height:999em;
+	overflow:hidden;
+}
+.guide-close::before {
+	content:"";
+	position:absolute;
+	left:3px;
+	bottom:2px;
+	width:28px;
+	height:28px;
+	background-color:#262626;
+	border-radius:28px
+}
+.guide-close::after {
+	content:"";
+	position:absolute;
+	top:4px;
+	right:2px;
+	width:9px;
+	height:9px;
+	background:url(images/640.png) no-repeat 0 0;
+	-webkit-background-size:9px auto;
+	background-size:9px auto
+}
+.guide-fixed .footer {
+	padding-bottom:65px
+}
+
+.bian{ border-right:1px solid #eeeeee; margin-left:-1px;}
+.footer_nav{ width:100%; height:50px; position:fixed; z-index:100; bottom:0px; background:#f8f8f8;border-top:1px solid #eeeeee;}
+.footer_nav ul{ width:40%; float:left; height:50px;}
+.footer_nav ul li{ width:33%; float:left; height:50px;}
+.footer_nav ul li span{ display:block; width:100%; height:30px; text-align:center; font-size:12px; color:#666; line-height:20px;}
+.footer_nav ul li em{ display:block; width:30px; height:25px; margin:auto;background: url(../images/pub_goods.png) no-repeat;background-size:auto 280px;}
+.footer_nav ul li .goods_nav1{ background-position:0 -190px;}
+.footer_nav ul li .goods_nav2{background-position:0 -156px;}
+.footer_nav ul li .goods_nav3{background-position:0 -120px;}
+
+.footer_nav dl{ width:60%; float:left; height:50px;}
+.footer_nav dl dd{ width:50%; float:left; height:51px;text-align:center; margin-top:-1px;}
+.footer_nav dl dd a{ font-size:18px; line-height:51px; color:#FFF }
+.footer_nav dl .flow{ background:#ff9c00}
+.footer_nav dl .goumai{ background:#dd2726}
+.apply{width: 100%; padding-top:0px; background: #ffffff;padding-bottom:10px;}
+.apply p{text-align: center;color: #333;font-size: 23px;line-height: 45px; margin:0;height: 45px;background-color:#f6f6f6;  margin-top:50px;}
+.apply dl{width: calc(100% - 20px);padding: 0 10px;color: #111111;font-size: 16px;line-height: 34px;margin-bottom: 15px;}
+.apply dl dt{float: left;display: inline-block;width: 85px;}
+.apply dl dd{float: left;display: inline-block;width: calc(100% - 0px);}
+.apply dl dd .input_txt,.apply dl dd .textarea{width:calc(100% - 22px);padding:0 10px;border:1px solid #cccccc;border-radius: 3px;font-size: 16px;}
+.apply dl dd .input_txt{height: 40px;line-height:38px;border:#ddd 1px solid;}
+.apply dl .inptmain{border:#1bbbbb 1px solid; width:100%; margin-top:20px;}
+
+.apply dl dd  .btn input{height:40px;line-height:40px; border:0; background:#ddd; width:30%; display:block; float:right}
+.apply dl dd .textarea{padding:5px 10px;line-height:24px;height:80px}
+.apply dl dd  .sel{ width:100%; border:#1bbbbb 1px solid;}
+.apply .upload{}
+.apply .upload dt{line-height: 24px;}
+.apply .btn_box{padding: 0 10px;display: block;}
+.apply .btn_box .button{height: 50px;line-height: 50px;cursor: pointer;color: #fff;font-size: 20px;text-align: center;border-radius: 5px;width:100%;background-color: #09B1B9;border:none;border-bottom: 0px solid #a40000;margin: 0 auto;}
+.apply .btn_boxx{padding: 0 10px;display: block;}
+.apply .btn_boxx .button{height: 50px;line-height: 50px;cursor: pointer;color: #fff;font-size: 20px;text-align: center;border-radius: 5px;width:100%;background-color: #f1901f;border:none;border-bottom: 0px solid #a40000;margin: 0 auto;}
+
+
+
+#appdown .appcontent {background-color: rgba(32, 37, 47, 0.95);height:36px;left: 0px;padding: 5px 0px;position: fixed;right: 0px;top: 0px;width: 100%;z-index: 999;}
+#appdown .appcontent a { display: block;}
+#appdown .down_btn { background:#f8830c ; border-radius: 3px; color: #fff; display: inline-block; font-size:12PX; height: 28px; line-height: 28px; padding: 0 8px; position: absolute; right: 8px; top: 10px;}
+#appdown .ffl_icon2 { display: inline-block;float: left; height: 36px; margin: 0 10px; width: 36px; background-color:#fff; border-radius:3px; display:block;}
+#appdown .ffl_icon {
+    border-radius: 3px;
+    display: block;
+    float: left;
+    height: 36px;
+    margin: 0 10px;
+    overflow: hidden;
+    width: 36px;
+    background: url(http://img1.88.la/images/logo_36.png) center center;
+    background-size: 100% 100%;
+}
+
+#appdown .ffl_icon img { height: 36px; width: 36px;}
+#appdown .top_text { color: #fff;display: inline-block; height: 48px; line-height:17px; }
+#appdown .top_text span {font-size:14px; margin-top:2px; display:block; line-height:17px;}
+#appdown .top_text p { font-size: 12px; line-height: 16px; font-family:SimSun;}
+.cinfo{ height:24px;line-height:40px; padding:0px 16px;}
+.cinfol{ float:left; padding-right:10px; font-size:14px;}
+.cinfol .green{ width:35px; height:24px; display:block;  background-position:0px -1px; background-size:100% 100%;background-repeat:no-repeat;}
+.pagecontent img{ width:100%!important;}
+
+.btn-container{
+	 text-align:center;
+     margin:auto;
+}
+.btn-container div {
+    border: 1.5px solid #FFF;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    color: #FFF;
+    text-align: center;
+    background-color:#ff9c00;
+    margin-right: 10px;
+    min-width: 90px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+<!--赞赏-->
+
+.project-detail-box {
+    background: #fff;
+    border: 1px solid #e1e5e7;
+    border-radius: 2px;
+    margin-bottom: 20px;
+}
+.project-detail_title {
+    border-top: none;
+    color: #2b3845;
+    padding: 15px 15px 10px;
+    /*border-bottom: 1px solid #e1e5e7;*/
+}
+.tz{ min-height:90px; border-top:1px solid #D0D0D0; padding-top:15px;}	
+.tz img{width:100%;height:100%; border-radius:50%; border:1px solid #cccccc; padding:2px;}	
+.tz .imgbox{position:relative;width:50px; height:50px; float:left; margin-left:10px;margin-top:10px; }
+.tz .sfbox{position:absolute; width:20px; height:20px; line-height:20px; border:2px solid #FFFFFF; font-size:8px; color:#FFFFFF; text-align:center;border-radius:50%; right:-10px; top:-3px; background:red;}
+.tz .bdbox{position:absolute; width:20px; height:20px; line-height:20px; border:2px solid #FFFFFF; font-size:8px; color:#FFFFFF; text-align:center;border-radius:50%; right:-10px; top:-3px; background:#ff9c00;}
+
+.mod-project-support_item__detail {
+    width:250px;
+    padding: 0 0 1px 0;
+   /* border-bottom: 1px solid #e1e5e7;*/
+    float: left;
+    margin-left: 30px;
+	
+   
+}
+.project-support_item__detail__user {
+ 
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 15px;
+    line-height: 1;
+}
+.project-support_item__detail__time {
+   
+    font-size: 12px;
+    color: #999;
+    position: relative;
+}
+.project-support_item__detail__content {
+   
+    font-size: 15px;
+    margin: 3px 0;
+    color: #222;
+}
+
+</style>
+	</head>
+<body>
+{insert name='share'}{insert name='add_url_uid'} 
+<script type="text/javascript"> 
+var process_request = "{$lang.process_request}";
+</script> 
+<script language="javascript"> 
+<!--
+/*屏蔽所有的js错误*/
+function killerrors() { 
+return true; 
+} 
+window.onerror = killerrors; 
+//-->
+function tiaozhuan()
+{ 
+//var thisurl = window.location.href;
+document.getElementById("share_form").submit();
+}
+</script> 
+<script type="text/javascript">
+				/*第一种形式 第二种形式 更换显示样式*/
+				function setGoodsTab(name,cursel,n){
+					$('html,body').animate({'scrollTop':0},600);
+				for(i=1;i<=n;i++){
+				var menu=document.getElementById(name+i);
+				var con=document.getElementById("user_"+name+"_"+i);
+				menu.className=i==cursel?"on":"";
+				con.style.display=i==cursel?"block":"none";
+				}
+				}
+				</script> 
+
+<div class="page-service-exchange">
+
+<div id="appdown">
+<div class="appcontent">
+<a pos="1" id="dlurl" href="{$ad.ad_url}">
+<span class="down_btn">立即领取</span>
+<span class="ffl_icon"></span>
+<div class="top_text">
+<span>{$shop_name}</span>
+<p>{$ad.ad_text}</p>
+</div>
+</a>
+</div>
+</div>
+
+<!--顶部广告-->
+<!--{if $ret.ifweizhi == 0}-->
+		 <div style=" height:50px;"></div>
+         <div class="topad"  style="display:block"><a href="article_detail.php?id={$id}&de_adid={$ad_id}&tourl={$row.ad_link}"><img src="{$row.ad_img}" style="width:100%;max-height:100px; " ></a>
+         </div>
+        <!-- {/if} -->
+<div class="rich_media ">                
+	<div class="rich_media_inner">
+		<div style=" height:5px;"></div>
+		<div id="page-content">
+			<div id="img-content">
+				<div class="rich_media_content" id="js_content">
+					<div class="pagecontent">
+  
+             {if $article.content}
+			{$article.content}
+			{else}
+			{$lang.content_empty}
+			{/if}
+</div>
+				</div>
+				<!--{if $row.erweima}-->
+				<a name="weixin"></a>
+                 <div style="text-align:center; margin-top:50px;"><img src="{$row.erweima}" border="0" /></div>
+				  <!-- {/if} -->
+			</div>
+			
+		</div>
+		
+	</div>
+	
+</div>
+<!--赞赏-->
+<div style=" height:20px;"></div>
+<div class="btn-container" ><!--{if $ad.is_zanshang}--><div data-reactid=".0.1.0.0.0.1.1.2.0.1"><a  style="color:#FFF;" onClick="showZADiv();">打赏({$Total}次)</a></div> <!--{/if}-->   <div data-reactid=".0.1.0.0.0.1.1.2.0.1">阅读({$count}次)</div></div>
+<div style=" height:20px;"></div>
+
+<!--{if $ad.is_zanshang}-->
+<div class="project-detail-box">
+<div class="project-detail_title">TA的支持者</div>
+         <!--{if $Total}-->
+           <div class="tz">
+		            <div class="imgbox">
+                      <div class="sfbox">沙发</div>	
+					       <img src="{$shafa.headimgurl}">
+					</div>     
+						 <div class="mod-project-support_item__detail">
+					          <div class="project-support_item__detail__user">{$shafa.nickname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>支持了<strong>{$shafa.reward_money}</strong> 元</small></div>            
+						      <div class="project-support_item__detail__time">{$shafa.rewardtimeymd}</div>             
+						      <div class="project-support_item__detail__content">{$shafa.reward_meg}</div>   
+						 </div>   
+			 </div> 
+			 <!-- {foreach from=$bandeng item=co }-->
+			  <div class="tz">
+		            <div class="imgbox">
+                      <div class="bdbox">板凳</div>	
+					        <img src="{$co.headimgurl}">
+					</div>     
+						 <div class="mod-project-support_item__detail">
+					          <div class="project-support_item__detail__user">{$co.nickname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>支持了<strong>{$co.reward_money}</strong> 元</small></div>            
+						      <div class="project-support_item__detail__time">{$co.rewardtimeymd}</div>             
+						      <div class="project-support_item__detail__content">{$co.reward_meg}</div>   
+						 </div>   
+			 </div>  
+			   <!--{/foreach}-->  
+			   <!--{else}-->
+			    <div class="tz">
+                <div class="more_loader_spinner" style="display: block;"><div class="jiazai"><em></em><span>亲，还没有人打赏哦！</span><em></em></div></div>
+				</div>
+            <!--{/if}-->                
+		 </div>
+										
+ <!--{/if}-->
+<!--赞赏end-->
+  
+<!-- #BeginLibraryItem "/library/extpintuan.lbi" -->
+<!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/page_footer.lbi" -->
+  <!-- #EndLibraryItem -->
+</div>
+ 		
+<!--底部导航-->
+<div style=" height:60px;"></div>
+<div class="footer_nav">
+<!--{if $ret.ifweizhi  eq 1 }-->
+	<div class="app-guide1 adweix" id="bannerDowm" style="display:block">
+	
+    <a href="article_detail.php?id={$id}&de_adid={$ad_id}&tourl={$row.ad_link}" ><img src="{$row.ad_img}" style="width:100%; max-height:100px;" ></a>
+	</div>
+	
+	  <!-- {/if} -->
+ <ul> 
+ <li class="bian"><a href="index.php"><em class="goods_nav1"></em><span>首页</span></a> </li>
+ <li class="bian"><a href="article_cat_ad.php?id={$ad.article_catid}"><em class="goods_nav2"></em><span>更多</span></a> </li>
+ <li><a class="button active_button" onClick="showFDiv();"><em class="goods_nav3"></em><span>分享</span></a></li>
+ </ul>
+ <dl>
+ <dd class="flow"><a class="button active_button" onClick="showFADiv();">发布文章</a> </dd>
+ <dd class="goumai"><a style="display:block;" href="article_ad.php?cat=list">广告管理</a> </dd>
+ </dl>                
+</div>    
+   
+       
+          <div class="tipMask" id="hidDiv" style="display:none; z-index:9000; background-color:#000; opacity:0.5;" ></div>
+        <div class="popGeneral" id="popDiv" style="background:none; top:0px; ">
+        <img src="themesmobile/dm299_com/images/share_guide.png" onClick="closeFDiv()"  width="100%" height="100%"/>
+        </div>  
+		  
+   <div class="tipMask" id="hidADiv" style="display:none; z-index:9000; background-color:#000; opacity:0.5;" ></div>
+    <div  class="popGeneral" id="popADiv" style="background:none; top:0px; ">
+       <div class="apply" id="apply">
+	        <a style="float:right;font-size:14px;margin-right:15px;margin-top:15px" onClick="closeFADiv()">关闭</a>
+	     <div style=" height:30px;"></div>
+		  <dd style="color:#F1901F; font-size:12px;line-height:30px;  margin-top:6px; height:30px; border-top:#ccc 1px solid;"></dd>
+	<form action="article_detail.php?id={$id}" id="signupok" method="post" name="addform" >
+       
+		<dl class="clearfix">
+			
+			<dd>
+			<select class="input_txt sel" name="adid" >
+            <option value="">请选择广告</option>
+				<!-- {foreach from=$contents item=co }-->
+					<option value="{$co.id}" >{$co.ad_title|escape:html|truncate:10}</option>
+				<!--{/foreach}-->
+			</select>
+			</dd>
+		</dl>
+        
+        <dl class="clearfix">
+			
+			<dd>广告位置：<label>顶部 <input type="radio" name="adweizhi" value="0"  /></label>
+                 <label style="margin-left:10px;">底部 <input name="adweizhi" type="radio" id="adweizhibtm" value="1" checked="CHECKED" /></label>
+                 
+             
+            </dd>
+			</dl>
+           <div class="btn_box" style="margin-bottom:20px;">
+			<input type="submit" name="signup" class="button"  value="确认提交" onclick="return postcheck();">
+		</div>
+            <dd style="color:#F1901F; margin:0 auto; font-size:11px;line-height:30px;  margin-top:6px; height:30px; border-top:#ccc 1px solid;">警告！禁止发布黄赌毒以及违反国家相关法律法规的信息</dd>
+		
+		</form>
+		</div>
+        </div> 
+		
+		<!--文章赞赏弹出-->
+			  
+   <div class="tipMask" id="zidADiv" style="display:none; z-index:9000; background-color:#000; opacity:0.5;" ></div>
+    <div  class="popGeneral" id="zopADiv" style="background:none; top:0px; ">
+       <div class="apply" id="apply">
+	        <a style="float:right;font-size:14px;margin-right:15px;margin-top:15px" onClick="closeZADiv()">关闭</a>
+	     <div style=" height:30px;"></div>
+		  <dd style="color:#F1901F; font-size:12px;line-height:30px;  margin-top:6px; height:30px; border-top:#ccc 1px solid;"></dd>
+	<form id="signupok" method="post" name="reward" >
+	    <dl class="clearfix">
+			
+			<dd>打赏金额：</dd>
+			<dd><input type="tel" class="input_txt" value="" name="reward_money" id="reward_money" placeholder="请输入打赏金额" style="width:92%;height:40px;" onpropertychange="if(isNaN(value)) value=value.substring(0,value.length-1);"  maxlength="5" ></dd>
+        </dl>
+       
+		<dl class="clearfix">
+			
+			<dd>鼓励小编：</dd>
+			<dd><input type="text" class="input_txt" value="" name="reward_meg"  id="reward_meg" placeholder="说一句鼓励小编的话" style="width:92%;height:40px;"></dd>
+        </dl>
+        <dl class="clearfix">
+			
+			<dd>匿名打赏：<label>是 <input type="radio" name="anonymous_reward" id="anonymous_reward" value="1"  /></label>
+                 <label style="margin-left:10px;">否 <input name="anonymous_reward" type="radio" id="anonymous_reward" value="0" checked="CHECKED" /></label>
+                 
+             
+            </dd>
+			</dl>
+           <div class="btn_box" style="margin-bottom:20px;">
+			<input type="button" name="signup" class="button"  onClick="callpay()" value="确认提交">
+			
+		</div>
+            <dd style="color:#F1901F; margin:0 auto; font-size:11px;line-height:30px;  margin-top:6px; height:30px; border-top:#ccc 1px solid;">一分也是爱！！您的每一次打赏，都是对我们的认可和鼓励!!</dd>
+		
+		</form>
+		</div>
+        </div> 
+    <!--关注+分享+返回顶部-Start  PRINCE 120029121-->
+         <!--弹出层 S-->
+        <script type="text/javascript">
+            function showFDiv(){
+                document.getElementById('popDiv').style.display = 'block';
+				document.getElementById('hidDiv').style.display = 'block';
+				document.getElementById('cartNum').innerHTML = document.getElementById('goods_number').value;
+				document.getElementById('cartPrice').innerHTML = document.getElementById('ECS_GOODS_AMOUNT').innerHTML;
+            }
+            function closeFDiv(){
+                document.getElementById('popDiv').style.display = 'none';
+				document.getElementById('hidDiv').style.display = 'none';
+				document.getElementById('joinDiv').style.display = 'none';
+            }
+			   
+			   function showFADiv(){
+                document.getElementById('popADiv').style.display = 'block';
+				document.getElementById('hidADiv').style.display = 'block';
+				
+            }
+			  function showZADiv(){
+                document.getElementById('zopADiv').style.display = 'block';
+				document.getElementById('zidADiv').style.display = 'block';
+				
+            }
+            function closeFADiv(){
+                document.getElementById('popADiv').style.display = 'none';
+				document.getElementById('hidADiv').style.display = 'none';
+				
+            }   
+			function closeZADiv(){
+                document.getElementById('zopADiv').style.display = 'none';
+				document.getElementById('zidADiv').style.display = 'none';
+				
+            }  
+			
+            function showReg(){
+                document.getElementById('popReg').style.display = 'block';
+				document.getElementById('hidReg').style.display = 'block';
+            }
+            function closeReg(){
+                document.getElementById('popReg').style.display = 'none';
+				document.getElementById('hidReg').style.display = 'none';
+            }
+         </script>
+		<script>
+        function goTop(){
+            $('html,body').animate({'scrollTop':0},600);
+        }
+        </script>
+          <!--广告微信-->
+        	<div class="float_right">
+            <!--{if $row.erweima}-->
+            <a href="#weixin" class="float_icon" ><img src="images/float_add.png"></a> 
+            <!-- {else} -->
+            <a href="javascript:showReg();" class="float_icon" ><img src="images/float_add.png"></a> 
+            <!-- {/if} -->  
+			<br/>
+			<br/>
+			   <!--{if $row.adtelnumber}--> 
+            <a href="tel:{$row.adtelnumber}" class="float_icon" ><img src="images/new_topup.png"></a> 
+			<!-- {/if} -->  
+       </div>
+	   
+        <!--关注弹出框 S-->
+        <div class="tipMask" id="hidReg" style="display:none; z-index:9000; background-color:#000; opacity:0.5;" ></div>
+        <div class="popGeneral" id="popReg"  style=" display:none; background:none; bottom:50px;text-align:center;" onClick="closeReg()">
+         <img src="{$_SERVER[HTTP_HOST]}/mobile/images/weixin/pt_qrcode.jpg" style="width:80%;height:auto"  />
+        </div>
+       
+  <script type="text/javascript">
+function postcheck(){
+	if (document.addform.adid.value=="" ){
+		alert('请选择广告！');
+		document.addform.adid.focus();
+		return false;
+	}
+	document.addform.submit();
+	return true;	
+}
+</script>
+</body>
+
+</html>

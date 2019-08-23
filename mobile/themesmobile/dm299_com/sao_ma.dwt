@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+	    *{
+	    	margin: 0;
+	    	padding:0;
+	    	font-size: 33px;
+	    }
+		.zhe_zhao{
+			z-index: 99;
+			position: absolute;
+			width:100%;
+			height: 100%;
+			margin-top: -300px;
+			background-color: #353232;
+		}
+		.button{
+			list-style: none;
+			width: 200px;
+			height: 80px;
+			position: relative;
+			left:50%;
+			margin-left: -100px;
+            top: 30%;
+            margin-top: 60px;
+			
+		}
+		.buten{
+			background-color: #02a1c1;
+			border:none;
+			text-decoration: none;
+			float: left;
+            margin-left: 240px;
+			font-size: 33px;
+			color: #fff;
+			padding: 30px;
+			padding-left:20px;
+			padding-right: 20px;
+
+			border-radius: 4px;
+
+		}
+	</style>
+</head>
+<body style="background-color: #29AC78;color: #fff;">
+	  <div class="zhe_zhao" style="display: <?php  if(isset($_SESSION['user_id']) && $_SESSION['user_id']){echo 'none';}else{echo 'block';}?>">
+		<a href="./user.php?teshu_tiao_zhuan=tiaozhaunhuilai&bianhao=<?php echo $_REQUEST['bianhao'];?>&jifen=<?php echo $_REQUEST['jifen'];?>" style="text-decoration: none;">
+		    
+
+		    <h3 style="color:#fff;text-align: center;margin-top:260px;font-size: 33px;">您还没有登录，请先登入后再进行操作！！！</h3>
+			<button  class="button" style="font-size: 33px;">立即登录</button>
+
+		</a>
+	</div>
+	<div style="font-size:18px;text-align: center;margin-top: 160px; display:{$zengsong}">
+
+		<header style="margin-top: 20px;">第<i>1</i>次扫码，商品为正品</header>
+
+    	<div style="margin-top: 20px;margin-bottom: 20px;">抽完奖后，赠送您<i><?php echo $jifen;?></i>积分</div>
+        <div style="margin-top: 40px;">
+        	<a href="./index.php" style="text-decoration: none;margin-right: 20px;">
+        		<button  class="buten">立即购买</button>
+        	</a>
+    		<a href="./dzp.php?id=<?php echo $id;?>&password=<?php echo $password;?>&time=<?php echo $time;?>&md=<?php echo $md;?>" style="margin-top: 20px;text-decoration: none;margin-left: 20px;">
+    		<button  class="buten">立即抽奖</button>
+    	</a>
+        </div>
+    	
+		
+	</div> 
+    <div style="clear: both;"></div>
+	<div style="text-align: center;margin-top: 300px;font-size:33px;display:{if $zengsong == 'block'}none{else} block{/if} ">
+		该商品已经参加过抽奖，请更换商品！！！
+	</div>
+    
+</body>
+</html>

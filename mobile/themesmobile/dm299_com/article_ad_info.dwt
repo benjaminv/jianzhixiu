@@ -1,0 +1,195 @@
+<!DOCTYPE html >
+<html>
+<head>
+ <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>{$page_title}</title>
+  <meta name="Keywords" content="{$keywords}" />
+  <meta name="Description" content="{$description}" />
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+ <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/css/public.css"/>
+  <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/extpt.css" />
+<style>
+/*底部导航*/
+body{margin: 0 auto;min-width: 320px;max-width: 640px;height: 100%;}
+.bian{ border-right:1px solid #eeeeee; margin-left:-1px;}
+.footer_nav{ width:100%; height:50px; position:fixed; z-index:100; bottom:0px; background:#f8f8f8;border-top:1px solid #eeeeee;}
+.footer_nav ul{ width:40%; float:left; height:50px;}
+.footer_nav ul li{ width:33%; float:left; height:50px;}
+.footer_nav ul li span{ display:block; width:100%; height:30px; text-align:center; font-size:12px; color:#666; line-height:20px;}
+.footer_nav ul li em{ display:block; width:30px; height:25px; margin:auto;background: url(../images/pub_goods.png) no-repeat;background-size:auto 280px;}
+.footer_nav ul li .goods_nav1{ background-position:0 -190px;}
+.footer_nav ul li .goods_nav2{background-position:0 -156px;}
+.footer_nav ul li .goods_nav3{background-position:0 -120px;}
+
+.footer_nav dl{ width:60%; float:left; height:50px;}
+.footer_nav dl dd{ width:50%; float:left; height:51px;text-align:center; margin-top:-1px;}
+.footer_nav dl dd a{ font-size:18px; line-height:51px; color:#FFF }
+.footer_nav dl .flow{ background:#ff9c00}
+.footer_nav dl .goumai{ background:#dd2726}
+.apply{width: 100%; padding-top:0px; background: #ffffff;padding-bottom:10px;}
+.apply p{text-align: center;color: #ffffff;font-size: 23px;line-height: 45px; margin:0;height: 45px;background-color:#1BBBBB;  margin-top:0px;}
+.apply dl{width: calc(100% - 20px);padding: 0 10px;color: #111111;font-size: 16px;line-height: 34px;margin-bottom: 15px;}
+.apply dl dt{float: left;display: inline-block;width: 85px;}
+.apply dl dd{float: left;display: inline-block;width: calc(100% - 0px);}
+.apply dl dd .input_txt,.apply dl dd .textarea{width:calc(100% - 22px);padding:0 10px;border:1px solid #cccccc;border-radius: 3px;font-size: 16px;}
+.apply dl dd .input_txt{height: 40px;line-height:38px;border:#ddd 1px solid;}
+.apply dl .inptmain{border:#1bbbbb 1px solid; width:100%; margin-top:20px;}
+
+.apply dl dd  .btn input{height:40px;line-height:40px; border:0; background:#ddd; width:30%; display:block; float:right}
+.apply dl dd .textarea{padding:5px 10px;line-height:24px;height:80px}
+.apply dl dd  .sel{ width:100%; border:#1bbbbb 1px solid;}
+.apply .upload{}
+.apply .upload dt{line-height: 24px;}
+.apply .btn_box{padding: 0 10px;display: block;}
+.apply .btn_box .button{height: 50px;line-height: 50px;cursor: pointer;color: #fff;font-size: 20px;text-align: center;border-radius: 5px;width:100%;background-color: #09B1B9;border:none;border-bottom: 0px solid #a40000;margin: 0 auto;}
+.apply .btn_boxx{padding: 0 10px;display: block;}
+.apply .btn_boxx .button{height: 50px;line-height: 50px;cursor: pointer;color: #fff;font-size: 20px;text-align: center;border-radius: 5px;width:100%;background-color: #f1901f;border:none;border-bottom: 0px solid #a40000;margin: 0 auto;}
+
+</style>
+	</head>
+<body >
+ <!-- #BeginLibraryItem "/library/global_nav.lbi" --><!-- #EndLibraryItem -->
+ 
+<div class="apply" id="apply">
+	<p>添加广告位<span style="float:right;font-size:12px;margin-right:10px"><a href="article_ad.php?act=ad_list" style="color:#ffffff">广告列表</a></span></p>
+	<br/>
+	<form action="article_ad.php?act=ad_info" id="signupok" method="post" name="addform"  enctype="multipart/form-data">
+		<dl class="clearfix">
+			<dd>广告标题：</dd>
+			<dd><input type="text" class="input_txt" value="" name="adtitle" id="adtitle" placeholder="请输入广告标题" style="width:95%;height:50px;"></dd>
+		</dl>
+		<dl class="clearfix">
+			<dd>广告链接：</dd>
+			<dd><input type="text" class="input_txt" value="" name="adlink" id="adlink" placeholder="广告链接（包含：http://）" style="width:95%;height:50px;"></dd>
+		</dl>
+        <dl class="clearfix">
+			<dd>联系电话：</dd>
+			<dd><input type="tel" class="input_txt" value="" name="adtelno" id="adtelno" placeholder="请输入联系电话" style="width:95%;height:50px;"></dd>
+		</dl>
+        
+		<dl class="clearfix">
+			<dd>广告图片：<span style="font-size:13px; color:#666;">(尺寸：750像素*150像素)</span></dd>
+			<dd><input type="file" class="input_txt"   placeholder="选择上传广告图片" name="ad_img" style="width:100%;height: 50px;box-sizing: border-box;padding: 14px;color: #696969;font-size: 12px;line-height: 12px;border: #e6e6e6 1px solid;
+background: #fff;"></dd>
+		</dl>
+		
+        <dl class="clearfix">
+			<dd>二维码：<span style="font-size:13px; color:#666;">(尺寸：258像素*258像素 可选）</span></dd>
+			<dd><input type="file" class="input_txt"   placeholder="选择上传二维码图片" name="qrcode" style="width:100%;height: 50px;box-sizing: border-box;padding: 14px;color: #696969;font-size: 12px;line-height: 12px;border: #e6e6e6 1px solid;
+background: #fff;"></dd>
+		</dl>
+        <br/>
+       
+		<div class="btn_box" style="margin-bottom:50px;">
+			<input type="submit" name="signup" class="button" value="确认提交"  onclick="return postcheck();">
+		</div>
+		
+		
+	</form>
+
+</div>
+ <!-- #BeginLibraryItem "/library/page_footer.lbi" -->
+  <!-- #EndLibraryItem -->
+<!--底部导航-->
+<div style=" height:60px;"></div>
+<div class="footer_nav">
+ <ul> 
+ <li class="bian"><a href="index.php"><em class="goods_nav1"></em><span>首页</span></a> </li>
+ <li class="bian"><a href="article_cat_ad.php?id={$ad.article_catid}"><em class="goods_nav2"></em><span>更多</span></a> </li>
+ <li><a class="button active_button" onClick="showFDiv();"><em class="goods_nav3"></em><span>分享</span></a></li>
+ </ul>
+ <dl>
+ <dd class="flow"><a style="display:block;" href="article_cat_ad.php?id={$ad.article_catid}">发布文章</a> </dd>
+ <dd class="goumai"><a style="display:block;" href="article_ad.php?cat=list">广告管理</a> </dd>
+ </dl>                
+</div>    
+   
+       
+          <div class="tipMask" id="hidDiv" style="display:none; z-index:9000; background-color:#000; opacity:0.5;" ></div>
+        <div class="popGeneral" id="popDiv" style="background:none; top:0px; ">
+        <img src="themesmobile/dm299_com/images/share_guide.png" onClick="closeFDiv()"  width="100%" height="100%"/>
+        </div>    
+
+    <!--关注+分享+返回顶部-Start  PRINCE 120029121-->
+         <!--弹出层 S-->
+        <script type="text/javascript">
+            function showFDiv(){
+                document.getElementById('popDiv').style.display = 'block';
+				document.getElementById('hidDiv').style.display = 'block';
+				document.getElementById('cartNum').innerHTML = document.getElementById('goods_number').value;
+				document.getElementById('cartPrice').innerHTML = document.getElementById('ECS_GOODS_AMOUNT').innerHTML;
+            }
+            function closeFDiv(){
+                document.getElementById('popDiv').style.display = 'none';
+				document.getElementById('hidDiv').style.display = 'none';
+				document.getElementById('joinDiv').style.display = 'none';
+            }
+			   
+            function showReg(){
+                document.getElementById('popReg').style.display = 'block';
+				document.getElementById('hidReg').style.display = 'block';
+            }
+            function closeReg(){
+                document.getElementById('popReg').style.display = 'none';
+				document.getElementById('hidReg').style.display = 'none';
+            }
+         </script>
+		
+
+        
+        <!--关注弹出框 S-->
+        <div class="tipMask" id="hidReg" style="display:none; z-index:9000; background-color:#000; opacity:0.5;" ></div>
+        <div class="popGeneral" id="popReg"  style=" display:none; background:none; bottom:50px;text-align:center;" onClick="closeReg()">
+         <img src="{$_SERVER[HTTP_HOST]}/mobile/images/weixin/pt_qrcode.jpg" style="width:80%;height:auto"  />
+        </div>
+        <!--关注弹出框 E-->
+  
+		<div class="float_right">
+            <!--{if $weixininfo.isfollow  }-->
+            <a href="javascript:showFDiv();" class="float_icon" ><img src="images/float_share.png"></a> 
+            <!-- {else} -->
+            <a href="javascript:showReg();" class="float_icon" ><img src="images/float_add.png"></a> 
+            <!-- {/if} -->    
+            
+       </div>
+    <!--关注+分享+返回顶部-End  PRINCE 120029121-->
+	
+	<script type="text/javascript">
+function postcheck(){
+	if (document.addform.adtitle.value=="" ){
+		alert('请填写广告标题！');
+		document.addform.adtitle.focus();
+		return false;
+	}
+	if (document.addform.adlink.value=="" ){
+		alert('请填写广告链接！');
+		document.addform.adlink.focus();
+		return false;
+	}
+	if(document.addform.adtelno.value=="" )
+	{
+		alert('手机号不能为空！'); 
+		document.addform.adtelno.focus();
+		return false;
+
+	}
+	if (document.addform.ad_img.value=="" ){
+		alert('请上传广告图片！');
+		document.addform.ad_img.focus();
+		return false;
+	}
+	/*if (document.addform.qrcode.value=="" ){
+		alert('请上传二维码图片！');
+		document.addform.qrcode.focus();
+		return false;
+	}*/
+	
+	document.addform.submit();
+	return true;	
+}
+</script>
+	
+</body>
+
+</html>

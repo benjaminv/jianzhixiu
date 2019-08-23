@@ -1,0 +1,88 @@
+<!-- $Id: third_customer_list.htm 2015-08-25 14:45:21Z langlibin $ -->
+
+{if $full_page}
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+<!-- <div class="form-div"> -->
+  <!-- <form action="javascript:searchCustomer()" name="searchForm"> -->
+    <!-- <img src="images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" /> -->
+    <!-- {$lang.cus_name} <input type="text" name="keyword" size="30" /> -->
+    <!-- <input type="submit" value="{$lang.button_search}" class="button" /> -->
+  <!-- </form> -->
+<!-- </div> -->
+<form method="POST" action="queue_msg.php?act=batch_drop" name="listForm" onsubmit="return confirm('{$lang.batch_drop_confirm}')">
+<!-- start cus list -->
+<div class="list-div" id="listDiv">
+{/if}
+
+  <table cellpadding="3" cellspacing="1">
+    <tr>
+      <th><input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox" />
+      <a href="javascript:listTable.sort('id'); ">{$lang.id}</a>{$sort_id}</th>
+      <th>{$lang.queue_type}</th>
+      <th>{$lang.queue_param}</th>
+      <th>{$lang.operator_status}</th>
+      <th>{$lang.result_status}</th>
+      <th><a href="javascript:listTable.sort('create_time'); ">{$lang.create_time}</a>{$sort_create_time}</th>
+      <th>{$lang.handler}</th>
+    </tr>
+
+    {foreach from=$list item=cus}
+    <tr>
+      <td><input value="{$cus.id}" name="checkboxes[]" type="checkbox">{$cus.id}</td>
+      <td class="first-cell">
+			{$cus.queue_type_name}
+	  </td>
+      <td class="first-cell">
+			{$cus.queue_param}
+	  </td>
+      <td align="center">
+		{$cus.operator_status_name}
+	  </td>
+	  <td align="center">
+	  {$cus.result_status_name}
+	  
+	  </td>
+      <td align="center">{$cus.formated_create_time}</td>
+      <td align="center">
+        <a href="queue_msg.php?act=done&id={$cus.id}" title="{$lang.do_now}"><img src="images/icon_edit.gif" border="0" height="16" width="16" /></a>
+		<a href="javascript:;" onclick="listTable.remove({$cus.id},'{$lang.drop_confirm}')" title="{$lang.remove}"><img src="images/icon_drop.gif" border="0" height="16" width="16" /></a>
+      </td>
+    </tr>
+    {foreachelse}
+    <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>
+    {/foreach}
+  </table>
+
+  <table cellpadding="4" cellspacing="0">
+    <tr>
+      <td><input type="submit" name="drop" id="btnSubmit" value="{$lang.drop}" class="button" disabled="true" /></td>
+      <td align="right">{include file="page.htm"}</td>
+    </tr>
+  </table>
+
+{if $full_page}
+</div>
+</form>
+
+<script type="text/javascript" language="JavaScript">
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+{foreach from=$filter item=item key=key}
+listTable.filter.{$key} = '{$item}';
+{/foreach}
+{literal}
+
+/* 搜索三方客服 */
+function searchCustomer()
+{
+   listTable.filter.keyword = Utils.trim(document.forms['searchForm'].elements['keyword'].value);
+   listTable.filter.page = 1;
+   listTable.loadList();
+}
+
+{/literal}
+</script>
+{include file="pagefooter.htm"}
+{/if}

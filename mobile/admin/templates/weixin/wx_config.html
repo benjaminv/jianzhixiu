@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <title>{$lang.cp_home}{if $ur_here} - {$ur_here} {/if}</title>
+
+    <meta name="robots" content="noindex, nofollow">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link href="styles/general.css" rel="stylesheet" type="text/css" />
+
+    <link href="styles/main.css" rel="stylesheet" type="text/css" />
+
+    {insert_scripts files="../js/transport.js,common.js"}
+
+    <script language="JavaScript">
+
+        <!--
+
+        // 这里把JS用到的所有语言都赋值到这里
+
+        {foreach from=$lang.js_languages key=key item=item}
+
+        var {$key} = "{$item}";
+
+        {/foreach}
+
+        //-->
+
+    </script>
+
+</head>
+
+<body>
+
+
+
+<h1>
+
+    <span class="action-span1"><a href="index.php?act=main">{$lang.cp_home}</a> </span><span id="search_id" class="action-span1"> - 微信设置</span>
+
+    <div style="clear:both"></div>
+
+</h1>
+
+
+
+{insert_scripts files="../js/utils.js,selectzone.js,colorselector.js"}
+
+<script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+
+
+
+{if $warning}
+
+<ul style="padding:0; margin: 0; list-style-type:none; color: #CC0000;">
+
+    <li style="border: 1px solid #CC0000; background: #FFFFCC; padding: 10px; margin-bottom: 5px;" >{$warning}</li>
+
+</ul>
+
+{/if}
+
+
+
+<!-- start goods form -->
+
+<div class="tab-div1">
+
+<!-- tab body -->
+
+<div id="tabbody-div">
+
+<!-- 通用信息 -->
+
+<form name="theForm" method="post" action="weixin.php?act=config" enctype="multipart/form-data">
+
+  <table width="100%" cellpadding="3" cellspacing="1">
+
+  <tbody>
+
+  <tr>
+
+    <td class="label">名称 :</td>
+
+    <td><input type="text" name="title" size="20" value="{$title}">&nbsp;&nbsp;&nbsp;&nbsp;<span style=" color:#F30;">*&nbsp;注:&nbsp;微信对接地址&nbsp;&nbsp;{$weixin_url}</span></td>
+
+  </tr>
+  
+  <tr>
+
+    <td class="label">Token:</td>
+
+	<td><input type="text" name="token" size="20" value="{$token}">&nbsp;&nbsp;&nbsp;&nbsp;<span style=" color:#F30;">*&nbsp;注:&nbsp;“Token”内容与对接的微信公众号中的Token值一致。</span></td>
+  </tr>
+
+  <tr>
+
+    <td class="label">AppId :</td>
+
+    <td><input type="text" name="appid" size="20" value="{$appid}"></td>
+
+  </tr>
+
+ <tr>
+
+    <td class="label">AppSecret :</td>
+
+    <td><input type="text" name="appsecret" size="32" value="{$appsecret}"></td>
+
+  </tr>
+ <tr>
+
+    <td class="label">微信支付商户号 :</td>
+
+    <td><input type="text" name="partnerId" size="32" value="{$partnerId}"></td>
+
+  </tr>
+ <tr>
+
+    <td class="label">微信支付秘钥 :</td>
+
+    <td><input type="text" name="partnerKey" size="32" value="{$partnerKey}"></td>
+
+  </tr>
+  <tr>
+
+    <td class="label">微信访问地址 :</td>
+
+    <td><input type="text" name="wap_url" size="32" value="{$wap_url}">&nbsp;&nbsp;&nbsp;&nbsp;<span style=" color:#F30;">*&nbsp;注:请填写&nbsp;&nbsp;&nbsp;{$wx_url}</span></td>
+
+  </tr>
+   <tr>
+
+    <td class="label">管理员ID :</td>
+
+    <td><input type="text" name="admin_id" size="32" value="{$admin_id}">&nbsp;&nbsp;&nbsp;&nbsp;<span>*&nbsp;注:&nbsp;&nbsp;请填写 会员管理->会员列表&nbsp;&nbsp;前的编号，作为接收订单、会员互动等消息提醒</span></td>
+
+  </tr>
+  
+  
+<tr>
+
+ <tr>
+
+    <td class="label">是否开启未关注用户引导关注 :</td>
+
+    <td><input type="radio" name="open_guide" value="1" {if $open_guide eq 1}checked{/if} />开启<input type="radio" name="open_guide" value="0" {if $open_guide eq 0}checked{/if} />关闭</td>
+
+  </tr>
+  
+  <tr>
+
+    <td class="label">引导关注二维码 :</td>
+
+    <td><input type="file" name="guide_qrcode"  />{if $guide_qrcode}&nbsp;&nbsp;<b style="color:#F00;">√已上传</b>{/if}&nbsp;&nbsp;<span>*&nbsp;注:上传官方公众号二维码 建议尺寸：258*258</span></td>
+
+  </tr>
+
+            <td class="label">绑定前回复内容 :</td>
+            <td><textarea name="reg_notice" rows="5" cols="40">{$reg_notice}</textarea>建议不要修改。必须提示用户填写邮箱和密码，使用+分割。</td>
+          </tr>
+          <tr>
+            <td class="label">绑定后回复内容 :</td>
+
+    <td><textarea name="bindmsg" rows="5" cols="40">{$bindmsg}</textarea></td>
+
+  </tr>
+
+ <tr>
+
+    <td class="label">关注回复内容 :</td>
+
+    <td><textarea name="followmsg" rows="5" cols="40">{$followmsg}</textarea></td>
+
+  </tr>
+
+ <tr>
+
+    <td class="label">帮助内容 :</td>
+
+    <td><textarea name="helpmsg" rows="5" cols="40">{$helpmsg}</textarea></td>
+
+  </tr>
+  
+  <tr>
+  	<td class="label">自动回复：</td>
+    <td><textarea name="auto_reply" rows="5" cols="40">{$auto_reply}</textarea></td>
+  </tr>
+
+  <tr>
+
+    <td colspan="2" align="center">
+
+      <input type="submit" value="{$lang.button_submit}" class="button" />
+
+    <input type="reset" value="{$lang.button_reset}" class="button" />
+
+    </td>
+
+  </tr>
+
+</tbody></table>
+
+</form>
+
+</div>
+
+</div>
+
+<!-- end goods form -->
+
+{insert_scripts files="validator.js,tab.js"}
+
+
+
+<script language="JavaScript">
+
+var goodsId = '{$goods.goods_id}';
+
+var elements = document.forms['theForm'].elements;
+
+var sz1 = new SelectZone(1, elements['source_select1'], elements['target_select1']);
+
+var sz2 = new SelectZone(2, elements['source_select2'], elements['target_select2'], elements['price2']);
+
+var sz3 = new SelectZone(1, elements['source_select3'], elements['target_select3']);
+
+var marketPriceRate = {$cfg.market_price_rate|default:1};
+
+var integralPercent = {$cfg.integral_percent|default:0};
+
+
+
+{literal}
+
+onload = function()
+
+{
+
+
+
+    if (document.forms['theForm'].elements['auto_thumb'])
+
+    {
+
+        handleAutoThumb(document.forms['theForm'].elements['auto_thumb'].checked);
+
+    }
+
+
+
+    // 检查新订单
+
+    startCheckOrder();
+
+    {/literal}
+
+        {foreach from=$user_rank_list item=item}
+
+        set_price_note({$item.rank_id});
+
+    {/foreach}
+
+        {literal}
+
+        document.forms['theForm'].reset();
+
+    }
+
+
+
+    function setAttrList(result, text_result)
+
+    {
+
+        document.getElementById('tbody-goodsAttr').innerHTML = result.content;
+
+    }
+
+
+
+
+
+            {/literal}
+
+</script>
+
+{include file="pagefooter.htm"}
+

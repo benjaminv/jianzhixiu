@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <title>推荐注册</title>
+    <!--v_shop.css-->
+    <link href="themesmobile/dm299_com/css/v_user.css" type="text/css" rel="stylesheet">
+
+    <style>
+	.agree-bind{
+    width: 60%;display: block;background-color: red;color: #fff !important;padding: 5px;text-align: center;margin: 0 auto;font-size: 16px;border-radius: 5px;}
+	.refuse-bind{
+		width: 60%;display: block;border: 2px solid red;color: red !important;padding: 5px;text-align: center;margin: 0 auto;font-size: 16px;    border-radius: 5px;
+	}
+	.show-note{margin: 20px 3%;width: 94%;float: left;font-size: 12px;line-height: 15px;color: #666;background: #eee;padding: 5px 0%;}
+    </style>
+</head>
+<body>
+
+<div style="font-size: 16px;text-align: center;margin-top: 120px;">推荐人：{$user_detail.user_name}</div>
+<div style="margin-top: 30px;">
+	<a href="weixin_login.php?user_id={$user_detail.user_id}&erweima_type=1" class="agree-bind" >
+		同意绑定
+	</a>
+</div>
+
+<!--<div style="margin-top: 30px;">
+	<a href="./" class='refuse-bind'>
+		不绑定，前往商城
+	</a>
+</div>-->
+
+<div class="show-note">
+	<div style="padding: 2px;">
+		1、 没有注册的用户（微信和绑定手机号都没有注册），用户上级即为本页提示上级。
+	</div>
+	<div style="padding: 2px;">
+		2、 绑定已有手机号（微信首次登陆），用户上级为绑定账号上级，此情况为初始化账号。
+	</div>
+	<div style="padding: 2px;">
+		3、 微信非首次登陆，用户上级为首次登陆时绑定的上级。
+	</div>
+</div>
+
+</body>
+</html>

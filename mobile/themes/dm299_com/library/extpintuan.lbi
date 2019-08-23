@@ -1,0 +1,36 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{if $extpintuan_goods}
+
+<section class="floor_body">
+  <h4><span>热门拼团</span><i><a href="extpintuan.php">更多</a></i></h4>
+    <div id="scroll_extpintuan" style=" background:#eeeeee">
+        <ul>
+          {foreach from=$extpintuan_goods item=goods name=extpintuan_goods key=key}
+          <li>
+            
+             <div class="index_pro"> 
+              <div class="products_kuang">
+               {if $goods.ext_act_type eq 2}
+               <div class="best_phone">限量团</div>
+               {/if}
+              
+               <a href="{$goods.url}" title="{$goods.name|escape:html}"> <img src="{$option.static_path}{$goods.thumb}"></a>
+                </div>
+              <div class="goods_name"><a href="{$goods.url}" title="{$goods.name|escape:html}">{$goods.name}</a></div>
+              <div class="price">
+              <a href="#" class="btns">
+                  <img src="themesmobile/dm299_com/images/extpt_logo.jpg"></a>
+                  
+                  <span>{$goods.final_price}</span><em>{if $goods.market_price}{$goods.market_price}{else}{$goods.shop_price}{/if}</em>
+              </div>  
+</div>
+
+          </li>
+      <!--{if $smarty.foreach.extpintuan_goods.iteration%3 eq 0 && $smarty.foreach.extpintuan_goods.iteration neq $smarty.foreach.extpintuan_goods.total}--> </ul>
+        <ul>
+          <!--{/if}-->
+          
+          {/foreach}
+</div>
+  </section>
+{/if}

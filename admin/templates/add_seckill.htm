@@ -1,0 +1,223 @@
+{include file="pageheader.htm"}
+
+{insert_scripts files="../js/utils.js,listtable.js,./js/jquery.js"}
+<script type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
+<div class="main-div">
+    <!-- #代码增加2014-12-23 by www.dm299.com  _star -->
+    <form method="post" action="skill.php?act=add_seckill_form" name="theForm" enctype="multipart/form-data">
+        <!-- #代码增加2014-12-23 by www.dm299.com  _end -->
+        <div id="seckill_body">
+        <table width="100%" cellspacing='1' cellpadding='3'>
+            <tr>
+                <td class="label">活动名称：</td>
+                <td>
+                    <input type="text" value="{$seckill_data.name}" name="name">
+                </td>
+
+            </tr>
+            <tr>
+                <td class="label">活动时间：</td>
+                <td>
+                    <input name="seckill_start_date" type="text" id="seckill_start_date" size="12"
+                           value='{$seckill_data.seckill_start_date}' readonly="readonly"
+                           onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"/>
+                    -
+                    <input name="seckill_end_date" type="text" id="seckill_end_date" size="12"
+                           value='{$seckill_data.seckill_end_date}' readonly="readonly"
+                           onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="narrow-label">活动图片</td>
+                <td><input id="item_images" onchange="handleFiles(this)"  name="img" type="file"></td>
+            </tr>
+            <tr>
+                <input type="hidden" name="image" value="{$seckill_data.img}">
+                <td class="narrow-label"></td>
+                <td id="img">
+                    <img style="width: 300px;height: 300px" src="{$seckill_data.img}" alt="">
+                </td>
+            </tr>
+
+
+        </table>
+
+            {foreach from=$content item=val key=k}
+            <div id="{$k}">
+                <div>
+                    <div style="float: right"><input onclick="del({$k})" type="button" value="×">
+                    </div>
+                    <table width="100%" cellspacing="1" cellpadding="3">
+                        <tr>
+                            <td class="label">选择秒杀商品:</td>
+                            <td>
+                                <input type="text" maxlength="60" value="{$val.goods_name}" id="goods{$k}"/>
+                                <input type="button" class="button" value="搜索" onclick="select_goods_info({$k});"/>
+                                <select name="seckill[{$k}][goods_id]" id="goods_name{$k}" style="width:200px">
+                                <option value="{if $val.goods_id}{$val.goods_id}{else}0{/if}">{if $val.goods_name}{$val.goods_name}{else}选择秒杀商品{/if}</option>
+                                </select> </td>
+                        </tr>
+                        <tr>
+                            <td class="label">设置秒杀价格</td>
+                            <td><input value="{$val.seckill_price}" type="text" name="seckill[{$k}][seckill_price]"
+                                onkeyup="if(isNaN(this.value))this.value=this.value.replace(/\D/g,'')">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label">设置秒杀数量:</td>
+                            <td><input value="{$val.seckill_num}" type="text" name="seckill[{$k}][seckill_num]"
+                                onkeyup="if(isNaN(this.value))this.value=this.value.replace(/\D/g,'')"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            {/foreach}
+
+        </div>
+        <div class="button-div">
+            <input type="button" onclick="add_item()" value="添加商品">
+        </div>
+        <div class="button-div">
+            <input type="hidden" name="id" value="{$id}">
+            <input type="submit" value="{$lang.button_submit}" onclick="return check_img()" class="button"/>
+            <input type="reset" value="{$lang.button_reset}" class="button"/>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    var i = {$num};
+        i = i-0;
+    var a = 0;
+    function add_item() {
+        i++;
+        var html = '<div id="'+i+'"> <div> <div style="float: right"><input onclick="del('+i+')" type="button" value="×">'+
+                '</div> <table width="100%" cellspacing="1" cellpadding="3"> <tr> <td class="label">选择秒杀商品:</td> <td>'+
+                '<input type="text" maxlength="60" id="goods'+i+'"/>'+
+                '<input type="button" class="button" value="搜索" onclick="select_goods_info('+i+');"/>'+
+                '<select name="seckill['+i+']['+"goods_id"+']" id="goods_name'+i+'" style="width:200px"> <option value="0">选择秒杀商品</option> </select> </td> </tr>'+
+                '<tr> <td class="label">设置秒杀价格</td> <td> <input type="text" name="seckill['+i+']['+"seckill_price"+']" onkeyup="if(isNaN(this.value))this.value=this.value.replace(/\D/g,'+')"> </td> </tr>'+
+                '<tr> <td class="label">设置秒杀数量:</td> <td> <input type="text" name="seckill['+i+']['+"seckill_num"+']" onkeyup="if(isNaN(this.value))this.value=this.value.replace(/\D/g,'+')"/>'+
+                '</td> </tr> </table> </div> </div>';
+        $("#seckill_body").append(html);
+
+    }
+
+
+
+    function select_goods_info(id) {
+        a = id;
+        var attr = document.getElementById("goods"+a).value;
+        Ajax.call('skill.php?act=search_goods_name', 'goods_name=' + attr, goods_select, 'GET', 'JSON');
+    }
+    function goods_select(res) {
+        var tpl = "";
+        tpl += '<option value="0">选择秒杀商品</option>';
+        for (var key in res) {
+            var row = res[key];
+            if (row['goods_id']) {
+                tpl += '<option value="' + row['goods_id'] + '">' + row['goods_name'] + '</option>';
+            }
+        }
+
+        var goods_info = document.getElementById("goods_name"+a);
+        goods_info.innerHTML = tpl;
+    }
+
+    function del(a) {
+        $("#"+a).remove();
+    }
+
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null ;
+        if (window.createObjectURL!=undefined) { // basic
+            url = window.createObjectURL(file) ;
+        } else if (window.URL!=undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        } else if (window.webkitURL!=undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
+
+
+    function handleFiles(obj) {
+
+        fileList = document.getElementById("img");
+        var files = obj.files;
+
+        img = new Image();
+
+
+        if(window.URL){
+            //File API
+
+            //img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+            img.src =getObjectURL(files[0]);
+            img.width = 300;
+            img.height = 300;
+
+            img.onload = function(e) {
+                window.URL.revokeObjectURL(img.src); //图片加载后，释放object URL
+            }
+            if(fileList.firstElementChild){
+                fileList.removeChild(fileList.firstElementChild);
+            }
+
+            fileList.appendChild(img);
+            return false;
+
+
+        }else if(window.FileReader){
+            //opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+            var reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+
+            reader.onload = function(e){
+
+                img.src = this.result;
+                img.width = 300;
+                img.height = 200;
+                fileList.appendChild(img);
+            }
+        }else{
+            //ie
+            obj.select();
+            obj.blur();
+            var nfile = document.selection.createRange().text;
+            document.selection.empty();
+            img.src = nfile;
+            img.width = 300;
+            img.height = 200;
+            img.onload=function(){
+
+            }
+            fileList.appendChild(img);
+        }
+    }
+
+    function check_img() {
+        var AllImgExt=".jpg|.jpeg|.bmp|.gif|.png|";//全部图片格式类型
+        var i = 0;
+        $("#item_images").each(function(index){
+            FileExt=this.value.substr(this.value.lastIndexOf(".")).toLowerCase();
+            if(this.value!='')
+            {
+                if(AllImgExt.indexOf(FileExt+"|")==-1)
+                {
+                    i++;
+                }
+            }
+        });
+
+        if(i != 0){
+            alert("图片格式错误,请重新上传图片");
+            return false;
+        }
+    }
+
+
+</script>
+{include file="pagefooter.htm"}

@@ -1,0 +1,18 @@
+<tr id="miniprogram" {if $menu['type'] neq 4}style="display:none"{/if}>
+	<td colspan="2">
+		<table width="100%" align="right">
+			<tr>
+				<td class="narrow-label"  style="width:30%;">小程序链接地址：</td>
+				<td><input name="value" type="text" value="{$menu.value}" maxlength="120"></td>
+			</tr>
+			<tr>
+				<td class="narrow-label">小程序appid</td>
+				<td><input name="appid" type="text" value="{$menu.appid}" maxlength="120"></td>
+			</tr>
+			<tr>
+				<td class="narrow-label">页面路径</td>
+				<td><input name="pagepath" type="text" value="{$menu.pagepath}" maxlength="120">例如：pages/lunar/index</td>
+			</tr>
+		</table>
+	</td>
+</tr>

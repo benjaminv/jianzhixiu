@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+<title>会员管理</title>
+<link href="themesmobile/dm299_com/css/v_user.css" type="text/css" rel="stylesheet">
+
+<script type="text/javascript" src="themesmobile/dm299_com/js/TouchSlide.1.1.js"></script>
+<link href="themesmobile/dm299_com/css/data.css" type="text/css" rel="stylesheet">
+
+</head>
+<body style=" background:#fff">
+  <!-- #BeginLibraryItem "/library/global_nav.lbi" --><!-- #EndLibraryItem -->
+  
+<!--header-->
+  <script type="text/javascript">
+      $(function(){
+          $('#beginTime').date();
+          $('#endTime').date();
+      });
+  </script>
+<div class="top">
+<dl>
+<dt><a href="javascript:history.back(-1)"></a></dt>
+<dd style="text-align:center;">分成管理</dd>
+</dl>
+</div>
+<!--main-->
+  <div class="head">
+      <ul>
+          <li style=" border-right:1px solid #191c27; margin-left:-1px;width:100%">
+              <a href="v_user_yjdaili.php" style="background-color:#fff;color:#000;border-radius: 8px;width:120px;display:block;margin:12px auto;" >一级代理团队</a>
+          </li>
+      </ul>
+  </div>
+  <div class="head">
+      <ul>
+          <li style=" border-right:1px solid #191c27; margin-left:-1px;"><span class="v_2">总收益：￥{$total}</span></li>
+          <li><span class="v_2">上月收益：￥{$next_total}</span></li>
+      </ul>
+  </div>
+  <style>
+      select option {
+          font-size:16px;
+      }
+  </style>
+  <script>
+      function search_total()
+      {
+          var time_start = $("#time_start").val();
+          var time_end = $("#time_end").val();
+          if(time_start==''||time_end=='')
+          {
+              alert("请填写完整时间！");
+              return false;
+          }
+          $.post("v_user_daili.php",{act:"ajax",time_start:time_start,time_end:time_end},function(resultJSONObject){
+              if(resultJSONObject.success){
+                  $("#chaxun").text(resultJSONObject.conent);
+      }else{
+          ;
+      }
+      },"json");
+      }
+  </script>
+  <div>
+      <div class="name" style="margin-top:10px;padding:2px 0px">
+          <span style="font-size:16px;padding-left:30px;">起始日期</span>
+          <input type="text" name="time_start" id="time_start" data-options="{'type':'YYYY-MM','beginYear':2010,'endYear':2088}" />
+      </div>
+      <div class="name" style="margin-top:10px;padding:7px 0px">
+          <span style="font-size:16px;padding-left:30px;">截止日期</span>
+          <input type="text" name="time_end" id="time_end" data-options="{'type':'YYYY-MM','beginYear':2010,'endYear':2088}"/>
+      </div>
+      <div>
+          <a href="javascript:search_total();" id="search_total" style="text-align:center;width: 80px;margin: auto;display: block;margin-top: 20px;background: #282c39;font-size: 14px;color: #fff;padding: 2px 8px;border-radius: 5px;">查询分成</a>
+      </div>
+      <div style="font-size:16px;padding-left:30px;">
+          查询收益：<span id="chaxun">暂无查询</span>
+      </div>
+  </div>
+  <script type="text/javascript" src="themesmobile/dm299_com/js/jquery-3.min.js"></script>
+  <script type="text/javascript" src="themesmobile/dm299_com/js/data.js"></script>
+  <script>
+      $.date('#time_start');
+      $.date('#time_end');
+
+  </script>
+<!---返回顶部-->
+<script>
+$("#search_total").click(function(){
+    var time_start = $("#time_start").val();
+    var time_end = $("#time_end").val();
+    if(time_start==''||time_end=='')
+    {
+        alert("请填写完整时间！");
+        return false;
+    }
+    $.post("v_user_daili.php",{act:"ajax",time_start:time_start,time_end:time_end},function(resultJSONObject){
+        if(resultJSONObject.success){
+            $("#chaxun").text(resultJSONObject.conent));
+    }else{
+        ;
+    }
+    },"json");
+});
+function goTop(){
+	$('html,body').animate({'scrollTop':0},600);
+}
+
+
+</script>
+<a href="javascript:goTop();" class="gotop"><img src="themesmobile/dm299_com/images/v-shop/topup.png"></a> 
+<!-----底部悬浮菜单---->
+<!-- #BeginLibraryItem "/library/vshop_footer.lbi" --><!-- #EndLibraryItem -->
+  <div id="datePlugin"></div>
+</body>
+</html>

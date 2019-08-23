@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>防伪查询</title>
+	<script type="text/javascript" src="themesmobile/dm299_com/js/jquery.js"></script>
+	<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<style type="text/css">
+	    *{
+	    	margin:0;
+	    	padding: 0;
+	    	font-size: 33px;
+	    }
+		.inputs{
+			width:80%;
+			height: 80px;
+			padding-left: 20px;
+			border-radius: 6px;
+			background-color: #fff;
+			margin-left: 5%;
+			margin-top: 30%;
+		}
+		.button{
+			background-color: #000;
+			color: #fff;
+			text-align: center;
+			line-height: 30px;
+			height: 80px;
+			width: 30%;
+			border: none;
+			border-radius: 6px;
+			margin-top: 60px;
+			cursor: pointer;
+			border: 1px solid #000;
+		}
+	</style>
+</head>
+<body style="background-color: #F5F5F5;">
+	<div >
+		<div>
+				<!-- images/201904/thumb_img/6_thumb_G_1556114382237.jpg -->
+			<img src="./images/saoyi.png" style="text-align: center;margin: auto;width: 70%;margin-left: 15%;margin-top: 10%">
+		</div>
+		<input type="" name="" placeholder="请输入防伪码" class="inputs">
+		<div>
+			<button class="button" style="margin-left: 5%;margin-right: 20%;" id='select_code'>查询</button>
+			<button class="button" id='scanQRCode'>扫一扫</button>
+		</div>
+	</div>
+
+</body>
+
+<script type="text/javascript">
+	// 查询防伪码的真伪按钮
+    $('#select_code').click(function(){
+
+    	var vals = $('.inputs').val();
+    	if(!vals){
+
+    		alert('请您输入防伪码编号');
+    	}else{
+
+    		window.location.href = 'sao_yi_sao.php?act=check_code&code='+vals;
+    	}
+
+       
+    });
+
+
+		  wx.config({
+		    debug: false,
+		    appId: '{$signPackage.appId}',
+		    timestamp: '{$signPackage.timestamp}',
+		    nonceStr: '{$signPackage.nonceStr}',
+		    signature: '{$signPackage.signature}',
+		    jsApiList: [
+		      // 所有要调用的 API 都要加到这个列表中
+			  'scanQRCode','checkJsApi'
+		    ]
+		  });
+
+        wx.ready(function() {
+            wx.checkJsApi({
+                jsApiList : ['scanQRCode'],
+                success : function(res) {
+ 
+                }
+            });
+        });
+        wx.error(function(res) {
+            alert("出错了：" + res.errMsg);//这个地方的好处就是wx.config配置错误，会弹出窗口哪里错误，然后根据微信文档查询即可。
+        });
+		//点击按钮扫描二维码
+        $("#scanQRCode").click(function(){
+            wx.scanQRCode({
+                    needResult : 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType : [ "qrCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success : function(res) {
+                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                        window.location.href = result;//因为我这边是扫描后有个链接，然后跳转到该页面
+                    },
+                error : function(){
+                       console.log('123');
+                }
+            });
+        });
+
+
+
+
+	</script>
+</html>

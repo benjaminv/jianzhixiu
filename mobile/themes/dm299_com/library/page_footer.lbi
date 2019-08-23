@@ -1,0 +1,8 @@
+<div class="footer" >
+      <div class="links"  id="ECS_MEMBERZONE"> {insert_scripts files='utils.js'}
+          {* ECSHOP 提醒您：根据用户id来调用member_info.lbi显示不同的界面  *}{insert name='member_info'}</div>
+          
+  	 <p class="mf_o4">{$copyright}</p>
+  	 <br />
+</div>
+

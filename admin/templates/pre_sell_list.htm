@@ -1,0 +1,178 @@
+<!-- $Id: pre_sale_list.htm 14216 2015-02-10 02:27:21Z derek $ -->
+
+{if $full_page} {include file="pageheader.htm"} {insert_scripts files="../js/utils.js,listtable.js"}
+<div class="form-div">
+	<form action="javascript:searchPreSale()" name="searchForm" method="post">
+		<img src="images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
+		{$lang.goods_name}
+		<input type="text" name="keyword" size="30" />
+		<input type="submit" value="{$lang.button_search}" class="button" />
+	</form>
+</div>
+
+
+
+<form method="post" action="pre_sell.php?act=batch_drop" name="listForm" onsubmit="return confirm(batch_drop_confirm);">
+	<!-- start pre_sale list -->
+	<div class="list-div" id="listDiv">
+		{/if}
+		<table cellpadding="3" cellspacing="1">
+			<tr>
+				<th>
+					<input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox" />
+					<a href="javascript:listTable.sort('act_id'); ">{$lang.record_id}</a>
+					{$sort_act_id}
+				</th>
+				<th>
+					<a href="javascript:listTable.sort('goods_name'); ">{$lang.goods_name}</a>
+					{$sort_goods_name}
+				</th>
+				<th>
+					<a href="javascript:listTable.sort('current_status'); ">
+					{$lang.current_status}
+					</a>
+				</th>
+				<!-- <th><a href="javascript:listTable.sort('start_time'); ">{$lang.start_date}</a>{$sort_start_time}</th> -->
+				<th>
+					<a href="javascript:listTable.sort('end_time'); ">{$lang.end_date}</a>
+					{$sort_end_time}
+				</th>
+				<!-- <th><a href="javascript:listTable.sort('gift_integral'); ">{$lang.gift_integral}</a>{$sort_gift_integral}</th> -->
+				<th>
+					<a href="javascript:listTable.sort('valid_goods'); ">
+					{$lang.valid_goods}
+					</a>
+				</th>
+				<th>
+					<a href="javascript:listTable.sort('valid_order'); ">
+					{$lang.valid_order}
+					</a>
+				</th>
+				<th>
+					<a href="javascript:listTable.sort('current_price'); ">
+					{$lang.current_price}
+					</a>
+				</th>
+				<th>
+					<a href="javascript:listTable.sort('initial_price'); ">
+						{$lang.initial_price}
+					</a>
+				</th>
+				<th>
+					<a href="javascript:listTable.sort('total_price'); ">
+						{$lang.total_price}
+					</a>
+				</th>
+				<th>
+					<a href="javascript:listTable.sort('get_price'); ">
+						{$lang.get_price}
+					</a>
+				</th>
+				<th>
+					<a href="javascript:listTable.sort('raise_days'); ">
+						{$lang.raise_days}
+					</a>
+				</th>
+				<th>
+					<a href="javascript:listTable.sort('price_rate'); ">
+						{$lang.price_rate}
+					</a>
+				</th>
+				<th>{$lang.handler}</th>
+			</tr>
+			{foreach from=$pre_sale_list item=pre_sale}
+			<tr>
+				<td align="left">
+					<input value="{$pre_sale.act_id}" name="checkboxes[]" type="checkbox">
+					{$pre_sale.act_id}
+				</td>
+				<td align="center">{$pre_sale.goods_name|escape:html}</td>
+				<td align="center">{$pre_sale.cur_status}</td>
+				<!-- <td align="right">{$pre_sale.start_time}</td> -->
+				<td align="center">{$pre_sale.end_time}</td>
+				<!-- <td align="right">{$pre_sale.gift_integral}</td> -->
+				<td align="center">{if $pre_sale.goods_num neq 0}{$pre_sale.goods_num }{else}0{/if}</td>
+				<td align="center">{$pre_sale.order_all}</td>
+				<td align="center">{$pre_sale.cur_price}</td>
+				<td align="center">{$pre_sale.initial_price}</td>
+				<td align="center">{$pre_sale.sell_price}</td>
+				<td align="center">{if $pre_sale.now_price neq 0}{$pre_sale.now_price}{else}0{/if}</td>
+				<td align="center">{$pre_sale.days}</td>
+				<td align="center">{if $pre_sale.get_rate neq 0}{$pre_sale.get_rate}{else}0{/if}%</td>
+				<td align="center">
+					<a href="order.php?act=list&amp;pre_sell_id={$pre_sale.act_id}&suppid={$pre_sale.supplier_id}">
+						<img src="images/icon_view.gif" title="{$lang.view_order}" border="0" height="16" width="16" />
+					</a>
+					<a href="pre_sell.php?act=edit&amp;id={$pre_sale.act_id}" title="{$lang.edit}">
+						<img src="images/icon_edit.gif" border="0" height="16" width="16" />
+					</a>
+					<a href="javascript:remove('{$pre_sale.act_id}');" title="{$lang.remove}">
+						<img src="images/icon_drop.gif" border="0" height="16" width="16" />
+					</a>
+					{if $pre_sale.back_money eq 1 }
+					<a href="javascript:back_money('{$pre_sale.act_id}');" title="{$lang.back_money}">
+						<img src="images/icon_output.gif" border="0" height="16" width="16" />
+					</a>
+					{/if}
+				</td>
+			</tr>
+			{foreachelse}
+			<tr>
+				<td class="no-records" colspan="13">{$lang.no_records}</td>
+			</tr>
+			{/foreach}
+		</table>
+		<table cellpadding="4" cellspacing="0">
+			<tr>
+				<!-- 
+      <td><input type="submit" name="drop" id="btnSubmit" value="{$lang.drop}" class="button" disabled="true" /></td>
+       -->
+				<td align="right">{include file="page.htm"}</td>
+			</tr>
+		</table>
+		{if $full_page}
+	</div>
+	<!-- end pre_sale list -->
+</form>
+<script type="text/javascript" language="JavaScript">
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+
+  {literal}
+  onload = function()
+  {
+    document.forms['searchForm'].elements['keyword'].focus();
+
+    startCheckOrder();
+  }
+
+  /**
+   * 搜索团购活动
+   */
+  function searchPreSale()
+  {
+
+    var keyword = Utils.trim(document.forms['searchForm'].elements['keyword'].value);
+    listTable.filter['keyword'] = keyword;
+    listTable.filter['page'] = 1;
+    listTable.loadList("pre_sale_list");
+  }
+  
+  function remove(id){
+	  if(confirm('您确定要删除此众筹活动吗')){
+	  	window.location.href   = "pre_sell.php?act=remove&act_id="+id;
+	  }
+  }
+
+  function back_money(id) {
+	  if (confirm('您确定要退款吗')){
+          window.location.href = "pre_sell.php?act=backMoney&act_id="+id;
+	  }
+  }
+  {/literal}
+</script>
+{include file="pagefooter.htm"} {/if}

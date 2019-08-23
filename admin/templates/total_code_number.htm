@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>在线商城 管理中心 - 入驻商列表 </title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="styles/general.css" rel="stylesheet" type="text/css">
+    <link href="styles/main.css" rel="stylesheet" type="text/css">
+    <link href="styles/chosen/chosen.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script><script type="text/javascript" src="js/chosen.jquery.min.js"></script><script type="text/javascript" src="js/jquery.json.js"></script><script type="text/javascript" src="../js/transport.js"></script><script type="text/javascript" src="js/common.js"></script>
+    {insert_scripts files="../js/utils.js,listtable.js"}
+</head>
+<body>
+  <h1>
+    <span class="action-span1"><a href="index.php?act=main">在线商城 管理中心</a> </span><span id="search_id" class="action-span1"> - 二维码信息 </span>
+    <div style="clear:both"></div>
+  </h1>
+  <form  style="margin-bottom: 6px;background-color: #F7F7F7;height: 40px;margin-top:-10px;" action="total_code_number.php" method="get">
+     
+         查询时间 <input name="date_begin" type="date" id="begin" size="15" style="width: 150px;height: 24px;margin-top: 5px;" value="{if $date_begin}{$date_begin}{/if}">
+         至 <input name="date_end" type="date" id="end" size="15" style="width: 150px;height: 24px;margin-top: 5px;" value="{if $date_end}{$date_end}{/if}">
+         <input type="submit" class="button " value=" 搜索 ">
+
+         <div style="float: right;line-height: 44px;">
+           <span>商城总二维码数：{$total_code}条</span>
+         </div>
+  </form>
+  <form method="post" action="" name="listForm">
+    <div class="list-div" id="listDiv">
+        
+        <table cellspacing="1" cellpadding="3" style="text-align: center;">
+            <tbody>
+              <tr>
+                <th>有效扫码数（第一次扫码）</th>
+                <th>历史扫码总数（所有扫码）</th>
+              </tr>
+           
+              <tr class="parent">
+                  <td>{$info.first}</td>
+                  <td style="padding-left: 10px;" class="batch">{$info.total}</td>
+            
+              </tr>
+           
+            </tbody>
+        </table>
+  </div>
+</form>
+</body>
+
+</html>

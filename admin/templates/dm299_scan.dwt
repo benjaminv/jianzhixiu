@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+	<title>木马扫描</title>
+	<link rel="shortcut icon" href="../favicon.ico" />
+	<link rel="icon" href="../animated_favicon.gif" type="image/gif" />
+	<link href="includes/scan/public/main.css" rel="stylesheet" type="text/css" />
+	<link href="includes/scan/public/purebox.css" rel="stylesheet" type="text/css" />
+	<link href="includes/scan/public/perfect-scrollbar.min.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="includes/scan/public/jquery.js"></script>
+	<script type="text/javascript" src="includes/scan/public/jquery.purebox.js"></script>
+	<script type="text/javascript" src="includes/scan/public/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="includes/scan/public/index.js"></script>
+</head>
+<body class="iframe_body">
+<div class="warpper shop_special">
+	<div class="title">木马扫描</div>
+	<div class="content">
+		<div class="tabs_info">
+			  <ul>
+				<li{if $act eq 'setting'} class="curr"{/if}><a href="dm299_scan.php?act=setting">配置</a></li>
+				<li{if $act eq 'scanset'} class="curr"{/if}><a href="dm299_scan.php?act=scanset">扫描</a></li>
+			  </ul>
+		</div>
+		{if $act eq 'setting'}
+		<div class="explanation" id="explanation">
+			<div class="ex_tit">
+				<i class="sc_icon"></i>
+				<h4>操作提示</h4>
+				<span id="explanationZoom" title="收起提示"></span>
+			</div>
+			<ul>
+				<li>这是一个付费插件，如需要授权，请联系QQ：124861234</li>
+			</ul>
+		</div>
+		{/if}
+		<div class="flexilist">
+			<div class="common-content">
+				<div class="mian-info">
+				{if $act eq 'setting'}
+				<form method="post" name="theForm" action="dm299_scan.php?act=setting_do">
+				<div class="switch_info" id="conent_area">
+					<div class="items">
+						<div class="item">
+							<div class="label"><em class="require-field">*</em>授权码：</div>
+							<div class="label_value">
+								<input type="text" name="authcode" value="{$config.authcode}" class="text w300" />
+								<a href="javascript:void(0);" class="btn btn30 blue_btn" id="CHK_DM299_VERSION">检查新版本</a>
+							</div>
+						</div>
+						<div class="item">
+							<div class="label">&nbsp;</div>
+							<div class="label_value info_btn"><input type="submit" value="保存配置" class="button" /></div>
+						</div>
+					</div>
+				</div>
+				</form>
+				{elseif $act eq 'scanset'}
+				<form method="post" name="theForm" action="dm299_scan.php?act=scan">
+				<div class="switch_info" id="conent_area">
+					<div class="items">
+						<div class="item">
+							<div class="label">修改时间：</div>
+							<div class="label_value">
+								<input type="text" name="uptime" value="{$config.uptime}" class="text w100" />
+								<div class="form_prompt"></div>
+								<div class="notic">单位(天)；如2天被修改过的文件,0为不扫描</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="label">文件格式：</div>
+							<div class="label_value">
+								<input type="text" name="ext" value="{$config.ext}" class="text w300" />
+							</div>
+						</div>
+						<div class="item">
+							<div class="label">&nbsp;</div>
+							<div class="label_value info_btn"><input type="submit" value="开始扫描" class="button" /></div>
+						</div>
+					</div>
+				</div>
+				</form>
+				{/if}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="footer">
+	<p>版权所有 © 2017-2020 <a href="http://www.dm299.com" target="_blank">苏州点迈软件系统有限公司</a>，并保留所有权利。</p>
+</div>
+</body>
+</html>

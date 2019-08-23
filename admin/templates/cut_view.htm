@@ -1,0 +1,76 @@
+<!-- $Id: cut_view.htm 14216 2008-03-10 02:27:21Z testyang $ -->
+
+{if $full_page}
+{include file="pageheader.htm"}
+<script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+{insert_scripts files="validator.js,../js/transport.org.js,../js/utils.js,listtable.js}
+
+
+<form method="post" action="" name="listForm">
+<div class="list-div" id="listDiv">
+{/if}
+
+<table cellpadding="3" cellspacing="1">
+    <tr>
+      <th><a href="javascript:listTable.sort('cut_id');">砍价ID</a>{$sort_cut_id}</th>
+      <th><a href="javascript:listTable.sort('act_id');">活动编号</a>{$sort_act_id}</th>
+      <th><a href="javascript:listTable.sort('user_id');">发起用户ID</a>{$sort_user_id}</th>
+      <th><a href="javascript:listTable.sort('user_nickname');">发起用户昵称</a>{$sort_user_nickname}</th>
+      <th><a href="javascript:listTable.sort('user_head');">头像</a>{$sort_user_head}</th>
+      <th><a href="javascript:listTable.sort('create_time');">发起时间</a>{$sort_create_time}</th>
+      <th><a href="javascript:listTable.sort('end_cut_time');">砍价限时</a>{$sort_end_cut_time}</th>
+      <th><a href="javascript:listTable.sort('end_buy_time');">购买限时</a>{$sort_end_buy_time}</th>
+      <th><a href="javascript:listTable.sort('new_price');">当前价格</a>{$sort_new_price}</th>
+      <th><a href="javascript:listTable.sort('new_price');">是否已到底价</a>{$sort_new_price}</th>
+      <th><a href="javascript:listTable.sort('order_times');">下单次数</a>{$sort_order_times}</th>
+      <th>查看砍价记录</th>
+
+    </tr>
+    {foreach from=$cut_list item=cut}
+    <tr>
+      <td align="center">{$cut.cut_id}</td>
+      <td align="center">{$cut.act_id}</td>
+      <td align="center"><a href="users.php?act=edit&id={$cut.user_id}" title="会员信息" target="_blank">{$cut.user_id}</a></td>
+      <td align="center"><a href="users.php?act=edit&id={$cut.user_id}" title="会员信息" target="_blank">{$cut.user_nickname}</a></td>
+      <td align="center">{if $cut.user_head}<img src="{$cut.user_head}" style="width:40px; height:auto;" >{/if}</td>
+      <td align="center">{$cut.create_time}</td>
+      <td align="center">{$cut.end_cut_time}</td>
+      <td align="center">{$cut.end_buy_time}</td>
+      <td align="center">{$cut.new_price}</td>
+      <td align="center">{if $info.max_price eq $cut.new_price}是{else}否{/if}</td>
+      <td align="center">{$cut.order_times}</td>
+      <td align="center">
+        <a href="cut.php?act=view&amp;act_id={$cut.act_id}&amp;cut_id={$cut.cut_id}" title="{$lang.view_detail}"><img src="images/icon_view.gif" border="0" height="16" width="16"></a>
+      </td>
+    </tr>
+    {foreachelse}
+    <tr><td class="no-records" colspan="12">{$lang.no_records}</td></tr>
+    {/foreach}
+    <tr>
+      <td align="right" nowrap="true" colspan="12">{include file="page.htm"}</td>
+    </tr>
+</table>
+
+{if $full_page}
+</div>
+</form>
+
+<script type="text/javascript" language="JavaScript">
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+  listTable.query = "query_cut";
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+
+  {literal}
+  onload = function()
+  {
+    startCheckOrder();  // 开始检查订单
+  }
+  {/literal}
+</script>
+{include file="pagefooter.htm"}
+{/if}

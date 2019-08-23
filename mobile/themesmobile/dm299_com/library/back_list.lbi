@@ -1,0 +1,39 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--顶部切换--->
+<ul class="order_listtop">
+  <li><a href="user.php?act=back_list" class="on">退款列表</a></li>
+	<li><a href="user.php?act=order_list">订单列表</a></li></ul>
+<div class="order_tishi">申请退款后请及时联系客服</div>
+<!--{if $orders}-->
+<div id="J_ItemList" class="order">
+  <ul class="single_item info">
+  	<!--{foreach from=$orders item=item}-->
+    <div class="order_list">
+      <h2> <a href="user.php?act=back_order_detail&id={$item.back_id}"><em></em><span>退款编号：{$item.back_id}</span></a>  <strong>{$item.status_back}</strong></h2>
+      <a href="user.php?act=back_order_detail&id={$item.back_id}">
+      <div class="order_list_goods">
+     	 {foreach from=$item.goods_list item=goods_info}
+        <dl>
+          <dt><img src="../../{$goods_info.goods_thumb}"></dt>
+          <dd class="name"><strong><a href="goods.php?id={$goods_info.goods_id}">{$goods_info.goods_name}</a></strong><span> </span></dd>
+          <dd class="pice" >{$goods_info.formated_goods_price}<em>x{$bgoods.back_goods_number}</em></dd>
+        </dl>
+        {/foreach} 
+      </div>
+      </a>
+      <div class="pic" style="font-size: 12px;">{$item.order_time} 原订单号：{$item.order_sn}</div>
+      <div class="pic">退款金额：<strong>{$item.refund_money_1}</strong></div>
+      <div class="anniu" style="width:95%;"> {if $item.status_back eq 0 && $item.status_back_1 lt 6 && $item.status_back_1 neq 3}<a style="background:#E71F19; color:#fff; border:1px solid #E71F19" href="user.php?act=del_back_order&id={$item.back_id}" onclick="return confirm('你确认要取消吗？')">取消退款</a> {/if} <a href="user.php?act=back_order_detail&id={$item.back_id}">查看详细</a> </div>
+    </div>
+    <!--{/foreach}-->
+  </ul>
+</div>
+<!--{else}-->
+<div id="list_0_0" class="font12">您没有退款退货的订单哦！</div>
+<!--{/if}--> 
+<script>
+function goTop(){
+	$('html,body').animate({'scrollTop':0},600);
+}
+</script> 
+<a href="javascript:goTop();" class="gotop"><img src="themesmobile/dm299_com/images/topup.png"></a> 

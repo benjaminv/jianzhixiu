@@ -1,0 +1,357 @@
+<!DOCTYPE html >
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>{$page_title}</title>
+  <meta name="Keywords" content="{$keywords}" />
+  <meta name="Description" content="{$description}" />
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+  <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/css/goods.css"/>  
+  <link rel="stylesheet" type="text/css" href="themesmobile/dm299_com/cut_view.css" />
+
+ <script type="text/javascript" src="themesmobile/dm299_com/js/jquery.js"></script>
+{insert_scripts files='jquery.json.js,transport.js'}
+<script type="text/javascript" src="themesmobile/dm299_com/js/touchslider.dev.js"></script>
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,prince_lefttime.js,transport.js'}
+ <script type="text/javascript" src="themesmobile/dm299_com/js/jquery-1.7.2.min.js"></script>
+
+<script type="text/javascript">
+  {foreach from=$lang.js_languages item=item key=key}
+    var {$key} = "{$item}";
+  {/foreach}
+</script>
+
+<script>
+function goBack(){  
+   if(history.length > 1 ){  
+          history.back(-1);  
+    }else{  
+          location.href = 'index.php';
+    }  
+} 
+</script>
+</head>
+<body>
+  <!-- #BeginLibraryItem "/library/global_nav.lbi" --><!-- #EndLibraryItem -->
+  
+
+<!--总开始  S PRINCE  120029121--->
+<div id="page" style="right: 0px; left: 0px; display: block;">
+
+
+  <header id="header" style="z-index:1;background-color:#E6EFDF; padding-top:5px; border-bottom:solid 1px #B0C99F; color:#666; text-align:center; font-size:12px; line-height:25px; padding-bottom:5px; height:auto;">
+	<!-- {if $cut.end_cut_time lt  $cut.now_time  } -->
+		 <img src="images/cut_green_ok.png" style="width:20px; height:20px;vertical-align: middle;"/><span style="color:#769E54; font-size:16px; font-family:微软雅黑;">本次砍价结束</span><br />谢谢小伙伴们的帮忙
+     <!-- {else} -->
+		 <img src="images/cut_green_ok.png" style="width:20px; height:20px;vertical-align: middle;"/><span style="color:#769E54; font-size:16px; font-family:微软雅黑;">{$cut.user_nickname}正在参与砍价活动</span><br />小伙伴们快来帮忙吧
+	<!-- {/if } -->
+  </header>
+  
+  
+  
+  
+  
+  <!--商品图--->
+  <section class="goods_slider" style="padding:10px;">
+    <a href="cut.php?act=view&id={$cut.act_id}&u={$user_id}">
+    <table>
+    <tr>
+    <td rowspan="2" style="" >
+		<div style="margin-left:5px; margin-top:5px; width:100px; height:68px;padding:2px;background-image:url({if strpos($cut.goods_thumb,'ttp')>0}{else}../{/if}{$cut.goods_thumb});background-size:auto 100%; background-repeat:no-repeat;"></div>
+    </td>
+    <td style="font-size:14px; line-height:15px;padding:5px; padding-left:10px; " > {$cut.act_name|escape:html}</td>
+	</tr>
+    <tr>
+    <td style="font-size:12px; padding-left:10px; line-height:2; ">当前价格:<em style="color:#FF0000">¥{$cut.new_price}</em><br/>
+		<!--点此查看商品详情>>-->
+    </td>
+    </tr>
+    </table></a>
+  </section>
+  <!--商品图 end---> 
+
+  
+      
+
+  <!--提示部分  PRINCE  120029121-->       
+  <section style="text-align:center;clear:both;" >
+      <!-- {if $cut.end_buy_time gt  $cut.now_time && $cut.end_cut_time lt  $cut.now_time &&  $cut.user_id eq $user_id  } -->
+      <div style="font-size:14px;padding-top:0px; width:100%"><br />请在限定时间内下单</div>       
+      <!--{/if }-->
+      
+      <div class="hdsysj_box">
+	  <!-- {if $cut.end_cut_time gt  $cut.now_time } -->
+			剩余-<span id="leftTime">{$lang.please_waiting}</span>-结束
+	  <!-- {elseif $cut.end_buy_time gt  $cut.now_time   &&  $cut.user_id eq $user_id  } -->
+			剩余-<span id="leftTime">{$lang.please_waiting}</span>-结束
+	  <!--{else}-->
+			<span >本次砍价已结束</span>
+	  <!--{/if }-->
+      </div>
+  </section>
+  <!--提示部分   PRINCE  120029121-->       
+
+
+  <!--楼主部分  PRINCE  120029121-->       
+  <section style="text-align:center">
+  <div style="height:15px;"><img src="images/cut_sanjiao.png"  /></div>
+  <div class="tzboderhr">
+	<div class="dleft">
+		  <!--{if $cut.user_head}-->
+         <img src="{$cut.user_head}">
+         <!--{else}-->
+         <img src="images/cut_icon_index.png">
+        <!--{/if }-->
+	</div>
+
+	<div class="dright"><div style="height:30px;line-height:30px;"><div style="float:left;">楼主：<b>{$cut.user_nickname}</b> </div><em style="float:right; margin-right:10px;" >{if $cut.cut_price }砍掉：¥{$cut.cut_price}{/if}</em></div>
+	<div style="width:100%;height:20px; text-align:left;">发起时间：{$cut.show_create_time}</div>
+  </div>
+  </section>
+  <!--楼主部分  PRINCE  120029121-->   
+  
+  
+  <!--成员部分  PRINCE  120029121-->       
+  <section style="text-align:center">    
+    <!-- {foreach from=$cut_logs item=item} -->
+  <div class="otherboderhr">
+	<div class="dleft">
+		  <!--{if $item.cut_user_head}-->
+         <img src="{$item.cut_user_head}">
+         <!--{else}-->
+         <img src="images/cut_icon_index.png">
+        <!--{/if }-->
+	</div>
+	<div class="dright"><div style="height:30px;line-height:30px;"><div style="float:left;">好友：<b >{$item.cut_user_nickname}</b> </div><em style="float:right; margin-right:10px;" >{if $item.cut_price }砍掉：¥{$item.cut_price}{/if}</em></div>
+	<div style="width:100%;height:20px; text-align:left;">砍价时间：{$item.formated_cut_time}</div>
+	</div>
+  </div>
+  <!-- {/foreach} -->    
+  </section>
+  <!--成员部分  PRINCE  120029121-->       
+
+
+<!--活动介绍 S  PRINCE 120029121-->  
+<!-- {if $cut.act_desc} -->
+<div class="hdjs" id=rule style="height:30px;">
+   <p style="height:30px;">活动介绍：</p>
+</div> 
+<div class="cut_desc" >  
+   <p >{$cut.act_desc}</p>
+</div> 
+<!-- {/if } -->
+<!--活动介绍 E  PRINCE 120029121--> 
+
+<!--div class="hdsysj" ><p style="width:100%; text-align:center; color:#FFFFFF"> <a href="cut.php" style="color:#FFF">更多活动请点击这里>></a></p></div--> 
+<br /><br /><br /><br /><br /><br />
+
+
+<!--购买表单  PRINCE 120029121-->  
+<form action="cut.php?act=buy" method="post" name="buy_form">
+            <input name="act" type="hidden" value="buy">
+            <input name="cut_id" type="hidden" value="{$cut.cut_id}">
+            <input name="act_id" type="hidden" value="{$cut.act_id}"> 
+</form>
+<!--购买表单  PRINCE 120029121--> 
+ 
+<!--砍价表单  PRINCE 120029121-->  
+<form name='cutForm' action="cut.php" method="POST">
+            <input name="cut" type="hidden" id="cut" value="1"  />
+            <input name="act" type="hidden" value="cut">
+            <input name="cut_id" type="hidden" value="{$cut.cut_id}"> 
+</form>
+<!--砍价表单  PRINCE 120029121-->  
+
+<!--底部 S  PRINCE 120029121-->  
+<div class="activity_nav">
+     <ul> 
+         <li class="activity_bian"><a href="index.php"><em class="goods_nav1"></em><span>首页</span></a> </li>
+         <li style=" width:66%; line-height:50px; text-align:center; color:#FF0000;" >
+ 		 <a  href="cut.php?act=userlist" style="color:#FF0000;">我的砍价</a>  
+         </li>
+     </ul>
+     <dl>
+     
+          <!--{if $cut.need_follow && (!$weixininfo.isfollow ) && $is_wechat_browser   }-->
+          <dd class="flow"><a style="display:block;" onclick="showReg();">帮砍一刀</a> </dd>
+          <!--{elseif $cut.user_id eq $user_id && $can_cut && $cut.end_cut_time gt  $cut.now_time}-->
+          <dd class="flow"><a style="display:block;" onclick="cutForm.submit();">自砍一刀</a> </dd>
+          <!--{elseif $can_cut && $cut.end_cut_time gt  $cut.now_time}-->
+          <dd class="flow"><a style="display:block;" onclick="cutForm.submit();">帮砍一刀</a> </dd>
+          <!--{else}-->
+          <dd class="flow"><a style="display:block;" onclick="showFDiv();">立即分享</a> </dd>
+          <!--{/if}-->
+          
+          <!--{if $cut.end_buy_time gt  $cut.now_time && $cut.user_id eq $user_id  }-->
+         		<dd class="goumai"><a style="display:block;" onclick="buy_form.submit();">立即下单</a> </dd>
+          <!--{else}-->
+         		<dd class="goumai"><a style="display:block;"  href="cut.php">更多活动</a> </dd>
+          <!--{/if}-->
+     </dl>                
+</div>
+<!--底部 E  PRINCE 120029121-->  
+
+
+
+
+
+
+
+
+    <!--关注+分享+返回顶部-Start  PRINCE 120029121-->
+         <!--弹出层 S-->
+        <script type="text/javascript">
+            function showFDiv(){
+                document.getElementById('popDiv').style.display = 'block';
+				document.getElementById('hidDiv').style.display = 'block';
+				document.getElementById('cartNum').innerHTML = document.getElementById('goods_number').value;
+				document.getElementById('cartPrice').innerHTML = document.getElementById('ECS_GOODS_AMOUNT').innerHTML;
+            }
+            function closeFDiv(){
+                document.getElementById('popDiv').style.display = 'none';
+				document.getElementById('hidDiv').style.display = 'none';
+				document.getElementById('joinDiv').style.display = 'none';
+            }
+            function showReg(){
+                document.getElementById('popReg').style.display = 'block';
+				document.getElementById('hidReg').style.display = 'block';
+            }
+            function closeReg(){
+                document.getElementById('popReg').style.display = 'none';
+				document.getElementById('hidReg').style.display = 'none';
+            }
+            function showBuy(){
+                document.getElementById('hidBuy').style.display = 'block';
+				document.getElementById('popBuy').style.display = 'block';
+            }
+            function closeBuy(){
+                document.getElementById('hidBuy').style.display = 'none';
+				document.getElementById('popBuy').style.display = 'none';
+            }
+         </script>
+		<script>
+        function goTop(){
+            $('html,body').animate({'scrollTop':0},600);
+        }
+        </script>
+        
+        <div class="tipMask" id="hidDiv" style="display:none; z-index:9000; background-color:#000; opacity:0.5;" ></div>
+        <div class="popGeneral" id="popDiv" style="background:none; top:0px; ">
+        <img src="images/share_guide.png" onClick="closeFDiv()"  width="100%" height="100%"/>
+        </div>
+        
+        <!--提示语 S-->
+        <!--{if $cut_tips  }-->
+        <div class="popGeneral" id="joinDiv" style="background:none; bottom:150px; display:block; text-align:center;">
+        <div style="line-height:50px; background:#FFF; border:1px solid #F00" onclick="closeFDiv()"> 
+        <span style=" font-size:12px; line-height:15px; color:#F00">{$cut_tips}</span>
+        <br />
+        点击关闭
+        </div>
+        </div>
+        <!--{/if }-->
+        <!--提示语 E-->
+        
+        <!--成功砍价 S-->
+        <!--{if $cut_done  }-->
+        <div class="popGeneral" id="joinDiv" style="background:none; bottom:150px; display:block; text-align:center;">
+        <div style="line-height:50px; background:#FFF; border:1px solid #F00" onclick="closeFDiv()"> 
+        恭喜您成功砍掉&nbsp;<font color="#FF0000">¥{$cut_done}</font>
+        <br />
+        点击关闭
+        </div>
+        </div>
+        <!--{/if }-->
+        <!--成功砍价 E-->
+        
+        <!--关注弹出框 S-->
+        <div class="tipMask" id="hidReg" style="display:none; z-index:9000; background-color:#000; opacity:0.5;" ></div>
+        <div class="popGeneral" id="popReg"  style=" display:none; background:none; bottom:50px;text-align:center;" onclick="closeReg()">
+         <img src="{$_SERVER[HTTP_HOST]}/mobile/images/weixin/cut_qrcode.jpg" style="width:80%;height:auto"  />
+        </div>
+        <!--关注弹出框 E-->
+  
+
+    <!--关注+分享+返回顶部-End  PRINCE 120029121-->
+
+
+{insert_scripts files='transport.js,utils.js'}
+<!--商品参数 E--> 
+<script type="text/javascript" src="{$ectouch_themes}/js/zepto.min.js"></script> 
+<script type="text/javascript">
+var gmt_end_time = "{$cut.gmt_end_time|default:0}";
+{foreach from=$lang.goods_js item=item key=key}
+var {$key} = "{$item}";
+var now_time = {$now_time};
+{/foreach}
+<!-- {literal} -->
+
+onload = function()
+{
+  try
+  {
+    onload_leftTime(now_time);
+	document.getElementById('number').value = 1;//更新数量
+  }
+  catch (e)
+  {}
+}
+<!-- {/literal} -->
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+<!-- {/literal} -->
+  wx.config({
+    debug: false,
+    appId: '{$signPackage.appId}',
+    timestamp: {$signPackage.timestamp},
+    nonceStr: '{$signPackage.nonceStr}',
+    signature: '{$signPackage.signature}',
+    jsApiList: [
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage' 
+    ]
+  });
+ wx.ready(function () {
+	//监听“分享给朋友”
+    wx.onMenuShareAppMessage({
+      title: '{if $cut.share_title }{$cut.share_title }{else}{$cut.act_name }{/if}',
+      desc: '{if $cut.share_brief }{$cut.share_brief }{else}{$cut.act_name }{/if}',
+      link: '{$cut.share_url}',
+      imgUrl: '{if strpos($cut.share_img,'ttp')>0}{else}{$web_url}{/if}{$cut.share_img}', //--PRINCE 120029121
+      trigger: function (res) {		
+      },
+      success: function (res) {
+      },
+      cancel: function (res) {
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+	
+	//分享到朋友圈
+    wx.onMenuShareTimeline({
+      title: '{if $cut.share_title }{$cut.share_title }{else}{$cut.act_name }{/if}',
+      link: '{$cut.share_url}',
+      imgUrl: '{if strpos($cut.share_img,'ttp')>0}{else}{$web_url}{/if}{$cut.share_img}', //--PRINCE 120029121
+      trigger: function (res) {		
+      },
+      success: function (res) {
+      },
+      cancel: function (res) {
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+	
+});
+<!-- {literal} -->
+</script>
+</div>
+<!--总结束  E PRINCE  120029121--->
+</body>
+</html>

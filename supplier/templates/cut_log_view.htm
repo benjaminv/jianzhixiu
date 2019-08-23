@@ -1,0 +1,78 @@
+<!-- $Id: cut_log_view.htm 14216 2008-03-10 02:27:21Z testyang $ -->
+
+{if $full_page}
+{include file="pageheader.htm"}
+<script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+{insert_scripts files="validator.js,../js/transport.org.js,../js/utils.js,listtable.js}
+<div class="list-div">
+    <table width="100%" cellpadding="3" cellspacing="1">
+      <tr>
+        <th colspan="8"><strong>{$info.cut_name} </strong></th>
+      </tr>
+      <!--tr>
+        <td><strong>{$lang.start_time}: </strong></td><td colspan="3">{$info.start_time}</td>
+        <td><strong>{$lang.end_time}: </strong></td><td colspan="3">{$info.end_time}</td>
+      </tr-->
+    </table>
+</div>
+
+<form method="post" action="" name="listForm">
+<div class="list-div" id="listDiv">
+{/if}
+
+<table cellpadding="3" cellspacing="1">
+    <tr>
+      <th><a href="javascript:listTable.sort('cut_id');">砍价ID</a>{$sort_cut_id}</th>
+      <th><a href="javascript:listTable.sort('act_id');">活动编号</a>{$sort_act_id}</th>
+      <th><a href="javascript:listTable.sort('act_user');">发起用户ID</a>{$sort_act_user}</th>
+      <th><a href="javascript:listTable.sort('cut_user');">好友ID</a>{$sort_cut_user}</th>
+      <th><a href="javascript:listTable.sort('cut_user_nickname');">好友昵称</a>{$sort_cut_user_nickname}</th>
+      <th><a href="javascript:listTable.sort('cut_user_head');">好友头像</a>{$sort_cut_user_head}</th>
+      <th><a href="javascript:listTable.sort('cut_time');">砍价时间</a>{$sort_cut_time}</th>
+      <th><a href="javascript:listTable.sort('cut_price');">砍掉价格</a>{$sort_cut_price}</th>
+      <th><a href="javascript:listTable.sort('after_cut_price');">砍后价格</a>{$sort_after_cut_price}</th>
+    </tr>
+    {foreach from=$cut_list item=cut}
+    <tr>
+      <td align="center">{$cut.cut_id}</td>
+      <td align="center">{$cut.act_id}</td>
+      <td align="center"><a href="users.php?act=edit&id={$cut.act_user}" title="会员信息" target="_blank">{$cut.act_user}</a></td>
+      <td align="center"><a href="users.php?act=edit&id={$cut.cut_user}" title="会员信息" target="_blank">{$cut.cut_user}</a></td>
+      <td align="center"><a href="users.php?act=edit&id={$cut.cut_user}" title="会员信息" target="_blank">{$cut.cut_user_nickname}</a></td>
+      <td align="center">{if $cut.cut_user_head}<img src="{$cut.cut_user_head}" style="width:40px; height:auto;" >{/if}</td>
+      <td align="center">{$cut.cut_time}</td>
+      <td align="center">{$cut.cut_price}</td>
+      <td align="center">{$cut.after_cut_price}</td>
+    </tr>
+    {foreachelse}
+    <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>
+    {/foreach}
+    <tr>
+      <td align="right" nowrap="true" colspan="10">{include file="page.htm"}</td>
+    </tr>
+</table>
+
+{if $full_page}
+</div>
+</form>
+
+
+<script type="text/javascript" language="JavaScript">
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+  listTable.query = "query_cut_log";
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+
+  {literal}
+  onload = function()
+  {
+    startCheckOrder();  // 开始检查订单
+  }
+  {/literal}
+</script>
+{include file="pagefooter.htm"}
+{/if}

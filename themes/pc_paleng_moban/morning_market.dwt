@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$page_title}</title>
+<script type="text/javascript" src="themes/pc_paleng_moban/js/js1.js"></script>
+<script type="text/javascript" src="themes/pc_paleng_moban/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="themes/pc_paleng_moban/js/jump.js"></script>
+<script type="text/javascript" src="themes/pc_paleng_moban/js/tab.js"></script>
+<script type="text/javascript">
+var compare_no_goods = "{$lang.compare_no_goods}";
+var btn_buy = "{$lang.btn_buy}";
+var is_cancel = "{$lang.is_cancel}";
+var select_spe = "{$lang.select_spe}";
+</script>
+<script>
+/*购物车滚动*/
+lastScrollY=100;
+    function heartBeat()
+    { 
+        var diffY;
+        if (document.documentElement && document.documentElement.scrollTop)
+            diffY = document.documentElement.scrollTop;
+        else if (document.body)
+            diffY = document.body.scrollTop
+        else
+        {/*Netscape stuff*/}
+        percent=.1*(diffY-lastScrollY); 
+        if(percent>0)percent=Math.ceil(percent); 
+        else percent=Math.floor(percent); 
+       document.getElementById("J_ScrollTopBtn").style.top=parseInt(document.getElementById("J_ScrollTopBtn").style.top)+percent+"px";
+        lastScrollY=lastScrollY+percent; 	
+    }
+    window.setInterval("heartBeat()",1);	
+</script>
+<style>
+/*漂浮*/
+body { position:relative;}
+.right_float { float:left; width:50px; position:absolute; right:-60px; overflow:hidden; z-index:50;}
+.right_float img { padding-top:5px;}
+
+
+.stay { width:1000px; margin:0 auto; padding:0; background:url(../images/stay_bg.gif) no-repeat 0 0; overflow:hidden;}
+.stay p { color:#646464; line-height:32px;}
+.stay_left { float:left; margin-left:10px;}
+.stay_right { float:right; margin-right:10px;}
+
+/*======顶部结束======*/
+/*======首页中部======*/
+
+.area { width:1000px; height:auto; margin:0 auto; margin-top:10px; padding:0 ; display:block; position:relative; z-index:10;}
+.banner { width:1000px; height:185px;}
+.first_banner { float:left; width:1000px; height:91px; display:block; overflow:hidden; z-index:0;}
+.first_banner A IMG {width:1000px; height:91px}
+.first_banner A IMG#pc_0 { display: block}
+
+.area_left { float:left; width:795px; margin-top:10px; overflow:hidden;}
+
+
+/*======早市======*/
+
+.area_top { float:left; width:1000px; margin-top:10px; overflow:hidden;}
+.top_left { float:left; margin:20px 10px 0 0; padding-left:25px; background:url(../images/up.gif) no-repeat 0 5px; color:#646464; line-height:25px; }
+.top_right { float:right; margin:20px 0px 3px 10px; padding-right:25px; background:url(../images/up.gif) no-repeat 80px 5px; color:#646464; line-height:25px; }
+.time { float:left; width:486px; margin-left:265px; _margin-left:145px; position:relative;}
+.time span { font-size:18px; font-weight:bold; line-height:25px; margin-left:45px;}
+.time p { position:absolute; top:15px; right:106px;}
+.kuai { float:left; width:1000px; position:relative; overflow:hidden;} 
+.up_line { width:1000px; height:14px; overflow:hidden; display:block;}
+.area_area { width:996px; background:#f97600; padding:0 3px; *padding:0 2px; overflow:hidden; }
+.ps_black { width:225px; color:#FFF; background:#000; position:absolute; top:0px; right:0px; padding:10px; line-height:20px; z-index:50; overflow:hidden; display:block; opacity:0.8; filter:alpha(opacity=80);}
+
+/*单个块*/
+.area_first { float:left; margin-left:1px;}
+.upline { width:330px; height:14px; display:block; overflow:hidden;}
+.top_one { background:#FFF;}
+.one_ps { width:326px; background:url(../images/top_one_bg.gif) no-repeat 0 0; margin-top:10px; padding-top:8px; overflow:hidden; display:block;}
+.one_ps p { float:left; width:300px; height:40px; color:#323232; font-size:14px; line-height:20px; padding:0 15px; overflow:hidden;}
+.one_ps p a { float:none; height:40px; margin:0; font-family:"微软雅黑"; font-weight:bold; font-size:14px; overflow:hidden;}
+.one_ps b { float:left; color:#ea6e00; padding-left:13px; _padding-left:8px; font-size:14px;}
+.ps_green { color:#009744; font-size:12px; line-height:26px;}
+.one_ps .ps_gray { margin:0;}
+.ps_gray { color:#7d7d7d; font-size:12px; font-weight:normal; margin-left:5px; text-decoration:line-through;}
+.ps_price { float:left; padding-top:17px; color:#ea6e00; font-weight:bold; font-size:28px;}
+.one_ps img { float:right; margin:13px 11px 0 0; _margin-right:5px; overflow:hidden; display:block;}
+
+/*======早市结束======*/
+
+
+</style>
+
+</head>
+<!--{insert_scripts files='common.js,transport.js,utils.js,auction.js'}-->
+<body>
+
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<div class="stay"><p class="stay_left">您所在的位置：<a href=".">首页</a> <code>&gt;</code> 早市		</p><p class="stay_right">网站公告：早市商品每天6点开始抢购11点结束。</p></div>
+<div class="area">
+	<div id="J_ScrollTopBtn" class="right_float" style="top:101px;">
+		<a href="flow.php"><img src="images/float_cart.gif" width="47" height="42" /></a>
+		<a href="#"><img src="images/backtop.gif" width="47" height="24" /></a>
+    </div>
+	<div class="banner"><img src="images/banner3.gif" width="1000" height="185" /></div>
+	<div class="area_top">
+    	<a href="javascript:;" class="top_right" onclick="activity_category1(1);" id="activity_categorytop_1">查看活动说明</a>
+        <div class="time">
+		{if $sstart eq 1}
+        	<p  id="leftTime">
+
+			</p>
+		<img src="images/time.gif" width="486" height="49" />
+		{elseif $sstart eq '2'}
+			<img width="486" height="49" src="images/aftertime.gif">
+		{elseif $sstart eq '3'}
+			<img width="486" height="49" src="images/befourtime.gif">
+		{/if}
+        </div>
+    </div>
+    <div class="kuai">
+    	<div class="ps_black" id="activity_category_1" style="display:none;">
+        	<p>1.早市商品每天6点开始抢购，11点结束。 
+			<br />2.江、浙、沪大部分地区、西安部分地区支持货到付款。
+			<br />3.全场满59元免运费。
+			<br />4.同城货到付款，上午下单下午可送达。 
+			<br />5.活动仅面向普通用户，一旦发现渠道订单，今天优品有权作废。 
+			<br />6.活动解释权归今天优品所有。</p>
+        </div>
+		<span class="up_line"><img src="images/up_line.gif" width="1000" height="14" /></span>
+
+		<div class="area_area">
+		  <!--{foreach from=$index_goods_list item=goods}-->
+    		<div class="area_first">
+        	<span class="upline"><img src="images/upline.gif" width="330" height="14" /></span>
+    		<div class="top_one">
+			
+        		<a href="{$goods.url}" target="_blank" title="{$goods.goods_name}"><img src="{$goods.thumb}" width="330" height="242" /></a>    
+                <div class="one_ps">
+                	<p><a href="{$goods.url}"  title="{$goods.goods_name}"  target="_blank">{$goods.goods_name}</a></p>
+					<b><span class="ps_green">仅剩{$goods.goods_number}份</span>
+                    <br />优品早市价：<br><span class="ps_gray">市场价:{$goods.market_price}</span></b>
+                    <span class="ps_price">{$goods.morning_market_price}</span>
+					{if $goods.goods_number}
+						{if $sstart eq 2}
+							<img width="105" height="48" src="images/qiangover.gif">
+						{/if}
+						{if $sstart eq 3}
+							<a href="#"><img width="105" height="48" src="images/befour.gif"></a>
+						{/if}
+						{if $sstart eq 1}
+						<a  href="javascript:addToCart({$goods.goods_id})" title="加入购物车" ><img src="images/qianggou.gif" width="105" height="48" /></a>
+						{/if}
+					{else}
+						<a href="#"><img width="105" height="48" src="images/over.gif"></a>
+					{/if}
+                </div>
+        	</div>
+            <span><img src="images/downline.gif" width="330" height="16" /></span>
+			
+        	</div>
+        		<!--{/foreach}--> 
+
+    	</div>
+    	<span><img src="images/down_line.gif" width="1000" height="14" /></span>
+	</div>
+    
+    <div class="blank"></div>
+</div>
+
+<script type="text/javascript" src="themes/pc_paleng_moban/js/indexPrivate.min.js"></script>
+    <!-- #BeginLibraryItem "/library/right_sidebar.lbi" --><!-- #EndLibraryItem -->
+
+<!-- #BeginLibraryItem "/library/page_footer_index.lbi" --><!-- #EndLibraryItem -->
+<script type="text/javascript">
+var gmt_end_time = {$jstime|default:0}; 
+<!-- {literal} -->
+
+onload = function(){
+  try { onload_leftTime(); }
+  catch (e) {}
+}
+
+</script>
+</body>
+</html>

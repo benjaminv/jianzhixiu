@@ -1,0 +1,138 @@
+<style type="text/css">
+    .share_cover{
+      width: 100%;
+      height: 100%;
+      z-index: 999;
+      background-color: rgba(0,0,0,0.7);
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
+    .share_box{
+      width: 100%;
+      height: 78px;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      margin-top: -39px;
+      z-index: 999;
+      text-align: center;
+    }
+    .share_box ul{
+      overflow: hidden;
+      position: relative;
+    }
+    .share_box li{
+      height: 78px;
+      float: left;
+      width: 100%;
+      list-style: none;
+      position: relative;
+    }
+    .share_box li div{
+      position: absolute;
+      width: 100%;
+      top: 15%;
+      left: 0;
+      text-align:center;
+    }
+    .share_box a{
+      color: #fff;
+    }
+    .share_box li div img{
+      width: 30px;
+      height: 30px;
+    }
+    
+    .share_cover_weixin img{
+      position: fixed;
+      top: 3rem;
+      right: 0;
+    }
+    .share_cover_safari img{
+      position: fixed;
+      bottom: 0.5rem;
+      left: 3rem;
+    }
+  </style>
+  <div id="share_cover_android" class="share_cover" style="display: none;" onclick="share_hide(this)" >
+    <div class="share_box">
+      <ul style="display: block;">
+        <li>
+          <a class="copy_link">
+            <div>
+              <h5><img src="./themesmobile/dm299_com/images/img_link.png"></h5>
+              <p>复制链接</p>
+            </div>
+          </a>
+        </li>
+        <!-- <li>
+          <a href="">
+            <div>
+              <input type="hidden" id="select_txt">
+              <img src="./themesmobile/dm299_com/images/img_pengyouquan.png">
+              <p>朋友圈</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="">
+            <div>
+              <img src="./themesmobile/dm299_com/images/img_qq.png">
+              <p>QQ</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="">
+            <div>
+              <img src="./themesmobile/dm299_com/images/img_sina.png">
+              <p>微博</p>
+            </div>
+          </a>
+        </li> -->
+      </ul>
+    </div>
+  </div>
+  <div id="share_cover_weixin" style="display: none;" class="share_cover share_cover_weixin" onclick="share_hide(this)">
+    <img src="./themesmobile/dm299_com/images/share_weixin.png" width="100%" alt="">
+  </div>
+  <div id="share_cover_safari" style="display: none;" class="share_cover share_cover_safari" onclick="share_hide(this)">
+    <img src="./themesmobile/dm299_com/images/share_safari.png" width="50%" alt="">
+  </div>
+  <script src="./themesmobile/dm299_com/js/clipboard.min.js"></script>
+  <script type="text/javascript">
+    function share_new(){
+      if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){
+        var u = navigator.userAgent, app = navigator.appVersion;
+          if(u.indexOf("MicroMessenger") > -1){ //share_cover_weixin
+          document.getElementById("share_cover_weixin").style.display="block";
+            return;
+          }else if(/Safari/.test(u) && !/Chrome/.test(u)){  //share_cover_safari
+          document.getElementById("share_cover_safari").style.display="block";
+            return;
+          }else if(u.indexOf("Android") > -1){  //share_cover_android
+          document.getElementById("share_cover_android").style.display="block";
+            return;
+          }else{
+            alert("请用微信浏览器打开进行分享！");
+          }
+      }else{
+        alert("请用微信浏览器打开进行分享！");
+        return false;
+      }
+    }
+    function share_hide(ob){
+      ob.style.display="none";
+    }
+    var clipboard = new ClipboardJS('.copy_link', {
+        text: function() {
+          var share_url = window.location.href;
+            return share_url;
+        }
+    });
+    clipboard.on('success', function(e) {
+      alert("复制成功，去分享给朋友吧！");
+      return;
+    });
+  </script>

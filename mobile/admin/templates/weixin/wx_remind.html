@@ -1,0 +1,222 @@
+{include file="pageheader.htm"}
+
+{insert_scripts files="../js/utils.js,listtable.js"}
+
+<style>
+.fx_tishi{width:100%; overflow:hidden; margin:auto;  padding:0px;padding-top:10px; padding-bottom:10px; border:1px solid #E6E6E6; background:#FBFBFB; margin-bottom:20px;}
+.fx_tishi span{display:block; width:98%; overflow:hidden; margin:auto;font-size:12px; line-height:150%; color:#666}
+</style>
+
+<div class="fx_tishi">
+	<span style=" font-size:14px; color:#F60">温馨提示:模板消息提醒设置的几点说明：</span>
+	<span>1.模板消息提醒，不受客服接口48小时限制，更能增加用户粘性与互动性；</span>
+	<span>2.每一个公众号所使用的消息模板ID是不同的，所以，您需要自行到微信公众平台添加模板消息模板；</span>
+	<span>3.以添加【订单微信提醒】消息模板为例讲解步骤：</span>
+	<span>4.登陆微信公众平台，找到左边【模板消息】菜单进入，点击【模板库】选择添加自己的行业，这里使用（ IT科技/互联网|电子商务），选择添加。</span>
+	<span>5.返回【模板库】，在下方（请输入模板标题、内容）处输入我们的模板标题【订单提交成功通知】，点击搜索</span>
+	<span>6.在搜索结果中找到我们需要的模板编号为：OPENTM200746866的模板，点击【详情】，添加即可。</span>
+</div>
+<div id="tabbody-div">
+<form name="theForm" method="post" action="weixin.php?act=remind">
+
+  <table width="100%" cellpadding="3" cellspacing="1">
+
+  <tbody>
+
+ <tr>
+
+    <td class="label">订单微信提醒 :</td>
+
+    <td><input type="radio" name="buynotice" value="1" {if $buynotice eq 1}checked{/if} />开启<input type="radio" name="buynotice" value="0" {if $buynotice eq 0}checked{/if} />关闭</td>
+
+  </tr>
+
+  <tr>
+
+    <td class="label">订单提交成功通知模板ID :</td>
+
+    <td><input type="text"  name="buymsg" value="{$buymsg}" value="{$buymsg}" size="50">模板编号：OPENTM200746866</td>
+
+  </tr>
+   <tr>
+
+    <td class="label">订单商家微信提醒 :</td>
+
+    <td><input type="radio" name="buysuppliertice" value="1" {if $buysuppliertice eq 1}checked{/if} />开启<input type="radio" name="buysuppliertice" value="0" {if $buysuppliertice eq 0}checked{/if} />关闭</td>
+
+  </tr>
+
+  <tr>
+
+    <td class="label">提醒供应商发货通知模板ID :</td>
+
+    <td><input type="text"  name="buysuppliermsg" value="{$buysuppliermsg}" size="50">模板编号：OPENTM206849234</td>
+
+  </tr>
+      <!-- <tr>
+
+    <td class="label">订单上级微信提醒 :</td>
+
+    <td><input type="radio" name="buyuptice" value="1" {if $buyuptice eq 1}checked{/if} />开启<input type="radio" name="buyuptice" value="0" {if $buyuptice eq 0}checked{/if} />关闭</td>
+
+  </tr>
+
+  <tr>
+
+    <td class="label">分销订单通知模板ID :</td>
+
+    <td><input type="text" name="buyupmsg" value="{$buyupmsg}" size="50">模板编号：OPENTM206547887</td>
+
+  </tr>-->
+  
+   <tr>
+
+    <td class="label">付款微信提醒 :</td>
+
+    <td><input type="radio" name="paytice" value="1" {if $paytice eq 1}checked{/if} />开启<input type="radio" name="paytice" value="0" {if $paytice eq 0}checked{/if} />关闭</td>
+
+  </tr>
+
+  <tr>
+
+    <td class="label">订单支付成功模板ID :</td>
+
+    <td><input type="text" name="paymsg" value="{$paymsg}" size="50">模板编号：TM00015</td>
+
+  </tr>
+  
+     <!--<tr>
+
+    <td class="label">付款商家微信提醒 :</td>
+
+    <td><input type="radio" name="paysuppliertice" value="1" {if $paysuppliertice eq 1}checked{/if} />开启<input type="radio" name="paysuppliertice" value="0" {if $paysuppliertice eq 0}checked{/if} />关闭</td>
+
+  </tr>
+
+  <tr>
+
+    <td class="label">发货提醒模板ID :</td>
+
+    <td><input type="text" name="paysuppliermsg" value="{$paysuppliermsg}" size="50">模板编号：OPENTM203331384</td>
+
+  </tr>-->
+
+     <tr>
+
+    <td class="label">付款上级微信提醒 :</td>
+
+    <td><input type="radio" name="payuptice" value="1" {if $payuptice eq 1}checked{/if} />开启<input type="radio" name="payuptice" value="0" {if $payuptice eq 0}checked{/if} />关闭</td>
+
+  </tr>
+
+  <tr>
+
+    <td class="label">分销订单支付成功通知模板ID :</td>
+
+    <td><input type="text" name="payupmsg" value="{$payupmsg}" size="50">模板编号：OPENTM206328960 </td>
+
+  </tr>
+   <tr>
+
+    <td class="label">会员加入微信提醒 :</td>
+
+    <td><input type="radio" name="jointice" value="1" {if $jointice eq 1}checked{/if} />开启<input type="radio" name="jointice" value="0" {if $jointice eq 0}checked{/if} />关闭</td>
+
+  </tr>
+
+  <tr>
+
+    <td class="label">邀请好友注册成功通知模板ID :</td>
+
+    <td><input type="text" name="joinmsg" value="{$joinmsg}" size="50">模板编号：OPENTM207679900</td>
+
+  </tr>
+  
+ <tr>
+
+    <td class="label">发货微信提醒 :</td>
+
+    <td><input type="radio" name="sendnotice" value="1" {if $sendnotice eq 1}checked{/if} />开启<input type="radio" name="sendnotice" value="0" {if $sendnotice eq 0}checked{/if} />关闭</td>
+
+  </tr>
+
+ <tr>
+    <td class="label">订单标记发货通知模板ID:</td>
+
+    <td><input type="text" name="sendmsg" value="{$sendmsg}" size="50">模板编号：TM00505</td>
+
+  </tr>
+
+
+ <tr>
+
+    <td class="label">云购中奖微信提醒 :</td>
+
+    <td><input type="radio" name="lucky_buy_lucky_user_notice" value="1" {if $lucky_buy_lucky_user_notice eq 1}checked{/if} />开启<input type="radio" name="lucky_buy_lucky_user_notice" value="0" {if $lucky_buy_lucky_user_notice eq 0}checked{/if} />关闭</td>
+
+  </tr>
+
+ <tr>
+    <td class="label">云购商品获得通知模板ID:</td>
+
+    <td><input type="text" name="lucky_buy_lucky_user_msg" value="{$lucky_buy_lucky_user_msg}" size="50">模板编号：OPENTM207445603</td>
+
+  </tr>
+ 
+ <tr>
+    <td class="label">开团成功通知模板ID:</td>
+
+    <td><input type="text" name="extpintuan_open" value="{$extpintuan_open}" size="50">模板编号：OPENTM400048565</td>
+
+  </tr>
+  
+ <tr>
+    <td class="label">参团成功通知模板ID:</td>
+
+    <td><input type="text" name="extpintuan_join" value="{$extpintuan_join}" size="50">模板编号：OPENTM400048581</td>
+
+  </tr>
+  
+ <tr>
+    <td class="label">拼团成功通知模板ID:</td>
+
+    <td><input type="text" name="extpintuan_success" value="{$extpintuan_success}" size="50">模板编号：OPENTM401153728</td>
+
+  </tr>
+   
+ <tr>
+    <td class="label">拼团失败通知模板ID:</td>
+
+    <td><input type="text" name="extpintuan_fail" value="{$extpintuan_fail}" size="50">模板编号：OPENTM401113750</td>
+
+  </tr>
+  
+ <tr>
+    <td class="label">活动结果通知模板ID:</td>
+
+    <td><input type="text" name="extpintuan_result" value="{$extpintuan_result}" size="50">模板编号：OPENTM204623681 （拼团抽奖结果专用）</td>
+
+  </tr>
+  
+  <tr>
+
+    <td colspan="2" align="center">
+
+      <input type="submit" value="{$lang.button_submit}" class="button" />
+
+    <input type="reset" value="{$lang.button_reset}" class="button" />
+
+    </td>
+
+  </tr>
+
+</tbody></table>
+
+</form>
+</div>
+
+
+
+{/literal}
+
+{include file="pagefooter.htm"}

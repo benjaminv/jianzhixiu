@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=1" name="viewport">
+    <link href="themesmobile/dm299_com/css/seckillpage.css?id=1" rel="stylesheet">
+    <script src="themesmobile/dm299_com/js/jquery.js"></script>
+    <title>{$page_title}</title>
+</head>
+<div>
+<header class="header">
+	<div class="h-left"><a class="sb-back" href="javascript:history.back(-1)" title="返回"></a></div>
+	<div class="h-mid">秒杀活动</div>
+	<div class="h-right">
+		<aside class="top_bar">
+		  <div onClick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+		</aside>
+  </div>
+</header>
+<!-- #BeginLibraryItem "/library/up_menu.lbi" --><!-- #EndLibraryItem --> <!--弹出菜单-->
+
+
+<div class="mainbox">
+    <div class="mainbox1">
+        <div class="navbtm">
+            {if $seckill_begin eq 2}
+            <p class="des">抢购中，先下单先得哦！</p>
+            {/if}
+
+            {if $seckill_begin eq 1}
+            <p class="des">暂未开启，耐心等候一会哦！</p>
+            {/if}
+            {if $seckill_begin eq 2}
+            <div id="seckill_time" class="time">
+                <p>距结束</p>
+                <span id="day_show"></span>:天
+                <span id="hour_show"></span>:时
+                <span id="minute_show"></span>:分
+                <span id="second_show"></span>:秒
+            </div>
+            {/if}
+
+            {if $seckill_begin eq 1}
+            <div id="seckill_time" class="time">
+                <p>距离开始</p>
+                <span id="day_show"></span>:天
+                <span id="hour_show"></span>:时
+                <span id="minute_show"></span>:分
+                <span id="second_show"></span>:秒
+            </div>
+            {/if}
+            <script type="text/javascript">
+                var pd = {$seckill_begin};
+                var html = "";
+                if(pd == 2){
+                    html = "已结束,请刷新页面";
+                }else if(pd == 1){
+                    html = "已开始，请刷新页面";
+                }
+                var intDiff = {$seckill_time|default:0};//倒计时总秒数量
+                function timer(intDiff){
+                  var a =   window.setInterval(function(){
+                        var day=0,
+                                hour=0,
+                                minute=0,
+                                second=0;//时间默认值
+                        if(intDiff > 0){
+                            day = Math.floor(intDiff / (60 * 60 * 24));
+                            hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                            minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                            second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+                        }
+                        if (hour<= 9) hour = '0' + hour;
+                        if (minute <= 9) minute = '0' + minute;
+                        if (second <= 9) second = '0' + second;
+                        document.getElementById("day_show").innerHTML=day;
+                        document.getElementById("hour_show").innerHTML=hour;
+                        document.getElementById("minute_show").innerHTML=minute;
+                        document.getElementById("second_show").innerHTML=second;
+                        intDiff--;
+                        if(intDiff == 0){
+                            clearInterval(a);
+                           $("#seckill_time").empty().html(html);
+                        }
+                    }, 1000);
+                }
+                timer(intDiff);
+            </script>
+            <div class="clearfix"></div>
+        </div>
+
+
+        {foreach name=goods_list from=$goods_list item=goods}
+        <a href="{$goods.url}" class="main0">
+            <div class="fl">
+                <img src="{$goods.goods_thumb}">
+                <p {if $goods.bf neq 100}style="display: none;"{/if}>已抢光</p>
+            </div>
+            <div class="mainfr">
+                <p class="dtl">{$goods.goods_name}</p>
+                <div class="mainbtm">
+                    <div class="pbox">
+                        <p class="skill-price">{$goods.final_price}</p>
+                        <p class="skill-price-odd">{$goods.market_price}</p>
+                    </div>
+                    {if $seckill_begin eq 2 &&  $goods.bf neq 100 }
+                    <div class="jindu">
+                        <span class="qms">去秒杀</span>
+                        <div class="votebox">
+                            <dl class="barbox">
+                                <span>已售{$goods.bf}%</span>
+                                <dd class="barline">
+                                    <div w="{$goods.bf}" style="width:0px;" class="charts"></div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    {/if}
+                   {if $seckill_begin eq 1}
+                    <p class="youhui">暂未开始</p>
+                    {/if}
+                </div>
+            </div>
+        </a>
+        {/foreach}
+    </div>
+</div>
+<script>
+    function animate(){
+        $(".charts").each(function(i,item){
+            var a=parseInt($(item).attr("w"));
+            $(item).animate({
+                width: a+"%"
+            },1000);
+        });
+    }
+    animate();
+</script>
+<script>
+    $(".mainbox").children().hide().eq(0).show()
+    $(".navbox .nav").click(
+            function(){
+                n=$(this).index();
+                $(".navbox .nav").removeClass("navcurrent").eq(n).addClass("navcurrent");
+                $(".mainbox").children().hide().eq(n).show()
+            }
+    )
+
+</script>
+</body>
+</html>
